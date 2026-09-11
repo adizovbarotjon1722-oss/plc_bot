@@ -1,0 +1,7 @@
+[
+  {"id": "gem", "label": "1. GEM welding", "kb_file": "tags_kb_gem.json"},
+  {"id": "sa3", "label": "2. SA3 welding", "kb_file": "tags_kb_sa3.json"},
+  {"id": "watercool", "label": "3. Water cooling", "kb_file": "tags_kb_watercool.json"},
+  {"id": "watercoolrobot", "label": "4. Water cooling robot", "kb_file": "tags_kb_watercoolrobot.json"},
+  {"id": "deflashing", "label": "5. Deflashing", "kb_file": "tags_kb_deflashing.json"}
+]

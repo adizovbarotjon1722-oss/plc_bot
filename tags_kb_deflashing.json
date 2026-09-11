@@ -1,0 +1,9371 @@
+[
+ {
+  "address": "%I0.0",
+  "data_type": "Bool",
+  "name": "I0.0_HMIMachineManual",
+  "comment": "HMI机器手动（HMI旋钮开关）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.1",
+  "data_type": "Bool",
+  "name": "I0.1_HMIMachineAuto",
+  "comment": "HMI机器自动（HMI旋钮开关）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.2",
+  "data_type": "Bool",
+  "name": "I0.2_CoolingMachineVersionID1",
+  "comment": "水冷集成版本ID1",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.3",
+  "data_type": "Bool",
+  "name": "I0.3_CoolingMachineVersionID2",
+  "comment": "水冷集成版本ID2",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.4",
+  "data_type": "Bool",
+  "name": "I0.4_CoolingMachineVersionID3",
+  "comment": "水冷集成版本ID3",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.5",
+  "data_type": "Bool",
+  "name": "I0.5_CoolingMachineVersionID4",
+  "comment": "水冷集成版本ID4",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.6",
+  "data_type": "Bool",
+  "name": "%I0.6",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.7",
+  "data_type": "Bool",
+  "name": "%I0.7",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.0",
+  "data_type": "Bool",
+  "name": "%I1.0",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.1",
+  "data_type": "Bool",
+  "name": "%I1.1",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.2",
+  "data_type": "Bool",
+  "name": "%I1.2",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.3",
+  "data_type": "Bool",
+  "name": "%I1.3",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.4",
+  "data_type": "Bool",
+  "name": "%I1.4",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.5",
+  "data_type": "Bool",
+  "name": "%I1.5",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.6",
+  "data_type": "Bool",
+  "name": "%I1.6",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.7",
+  "data_type": "Bool",
+  "name": "%I1.7",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.0",
+  "data_type": "Bool",
+  "name": "I2.0_PowerPhaseNormal",
+  "comment": "相序正常(相序继电器常闭触点输入)",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.1",
+  "data_type": "Bool",
+  "name": "I2.1_MainEnable",
+  "comment": "主控使能(安全继电器辅助触点输入)",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.2",
+  "data_type": "Bool",
+  "name": "I2.2_AirSwitch",
+  "comment": "气源压力开关信号(低于4Bar断开)",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.3",
+  "data_type": "Bool",
+  "name": "I2.3_InletGratingCover",
+  "comment": "上料平台光栅遮挡信号（安全PLC信号）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.4",
+  "data_type": "Bool",
+  "name": "I2.4_InletGratingAlarm",
+  "comment": "上料平台光栅报警（安全PLC信号）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.5",
+  "data_type": "Bool",
+  "name": "I2.5_SafetyDoorClosed",
+  "comment": "安全门关闭信号（门锁信号）1关闭",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.6",
+  "data_type": "Bool",
+  "name": "I2.6_SafetyDoorLocked",
+  "comment": "安全门锁紧信号（门锁信号）1锁紧",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.7",
+  "data_type": "Bool",
+  "name": "I2.7_FlashConveyorLine2InverterFault",
+  "comment": "修边废料输送线2电机变频器故障",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.0",
+  "data_type": "Bool",
+  "name": "I3.0_ControlOn",
+  "comment": "安全复位[电柜黑色按钮]",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.1",
+  "data_type": "Bool",
+  "name": "I3.1_FaultReset",
+  "comment": "故障复位[电柜和HMI主面板黑色按钮]",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.2",
+  "data_type": "Bool",
+  "name": "I3.2_MachineManual",
+  "comment": "机器手动（电柜旋钮开关）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.3",
+  "data_type": "Bool",
+  "name": "I3.3_MachineAuto",
+  "comment": "机器自动（电柜板旋钮开关）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.4",
+  "data_type": "Bool",
+  "name": "I3.4_GoBasicButton",
+  "comment": "总回原位[电柜和HMI主面板蓝色带灯按钮]",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.5",
+  "data_type": "Bool",
+  "name": "I3.5_InletE-StopTrig",
+  "comment": "上料平台急停按钮被按下（急停按钮常开点）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.6",
+  "data_type": "Bool",
+  "name": "I3.6_HMIE-StopTrig",
+  "comment": "HMI急停按钮被按下（急停按钮常开点）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.7",
+  "data_type": "Bool",
+  "name": "I3.7_CabitE-StopTrig",
+  "comment": "电柜急停按钮被按下（急停按钮常开点）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%Q10.0",
+  "data_type": "Bool",
+  "name": "Q10.0_Buzzer[Tower]",
+  "comment": "蜂鸣器（塔灯）****电源1****",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.1",
+  "data_type": "Bool",
+  "name": "Q10.1_FaultLED[Tower]",
+  "comment": "故障灯（红色塔灯）",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.2",
+  "data_type": "Bool",
+  "name": "Q10.2_ManualLED[Tower]",
+  "comment": "手动指示灯（黄色塔灯）",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.3",
+  "data_type": "Bool",
+  "name": "Q10.3_AutoRunLED[Tower]",
+  "comment": "自动运行灯（绿色塔灯）",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.4",
+  "data_type": "Bool",
+  "name": "Q10.4_SafetyDoorLockedLED",
+  "comment": "安全门锁门指示灯（白色带灯按钮）",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.5",
+  "data_type": "Bool",
+  "name": "Q10.5_InletAutoRunLED[Tower]",
+  "comment": "上料平台自动运行灯（绿色塔灯）",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.6",
+  "data_type": "Bool",
+  "name": "%Q10.6",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.7",
+  "data_type": "Bool",
+  "name": "%Q10.7",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.0",
+  "data_type": "Bool",
+  "name": "Q11.0_DoorNotLockAlarmLED",
+  "comment": "下料平台维修门未锁紧警示灯（旋转警示灯）",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.1",
+  "data_type": "Bool",
+  "name": "%Q11.1",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.2",
+  "data_type": "Bool",
+  "name": "%Q11.2",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.3",
+  "data_type": "Bool",
+  "name": "%Q11.3",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.4",
+  "data_type": "Bool",
+  "name": "%Q11.4",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.5",
+  "data_type": "Bool",
+  "name": "%Q11.5",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.6",
+  "data_type": "Bool",
+  "name": "%Q11.6",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.7",
+  "data_type": "Bool",
+  "name": "%Q11.7",
+  "comment": "",
+  "group": "DO\\Light",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%MB1",
+  "data_type": "Byte",
+  "name": "System_Byte",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.0",
+  "data_type": "Bool",
+  "name": "FirstScan",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.1",
+  "data_type": "Bool",
+  "name": "DiagStatusUpdate",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.2",
+  "data_type": "Bool",
+  "name": "AlwaysTRUE",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.3",
+  "data_type": "Bool",
+  "name": "AlwaysFALSE",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MB100",
+  "data_type": "Byte",
+  "name": "Clock_Byte",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.0",
+  "data_type": "Bool",
+  "name": "Clock_10Hz",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.1",
+  "data_type": "Bool",
+  "name": "Clock_5Hz",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.2",
+  "data_type": "Bool",
+  "name": "Clock_2.5Hz",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.3",
+  "data_type": "Bool",
+  "name": "Clock_2Hz",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.4",
+  "data_type": "Bool",
+  "name": "Clock_1.25Hz",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.5",
+  "data_type": "Bool",
+  "name": "Clock_1Hz",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.6",
+  "data_type": "Bool",
+  "name": "Clock_0.625Hz",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.7",
+  "data_type": "Bool",
+  "name": "Clock_0.5Hz",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%I4.0",
+  "data_type": "Bool",
+  "name": "I4.0_StartBotton",
+  "comment": "启动按钮（电柜绿色蘑菇头按钮）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.1",
+  "data_type": "Bool",
+  "name": "I4.1_StopBptton",
+  "comment": "停止按钮（电柜红色按钮）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.2",
+  "data_type": "Bool",
+  "name": "I4.2_InletRasterConfirm",
+  "comment": "上料平台光栅确认按钮（入口按钮盒白色带灯按钮）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.3",
+  "data_type": "Bool",
+  "name": "I4.3_InletGoHome",
+  "comment": "上料平台回原位按钮（入口按钮盒蓝色带灯按钮）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.4",
+  "data_type": "Bool",
+  "name": "I4.4_InletFaultReset",
+  "comment": "上料平台故障复位按钮（入口按钮盒红色带灯按钮）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.5",
+  "data_type": "Bool",
+  "name": "I4.5_InletStartBotton",
+  "comment": "上料平台启动按钮（入口按钮盒绿色蘑菇头按钮）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.6",
+  "data_type": "Bool",
+  "name": "I4.6_InletStopBotton",
+  "comment": "上料平台停止按钮（入口按钮盒红色按钮）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.7",
+  "data_type": "Bool",
+  "name": "I4.7_FlashConveyorLine1InverterFault",
+  "comment": "修边废料输送线1电机变频器故障",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.0",
+  "data_type": "Bool",
+  "name": "I5.0_CoolingMachineAllowTankIn",
+  "comment": "水冷集成允许油箱进入（1允许进入）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.1",
+  "data_type": "Bool",
+  "name": "I5.1_CoolingMachineAllowTableOut",
+  "comment": "水冷集成允许下料平台离开（油箱不需要翻转，下料平台靠模和水冷集成共用）（1允许离开）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.2",
+  "data_type": "Bool",
+  "name": "I5.2_CoolingMachineLCOK",
+  "comment": "水冷集成光栅OK，未保护执行也未挡光栅（此时下料平台都要暂停）（1为OK）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.3",
+  "data_type": "Bool",
+  "name": "I5.3_CoolingMachineLCLight",
+  "comment": "水冷集成光栅灯保护开启(1为保护灯开启)",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.4",
+  "data_type": "Bool",
+  "name": "I5.4_CoolingMachineAskToRealeseTank",
+  "comment": "水冷集成允许修边松开吸盘（水冷集成直接抓修边下料平台吸盘上的油箱）",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.5",
+  "data_type": "Bool",
+  "name": "%I5.5",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.6",
+  "data_type": "Bool",
+  "name": "%I5.6",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.7",
+  "data_type": "Bool",
+  "name": "%I5.7",
+  "comment": "",
+  "group": "DI\\Cabit_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I100.0",
+  "data_type": "Bool",
+  "name": "CmdComplete",
+  "comment": "命令处理结束",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I100.1",
+  "data_type": "Bool",
+  "name": "CmdError",
+  "comment": "命令处理错误",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I100.2",
+  "data_type": "Bool",
+  "name": "CmdReady",
+  "comment": "可受理命令处理",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I100.3",
+  "data_type": "Bool",
+  "name": "ResultReady",
+  "comment": "数据传送完成",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I100.4",
+  "data_type": "Bool",
+  "name": "ResultOR",
+  "comment": "在输出设定中指定的工具判定值的OR结果",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I100.5",
+  "data_type": "Bool",
+  "name": "%I100.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I100.6",
+  "data_type": "Bool",
+  "name": "%I100.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I100.7",
+  "data_type": "Bool",
+  "name": "%I100.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I101.0",
+  "data_type": "Bool",
+  "name": "READY1",
+  "comment": "向触发1输入变为可受理的状态",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I101.1",
+  "data_type": "Bool",
+  "name": "READY2",
+  "comment": "向触发2输入变为可受理的状态",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I101.2",
+  "data_type": "Bool",
+  "name": "READY3",
+  "comment": "向触发3输入变为可受理的状态",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I101.3",
+  "data_type": "Bool",
+  "name": "READY4",
+  "comment": "向触发4输入变为可受理的状态",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I101.4",
+  "data_type": "Bool",
+  "name": "%I101.4",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I101.5",
+  "data_type": "Bool",
+  "name": "%I101.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I101.6",
+  "data_type": "Bool",
+  "name": "%I101.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I101.7",
+  "data_type": "Bool",
+  "name": "%I101.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I102.0",
+  "data_type": "Bool",
+  "name": "ACK1",
+  "comment": "受理了触发1",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I102.1",
+  "data_type": "Bool",
+  "name": "ACK2",
+  "comment": "受理了触发2",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I102.2",
+  "data_type": "Bool",
+  "name": "ACK3",
+  "comment": "受理了触发3",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I102.3",
+  "data_type": "Bool",
+  "name": "ACK4",
+  "comment": "受理了触发4",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I102.4",
+  "data_type": "Bool",
+  "name": "%I102.4",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I102.5",
+  "data_type": "Bool",
+  "name": "%I102.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I102.6",
+  "data_type": "Bool",
+  "name": "%I102.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I102.7",
+  "data_type": "Bool",
+  "name": "%I102.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I103.0",
+  "data_type": "Bool",
+  "name": "BUSY",
+  "comment": "繁忙",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I103.1",
+  "data_type": "Bool",
+  "name": "ERROR",
+  "comment": "系统错误",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I103.2",
+  "data_type": "Bool",
+  "name": "%I103.2",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I103.3",
+  "data_type": "Bool",
+  "name": "RUN",
+  "comment": "处于运行模式",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I103.4",
+  "data_type": "Bool",
+  "name": "%I103.4",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I103.5",
+  "data_type": "Bool",
+  "name": "%I103.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I103.6",
+  "data_type": "Bool",
+  "name": "1OUTPUT_IMG_BUSY",
+  "comment": "图像输出中",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I103.7",
+  "data_type": "Bool",
+  "name": "1OUTPUT_IMG_STATUS",
+  "comment": "图像输出缓存中",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW112",
+  "data_type": "Word",
+  "name": "Error code",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID116",
+  "data_type": "DInt",
+  "name": "Total count",
+  "comment": "显示检测次数",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID120",
+  "data_type": "DInt",
+  "name": "Command Result",
+  "comment": "命令执行结果",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID124",
+  "data_type": "DInt",
+  "name": "Command Data 1",
+  "comment": "命令执行结果数据1（相机当前SD卡号）",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID128",
+  "data_type": "DInt",
+  "name": "Command Data 2",
+  "comment": "命令执行结果数据2（相机当前程序号）",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID132",
+  "data_type": "DInt",
+  "name": "Command Data 3",
+  "comment": "命令执行结果数据3",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID136",
+  "data_type": "DInt",
+  "name": "Command Data 4",
+  "comment": "命令执行结果数据4",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID140",
+  "data_type": "DInt",
+  "name": "Command Data 5",
+  "comment": "命令执行结果数据5",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID144",
+  "data_type": "DInt",
+  "name": "Command Data 6",
+  "comment": "命令执行结果数据6",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID148",
+  "data_type": "DInt",
+  "name": "Command Data 7",
+  "comment": "命令执行结果数据7",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID152",
+  "data_type": "DInt",
+  "name": "Command Data 8",
+  "comment": "命令执行结果数据8",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID156",
+  "data_type": "DInt",
+  "name": "Command Data 9",
+  "comment": "命令执行结果数据9",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID160",
+  "data_type": "DInt",
+  "name": "Result Data 1",
+  "comment": "检测结果数据1（X）",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID164",
+  "data_type": "DInt",
+  "name": "Result Data 2",
+  "comment": "检测结果数据2（Y）",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID168",
+  "data_type": "DInt",
+  "name": "Result Data 3",
+  "comment": "检测结果数据3（Z）",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID172",
+  "data_type": "DInt",
+  "name": "Result Data 4",
+  "comment": "检测结果数据4（RX）",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID176",
+  "data_type": "DInt",
+  "name": "Result Data 5",
+  "comment": "检测结果数据5（RY）",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID180",
+  "data_type": "DInt",
+  "name": "Result Data 6",
+  "comment": "检测结果数据6（RZ）",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%Q100.0",
+  "data_type": "Bool",
+  "name": "CmdRequest",
+  "comment": "请求执行命令",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q100.1",
+  "data_type": "Bool",
+  "name": "%Q100.1",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q100.2",
+  "data_type": "Bool",
+  "name": "%Q100.2",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q100.3",
+  "data_type": "Bool",
+  "name": "ResultAck",
+  "comment": "已获取数据",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q100.4",
+  "data_type": "Bool",
+  "name": "ErrorRestRequest",
+  "comment": "清除错误",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q100.5",
+  "data_type": "Bool",
+  "name": "%Q100.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q100.6",
+  "data_type": "Bool",
+  "name": "%Q100.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q100.7",
+  "data_type": "Bool",
+  "name": "%Q100.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q101.0",
+  "data_type": "Bool",
+  "name": "TRG1",
+  "comment": "执行向触发1分配的CCD拍摄命令",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q101.1",
+  "data_type": "Bool",
+  "name": "TRG2",
+  "comment": "执行向触发2分配的CCD拍摄命令",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q101.2",
+  "data_type": "Bool",
+  "name": "TRG3",
+  "comment": "执行向触发3分配的CCD拍摄命令",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q101.3",
+  "data_type": "Bool",
+  "name": "TRG4",
+  "comment": "执行向触发4分配的CCD拍摄命令",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q101.4",
+  "data_type": "Bool",
+  "name": "%Q101.4",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q101.5",
+  "data_type": "Bool",
+  "name": "%Q101.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q101.6",
+  "data_type": "Bool",
+  "name": "%Q101.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q101.7",
+  "data_type": "Bool",
+  "name": "%Q101.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q102.0",
+  "data_type": "Bool",
+  "name": "RESET",
+  "comment": "执行复位动作",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q102.1",
+  "data_type": "Bool",
+  "name": "EXT",
+  "comment": "暂停生成内部触发和受理外部触发",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q102.2",
+  "data_type": "Bool",
+  "name": "TEST",
+  "comment": "在试运行等情况下需要暂停判定输出等功能时",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q102.3",
+  "data_type": "Bool",
+  "name": "%Q102.3",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q102.4",
+  "data_type": "Bool",
+  "name": "%Q102.4",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q102.5",
+  "data_type": "Bool",
+  "name": "%Q102.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q102.6",
+  "data_type": "Bool",
+  "name": "%Q102.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q102.7",
+  "data_type": "Bool",
+  "name": "%Q102.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q103.0",
+  "data_type": "Bool",
+  "name": "%Q103.0",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q103.1",
+  "data_type": "Bool",
+  "name": "%Q103.1",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q103.2",
+  "data_type": "Bool",
+  "name": "%Q103.2",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q103.3",
+  "data_type": "Bool",
+  "name": "%Q103.3",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q103.4",
+  "data_type": "Bool",
+  "name": "%Q103.4",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q103.5",
+  "data_type": "Bool",
+  "name": "%Q103.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q103.6",
+  "data_type": "Bool",
+  "name": "%Q103.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q103.7",
+  "data_type": "Bool",
+  "name": "%Q103.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW112",
+  "data_type": "Word",
+  "name": "ExecCondNo",
+  "comment": "",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QD116",
+  "data_type": "DWord",
+  "name": "Command Number",
+  "comment": "命令No",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QD120",
+  "data_type": "DWord",
+  "name": "Cmd Parameter1",
+  "comment": "命令参数1",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QD124",
+  "data_type": "DWord",
+  "name": "Cmd Parameter2",
+  "comment": "命令参数2",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QD128",
+  "data_type": "DWord",
+  "name": "Cmd Parameter3",
+  "comment": "命令参数3",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QD132",
+  "data_type": "DWord",
+  "name": "Cmd Parameter4",
+  "comment": "命令参数4",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QD136",
+  "data_type": "DWord",
+  "name": "Cmd Parameter5",
+  "comment": "命令参数5",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QD140",
+  "data_type": "DWord",
+  "name": "Cmd Parameter6",
+  "comment": "命令参数6",
+  "group": "3DVision_ProfinetDO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%I500.0",
+  "data_type": "Bool",
+  "name": "R1_MotorOn_FeedBack",
+  "comment": "R1_电动机上电反馈(DO0)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I500.1",
+  "data_type": "Bool",
+  "name": "R1_MotorOff_FeedBack",
+  "comment": "R1_电动机下电反馈(DO1)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I500.2",
+  "data_type": "Bool",
+  "name": "R1_CycleOn",
+  "comment": "R1_程序运行状态(DO2)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I500.3",
+  "data_type": "Bool",
+  "name": "R1_EmergencyStop",
+  "comment": "R1_紧急停止(DO3)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I500.4",
+  "data_type": "Bool",
+  "name": "R1_AutoOn",
+  "comment": "R1_自动运行状态(DO4)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I500.5",
+  "data_type": "Bool",
+  "name": "R1_RunchainOK",
+  "comment": "R1_运行链处于正常状态(DO5)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I500.6",
+  "data_type": "Bool",
+  "name": "R1_ExecutionError",
+  "comment": "R1_程序执行错误报警(DO6)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I500.7",
+  "data_type": "Bool",
+  "name": "R1_MotorOnState",
+  "comment": "R1_电动机上电状态(DO7)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I501.0",
+  "data_type": "Bool",
+  "name": "R1_MotorOffState",
+  "comment": "R1_电动机下电状态(DO8)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I501.1",
+  "data_type": "Bool",
+  "name": "R1_PowerFailError",
+  "comment": "R1_动力供应失效状态，机器人断电后无法从当前位置运行(DO9)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I501.2",
+  "data_type": "Bool",
+  "name": "R1_MotionSupervisTriggered",
+  "comment": "R1_当碰撞检测被触发时信号置位(DO10)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I501.3",
+  "data_type": "Bool",
+  "name": "R1_MotionSupervisionOn",
+  "comment": "R1_动作监控打开状态(DO11)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I501.4",
+  "data_type": "Bool",
+  "name": "R1_PathReturnRegionError",
+  "comment": "R1_返回路径失败状态，机器人当前位置离程序位置太远导致(DO12)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I501.5",
+  "data_type": "Bool",
+  "name": "R1_SimulatedI/O",
+  "comment": "R1_有IO信号处于仿真模式(DO13)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I501.6",
+  "data_type": "Bool",
+  "name": "R1_MechanicalUnitActive",
+  "comment": "R1_激活机械单元(DO14)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I501.7",
+  "data_type": "Bool",
+  "name": "R1_MechanicalUnitNotMoving",
+  "comment": "R1_机械单元没有运行(DO15)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I502.0",
+  "data_type": "Bool",
+  "name": "R1_BackupInProgress",
+  "comment": "R1_系统备份进行中，当备份结束后或者错误时信号复位(DO16)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I502.1",
+  "data_type": "Bool",
+  "name": "R1_BackupError",
+  "comment": "R1_备份错误报警(DO17)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I502.2",
+  "data_type": "Bool",
+  "name": "R1_CPUFanNotRunning",
+  "comment": "R1_CPU风扇没有运转(DO18)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I502.3",
+  "data_type": "Bool",
+  "name": "R1_TemperatureWarning",
+  "comment": "R1_CPU温度过热(DO19)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I502.4",
+  "data_type": "Bool",
+  "name": "R1_AbsoluteAccuracyActive",
+  "comment": "R1_绝对精度激活(DO20)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I502.5",
+  "data_type": "Bool",
+  "name": "R1_SMBBatteryChargeLow",
+  "comment": "R1_蓄电池电量低(DO21)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I502.6",
+  "data_type": "Bool",
+  "name": "R1_Home",
+  "comment": "R1_机器人在原点(DO22)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I502.7",
+  "data_type": "Bool",
+  "name": "%I502.7",
+  "comment": "R1_(DO23)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I503.0",
+  "data_type": "Bool",
+  "name": "R1_Handshake",
+  "comment": "R1_握手信号(DO24)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I503.1",
+  "data_type": "Bool",
+  "name": "R1_LoadModuleFinish",
+  "comment": "R1_加载完成(DO25)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I503.2",
+  "data_type": "Bool",
+  "name": "R1_UnLoadModuleFinish",
+  "comment": "R1_卸载完成(DO26)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I503.3",
+  "data_type": "Bool",
+  "name": "%I503.3",
+  "comment": "(DO27)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I503.4",
+  "data_type": "Bool",
+  "name": "%I503.4",
+  "comment": "(DO28)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I503.5",
+  "data_type": "Bool",
+  "name": "%I503.5",
+  "comment": "(DO29)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I503.6",
+  "data_type": "Bool",
+  "name": "%I503.6",
+  "comment": "(DO30)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I503.7",
+  "data_type": "Bool",
+  "name": "%I503.7",
+  "comment": "(DO31)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I504.0",
+  "data_type": "Bool",
+  "name": "R1_InitialRunning",
+  "comment": "R1_机器人在回原位过程中(DO32)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I504.1",
+  "data_type": "Bool",
+  "name": "R1_AutoRunning",
+  "comment": "R1_机器人在自动运行过程中(DO33)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I504.2",
+  "data_type": "Bool",
+  "name": "R1_ChangOverRuning",
+  "comment": "R1_机器人在换型运行过程中(DO34)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I504.3",
+  "data_type": "Bool",
+  "name": "R1_StandbyPOSRuning",
+  "comment": "R1_机器人到待机位置运行过程中(DO35)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I504.4",
+  "data_type": "Bool",
+  "name": "R1_CycleStartRuning",
+  "comment": "R1_机器人已启动起来(DO36)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I504.5",
+  "data_type": "Bool",
+  "name": "R1_ProgramCheck",
+  "comment": "R1_机器人程序号及版本确认信号(DO37)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I504.6",
+  "data_type": "Bool",
+  "name": "%I504.6",
+  "comment": "(DO38)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I504.7",
+  "data_type": "Bool",
+  "name": "%I504.7",
+  "comment": "(DO39)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I505.0",
+  "data_type": "Bool",
+  "name": "%I505.0",
+  "comment": "(DO40)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I505.1",
+  "data_type": "Bool",
+  "name": "%I505.1",
+  "comment": "(DO41)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I505.2",
+  "data_type": "Bool",
+  "name": "%I505.2",
+  "comment": "(DO42)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I505.3",
+  "data_type": "Bool",
+  "name": "%I505.3",
+  "comment": "(DO43)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I505.4",
+  "data_type": "Bool",
+  "name": "%I505.4",
+  "comment": "(DO44)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I505.5",
+  "data_type": "Bool",
+  "name": "%I505.5",
+  "comment": "(DO45)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I505.6",
+  "data_type": "Bool",
+  "name": "%I505.6",
+  "comment": "(DO46)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I505.7",
+  "data_type": "Bool",
+  "name": "%I505.7",
+  "comment": "(DO47)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I506.0",
+  "data_type": "Bool",
+  "name": "R1_InLetLoadTankPOS",
+  "comment": "R1_机器人在上料台加载油箱位置(DO48)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I506.1",
+  "data_type": "Bool",
+  "name": "R1_InTableUnLoadTankPOS",
+  "comment": "R1_机器人在修边台卸载油箱位置(DO49)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I506.2",
+  "data_type": "Bool",
+  "name": "R1_InTableLoadTankPOS",
+  "comment": "R1_机器人在修边台装载油箱位置(DO50)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I506.3",
+  "data_type": "Bool",
+  "name": "R1_InOutPutUnLoadPOS",
+  "comment": "R1_机器人在下料平台卸载位置(DO51)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I506.4",
+  "data_type": "Bool",
+  "name": "R1_InCheckPOS",
+  "comment": "R1_达到检测位置（信号自检）(DO52)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I506.5",
+  "data_type": "Bool",
+  "name": "R1_InTableClampTankPos",
+  "comment": "R1_机器人在修边台油箱压紧位置（可以冲切加油口）(DO53)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I506.6",
+  "data_type": "Bool",
+  "name": "R1_InOutPutUnLoadWaitPOS",
+  "comment": "R1_机器人在下料平台卸载等待位置(DO54)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I506.7",
+  "data_type": "Bool",
+  "name": "R1_InDeflshTableWaitPOS",
+  "comment": "R1_机器人在修边台等待位(DO55)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I507.0",
+  "data_type": "Bool",
+  "name": "R1InStandbyPOS",
+  "comment": "R1_机器人在待机等待位(DO56)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I507.1",
+  "data_type": "Bool",
+  "name": "%I507.1",
+  "comment": "(DO57)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I507.2",
+  "data_type": "Bool",
+  "name": "%I507.2",
+  "comment": "(DO58)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I507.3",
+  "data_type": "Bool",
+  "name": "%I507.3",
+  "comment": "(DO59)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I507.4",
+  "data_type": "Bool",
+  "name": "%I507.4",
+  "comment": "(DO60)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I507.5",
+  "data_type": "Bool",
+  "name": "%I507.5",
+  "comment": "(DO61)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I507.6",
+  "data_type": "Bool",
+  "name": "%I507.6",
+  "comment": "(DO62)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I507.7",
+  "data_type": "Bool",
+  "name": "%I507.7",
+  "comment": "(DO63)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I508.0",
+  "data_type": "Bool",
+  "name": "R1_ToCutRobotLeaveSafeArea",
+  "comment": "R1_告诉修边机器人，搬运机器人已离开修边区域(DO64)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I508.1",
+  "data_type": "Bool",
+  "name": "R1_ToOutletLeaveSafeArea",
+  "comment": "R1_告诉下料平台，搬运机器人已离开下料平台区域(DO65)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I508.2",
+  "data_type": "Bool",
+  "name": "R1_ToInletLeaveSafeArea",
+  "comment": "R1_告诉上料平台，搬运机器人已离开上料平台区域(DO66)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I508.3",
+  "data_type": "Bool",
+  "name": "R1_ToDeflshTableLeaveSafeArea",
+  "comment": "R1_告诉修边工作台，搬运机器人已离开修边区域(DO67)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I508.4",
+  "data_type": "Bool",
+  "name": "%I508.4",
+  "comment": "(DO68)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I508.5",
+  "data_type": "Bool",
+  "name": "%I508.5",
+  "comment": "(DO69)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I508.6",
+  "data_type": "Bool",
+  "name": "%I508.6",
+  "comment": "(DO70)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I508.7",
+  "data_type": "Bool",
+  "name": "%I508.7",
+  "comment": "(DO71)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I509.0",
+  "data_type": "Bool",
+  "name": "%I509.0",
+  "comment": "(DO72)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I509.1",
+  "data_type": "Bool",
+  "name": "%I509.1",
+  "comment": "(DO73)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I509.2",
+  "data_type": "Bool",
+  "name": "%I509.2",
+  "comment": "(DO74)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I509.3",
+  "data_type": "Bool",
+  "name": "%I509.3",
+  "comment": "(DO75)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I509.4",
+  "data_type": "Bool",
+  "name": "%I509.4",
+  "comment": "(DO76)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I509.5",
+  "data_type": "Bool",
+  "name": "%I509.5",
+  "comment": "(DO77)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I509.6",
+  "data_type": "Bool",
+  "name": "%I509.6",
+  "comment": "(DO78)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I509.7",
+  "data_type": "Bool",
+  "name": "%I509.7",
+  "comment": "(DO79)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I510.0",
+  "data_type": "Bool",
+  "name": "R1_HandingFinish",
+  "comment": "(DO80)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I510.1",
+  "data_type": "Bool",
+  "name": "%I510.1",
+  "comment": "(DO81)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I510.2",
+  "data_type": "Bool",
+  "name": "%I510.2",
+  "comment": "(DO82)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I510.3",
+  "data_type": "Bool",
+  "name": "%I510.3",
+  "comment": "(DO83)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I510.4",
+  "data_type": "Bool",
+  "name": "%I510.4",
+  "comment": "(DO84)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I510.5",
+  "data_type": "Bool",
+  "name": "%I510.5",
+  "comment": "(DO85)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I510.6",
+  "data_type": "Bool",
+  "name": "%I510.6",
+  "comment": "(DO86)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I510.7",
+  "data_type": "Bool",
+  "name": "%I510.7",
+  "comment": "(DO87)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I511.0",
+  "data_type": "Bool",
+  "name": "%I511.0",
+  "comment": "(DO88)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I511.1",
+  "data_type": "Bool",
+  "name": "%I511.1",
+  "comment": "(DO89)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I511.2",
+  "data_type": "Bool",
+  "name": "%I511.2",
+  "comment": "(DO90)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I511.3",
+  "data_type": "Bool",
+  "name": "%I511.3",
+  "comment": "(DO91)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I511.4",
+  "data_type": "Bool",
+  "name": "%I511.4",
+  "comment": "(DO92)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I511.5",
+  "data_type": "Bool",
+  "name": "%I511.5",
+  "comment": "(DO93)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I511.6",
+  "data_type": "Bool",
+  "name": "%I511.6",
+  "comment": "(DO94)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I511.7",
+  "data_type": "Bool",
+  "name": "%I511.7",
+  "comment": "(DO95)",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW512",
+  "data_type": "Word",
+  "name": "R1_CurrentPostion",
+  "comment": "R1_机器人当前位置（DO96-DO111）",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IB514",
+  "data_type": "Byte",
+  "name": "R1_CurrentRecipe",
+  "comment": "R1_机器人当前版本（DO112-DO119）",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IB515",
+  "data_type": "Byte",
+  "name": "R1_CurrentProgramNum",
+  "comment": "R1_机器人当前程序号（DO120-DO127）",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%Q500.0",
+  "data_type": "Bool",
+  "name": "R1_MotorsOn",
+  "comment": "R1_电动机上电(DI0)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%IB516",
+  "data_type": "Byte",
+  "name": "%IB516",
+  "comment": "",
+  "group": "Robot1ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%Q500.1",
+  "data_type": "Bool",
+  "name": "R1_MotorsOff",
+  "comment": "R1_电动机下电(DI1)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q500.2",
+  "data_type": "Bool",
+  "name": "R1_Start",
+  "comment": "R1_启动运行(DI2)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q500.3",
+  "data_type": "Bool",
+  "name": "R1_StartAtMain",
+  "comment": "R1_从程序启动运行(DI3)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q500.4",
+  "data_type": "Bool",
+  "name": "R1_Stop",
+  "comment": "R1_停止(DI4)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q500.5",
+  "data_type": "Bool",
+  "name": "R1_QuickStop",
+  "comment": "R1_快速停止(DI5)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q500.6",
+  "data_type": "Bool",
+  "name": "R1_SoftStop",
+  "comment": "R1_软停止(DI6)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q500.7",
+  "data_type": "Bool",
+  "name": "R1_StopAtEndOfCycle",
+  "comment": "R1_在循环结束后停止(DI7)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q501.0",
+  "data_type": "Bool",
+  "name": "R1_Interrupt",
+  "comment": "R1_中断触发(DI8)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q501.1",
+  "data_type": "Bool",
+  "name": "R1_LoadAndStart",
+  "comment": "R1_加载程序并启动运行(DI9)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q501.2",
+  "data_type": "Bool",
+  "name": "R1_ResetEmergencyStop",
+  "comment": "R1_急停复位(DI10)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q501.3",
+  "data_type": "Bool",
+  "name": "R1_ResetExecutionErrorSignal",
+  "comment": "R1_报警复位(DI11)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q501.4",
+  "data_type": "Bool",
+  "name": "R1_MotorsOnAndStart",
+  "comment": "R1_电动机上电并启动运行(DI21)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q501.5",
+  "data_type": "Bool",
+  "name": "R1_StopAtEndOfInstruction",
+  "comment": "R1_在指令运行结束后停止(DI13)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q501.6",
+  "data_type": "Bool",
+  "name": "R1_SystemRestart",
+  "comment": "R1_重启系统(DI14)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q501.7",
+  "data_type": "Bool",
+  "name": "R1_Load",
+  "comment": "R1_加载程序文件(DI15)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q502.0",
+  "data_type": "Bool",
+  "name": "R1_Backup",
+  "comment": "R1_系统备份(DI16)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q502.1",
+  "data_type": "Bool",
+  "name": "R1_ProductionModel",
+  "comment": "R1_生产模式(DI17)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q502.2",
+  "data_type": "Bool",
+  "name": "R1_ChangeModuleModel",
+  "comment": "R1_换型模式(DI18)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q502.3",
+  "data_type": "Bool",
+  "name": "R1_ModuleLoad",
+  "comment": "R1_模块加载(DI19)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q502.4",
+  "data_type": "Bool",
+  "name": "R1_ModuleUnLoad",
+  "comment": "R1_模块卸载(DI20)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q502.5",
+  "data_type": "Bool",
+  "name": "R1_DryCycleMode",
+  "comment": "设备在空循环模式（入口无油箱时，跳过视觉引导的点）(DO21)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q502.6",
+  "data_type": "Bool",
+  "name": "%Q502.6",
+  "comment": "(DO22)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q502.7",
+  "data_type": "Bool",
+  "name": "%Q502.7",
+  "comment": "(DO23)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q503.0",
+  "data_type": "Bool",
+  "name": "%Q503.0",
+  "comment": "(DO24)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q503.1",
+  "data_type": "Bool",
+  "name": "%Q503.1",
+  "comment": "(DO25)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q503.2",
+  "data_type": "Bool",
+  "name": "%Q503.2",
+  "comment": "(DO26)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q503.3",
+  "data_type": "Bool",
+  "name": "%Q503.3",
+  "comment": "(DO27)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q503.4",
+  "data_type": "Bool",
+  "name": "%Q503.4",
+  "comment": "(DO28)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q503.5",
+  "data_type": "Bool",
+  "name": "%Q503.5",
+  "comment": "(DO29)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q503.6",
+  "data_type": "Bool",
+  "name": "%Q503.6",
+  "comment": "(DO30)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q503.7",
+  "data_type": "Bool",
+  "name": "%Q503.7",
+  "comment": "(DO31)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q504.0",
+  "data_type": "Bool",
+  "name": "R1_InitialRun",
+  "comment": "R1_机器人回原位(DI32)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q504.1",
+  "data_type": "Bool",
+  "name": "R1_AutoRun",
+  "comment": "R1_机器人自动运行(DI33)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q504.2",
+  "data_type": "Bool",
+  "name": "R1_ChangOverRun",
+  "comment": "R1_机器人换型运行(DI34)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q504.3",
+  "data_type": "Bool",
+  "name": "R1_StandbyPOSRun",
+  "comment": "R1_机器人去待机位运行(DI35)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q504.4",
+  "data_type": "Bool",
+  "name": "R1_CycleStart",
+  "comment": "R1_机器人启动运行(DI36)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q504.5",
+  "data_type": "Bool",
+  "name": "%Q504.5",
+  "comment": "(DI37)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q504.6",
+  "data_type": "Bool",
+  "name": "%Q504.6",
+  "comment": "(DI38)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q504.7",
+  "data_type": "Bool",
+  "name": "%Q504.7",
+  "comment": "(DI39)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q505.0",
+  "data_type": "Bool",
+  "name": "%Q505.0",
+  "comment": "(DI40)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q505.1",
+  "data_type": "Bool",
+  "name": "%Q505.1",
+  "comment": "(DI41)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q505.2",
+  "data_type": "Bool",
+  "name": "%Q505.2",
+  "comment": "(DI42)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q505.3",
+  "data_type": "Bool",
+  "name": "%Q505.3",
+  "comment": "(DI43)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q505.4",
+  "data_type": "Bool",
+  "name": "%Q505.4",
+  "comment": "(DI44)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q505.5",
+  "data_type": "Bool",
+  "name": "%Q505.5",
+  "comment": "(DI45)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q505.6",
+  "data_type": "Bool",
+  "name": "%Q505.6",
+  "comment": "(DI46)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q505.7",
+  "data_type": "Bool",
+  "name": "%Q505.7",
+  "comment": "(DI47)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q506.0",
+  "data_type": "Bool",
+  "name": "R1_ToGetInletTank",
+  "comment": "R1_去取上料升降台油箱(DI48)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q506.1",
+  "data_type": "Bool",
+  "name": "R1_ToPutInletTank",
+  "comment": "R1_去上料升降台放油箱(DI49)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q506.2",
+  "data_type": "Bool",
+  "name": "R1_ToGetTableTank",
+  "comment": "R1_去取修边台油箱(DI50)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q506.3",
+  "data_type": "Bool",
+  "name": "R1_ToPutTableTank",
+  "comment": "R1_去修边台放油箱(DI51)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q506.4",
+  "data_type": "Bool",
+  "name": "R1_ToPutOutTank",
+  "comment": "R1_去下料升降台放油箱(DI52)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q506.5",
+  "data_type": "Bool",
+  "name": "R1_OutLetAllowPutTank",
+  "comment": "R1_下料平台允许放油箱(DI53)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q506.6",
+  "data_type": "Bool",
+  "name": "R1_ToTableClampTankPos",
+  "comment": "R1去修边台油箱压紧位置（可以冲切加油口）(DI54)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q506.7",
+  "data_type": "Bool",
+  "name": "R1_ToStandbyPOS",
+  "comment": "R1去待机等待位(DI55)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q507.0",
+  "data_type": "Bool",
+  "name": "%Q507.0",
+  "comment": "(DI56)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q507.1",
+  "data_type": "Bool",
+  "name": "%Q507.1",
+  "comment": "(DI57)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q507.2",
+  "data_type": "Bool",
+  "name": "%Q507.2",
+  "comment": "(DI58)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q507.3",
+  "data_type": "Bool",
+  "name": "%Q507.3",
+  "comment": "(DI59)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q507.4",
+  "data_type": "Bool",
+  "name": "%Q507.4",
+  "comment": "(DI60)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q507.5",
+  "data_type": "Bool",
+  "name": "%Q507.5",
+  "comment": "(DI61)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q507.6",
+  "data_type": "Bool",
+  "name": "%Q507.6",
+  "comment": "(DI62)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q507.7",
+  "data_type": "Bool",
+  "name": "%Q507.7",
+  "comment": "(DI63)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q508.0",
+  "data_type": "Bool",
+  "name": "R1_FromCutRobot2LeaveSafeArea",
+  "comment": "R2修边机器人已离开修边区域(DI64)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q508.1",
+  "data_type": "Bool",
+  "name": "R1_FromCutRobot3LeaveSafeArea",
+  "comment": "R3修边机器人已离开修边区域(DI65)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q508.2",
+  "data_type": "Bool",
+  "name": "%Q508.2",
+  "comment": "(DI66)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q508.3",
+  "data_type": "Bool",
+  "name": "%Q508.3",
+  "comment": "(DI67)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q508.4",
+  "data_type": "Bool",
+  "name": "%Q508.4",
+  "comment": "(DI68)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q508.5",
+  "data_type": "Bool",
+  "name": "%Q508.5",
+  "comment": "(DI69)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q508.6",
+  "data_type": "Bool",
+  "name": "%Q508.6",
+  "comment": "(DI70)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q508.7",
+  "data_type": "Bool",
+  "name": "%Q508.7",
+  "comment": "(DI71)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q509.0",
+  "data_type": "Bool",
+  "name": "%Q509.0",
+  "comment": "(DI72)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q509.1",
+  "data_type": "Bool",
+  "name": "%Q509.1",
+  "comment": "(DI73)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q509.2",
+  "data_type": "Bool",
+  "name": "%Q509.2",
+  "comment": "(DI74)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q509.3",
+  "data_type": "Bool",
+  "name": "%Q509.3",
+  "comment": "(DI75)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q509.4",
+  "data_type": "Bool",
+  "name": "%Q509.4",
+  "comment": "(DI76)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q509.5",
+  "data_type": "Bool",
+  "name": "%Q509.5",
+  "comment": "(DI77)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q509.6",
+  "data_type": "Bool",
+  "name": "%Q509.6",
+  "comment": "(DI78)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q509.7",
+  "data_type": "Bool",
+  "name": "%Q509.7",
+  "comment": "(DI79)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q510.0",
+  "data_type": "Bool",
+  "name": "R1_InletGetFinish",
+  "comment": "R1_上料升降台取油箱完成(DI80)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q510.1",
+  "data_type": "Bool",
+  "name": "R1_InletPutFinsih",
+  "comment": "R1_上料升降台放油箱完成(DI81)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q510.2",
+  "data_type": "Bool",
+  "name": "R1_TablePutFinish",
+  "comment": "R1_修边台放油箱完成(DI82)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q510.3",
+  "data_type": "Bool",
+  "name": "R1_TablePunchFinish",
+  "comment": "R1_修边台冲切完成(DI83)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q510.4",
+  "data_type": "Bool",
+  "name": "R1_TableGetFinish",
+  "comment": "R1_修边台取油箱完成(DI84)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q510.5",
+  "data_type": "Bool",
+  "name": "R1_OutPutFinish",
+  "comment": "R1_下料升降台放油箱完成(DI85)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q510.6",
+  "data_type": "Bool",
+  "name": "%Q510.6",
+  "comment": "(DI86)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q510.7",
+  "data_type": "Bool",
+  "name": "%Q510.7",
+  "comment": "(DI87)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q511.0",
+  "data_type": "Bool",
+  "name": "%Q511.0",
+  "comment": "(DI88)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q511.1",
+  "data_type": "Bool",
+  "name": "%Q511.1",
+  "comment": "(DI89)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q511.2",
+  "data_type": "Bool",
+  "name": "%Q511.2",
+  "comment": "(DI90)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q511.3",
+  "data_type": "Bool",
+  "name": "%Q511.3",
+  "comment": "(DI91)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q511.4",
+  "data_type": "Bool",
+  "name": "%Q511.4",
+  "comment": "(DI92)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q511.5",
+  "data_type": "Bool",
+  "name": "%Q511.5",
+  "comment": "(DI93)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q511.6",
+  "data_type": "Bool",
+  "name": "%Q511.6",
+  "comment": "(DI94)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q511.7",
+  "data_type": "Bool",
+  "name": "%Q511.7",
+  "comment": "(DI95)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB512",
+  "data_type": "Byte",
+  "name": "R1_AutoSpeed",
+  "comment": "R1_机器人自动运行速度设定(DI96-DI103)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB513",
+  "data_type": "Byte",
+  "name": "R1_InitialSpeed",
+  "comment": "R1_机器人回原位速度(DI104-DI111)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB514",
+  "data_type": "Byte",
+  "name": "R1_Recipe",
+  "comment": "R1_机器人版本选择(DI112-DI119)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB515",
+  "data_type": "Byte",
+  "name": "R1_ProgramNum",
+  "comment": "R1_机器人程序号选择(DI120-DI127)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW516",
+  "data_type": "Int",
+  "name": "R1_OffSetX",
+  "comment": "R1_机器人X方向偏移(DI128-DI143)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW518",
+  "data_type": "Int",
+  "name": "R1_OffSetY",
+  "comment": "R1_机器人Y方向偏移(DI144-DI159)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW520",
+  "data_type": "Int",
+  "name": "R1_OffSetZ",
+  "comment": "R1_机器人Z方向偏移(DI160-DI175)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW522",
+  "data_type": "Int",
+  "name": "R1_OffSetRX",
+  "comment": "R1_机器人RX方向偏移(DI176-DI191)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW524",
+  "data_type": "Int",
+  "name": "R1_OffSetRY",
+  "comment": "R1_机器人RY方向偏移(DI192-DI207)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW526",
+  "data_type": "Int",
+  "name": "R1_OffSetRZ",
+  "comment": "R1_机器人RZ方向偏移(DI208-DI223)",
+  "group": "Robot1ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%I600.0",
+  "data_type": "Bool",
+  "name": "R2_MotorOn_FeedBack",
+  "comment": "R2_电动机上电反馈(DO0)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I600.1",
+  "data_type": "Bool",
+  "name": "R2_MotorOff_FeedBack",
+  "comment": "R2_电动机下电反馈(DO1)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I600.2",
+  "data_type": "Bool",
+  "name": "R2_CycleOn",
+  "comment": "R2_程序运行状态(DO2)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I600.3",
+  "data_type": "Bool",
+  "name": "R2_EmergencyStop",
+  "comment": "R2_紧急停止(DO3)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I600.4",
+  "data_type": "Bool",
+  "name": "R2_AutoOn",
+  "comment": "R2_自动运行状态(DO4)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I600.5",
+  "data_type": "Bool",
+  "name": "R2_RunchainOK",
+  "comment": "R2_运行链处于正常状态(DO5)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I600.6",
+  "data_type": "Bool",
+  "name": "R2_ExecutionError",
+  "comment": "R2_程序执行错误报警(DO6)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I600.7",
+  "data_type": "Bool",
+  "name": "R2_MotorOnState",
+  "comment": "R2_电动机上电状态(DO7)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I601.0",
+  "data_type": "Bool",
+  "name": "R2_MotorOffState",
+  "comment": "R2_电动机下电状态(DO8)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I601.1",
+  "data_type": "Bool",
+  "name": "R2_PowerFailError",
+  "comment": "R2_动力供应失效状态，机器人断电后无法从当前位置运行(DO9)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I601.2",
+  "data_type": "Bool",
+  "name": "R2_MotionSupervisTriggered",
+  "comment": "R2_当碰撞检测被触发时信号置位(DO10)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I601.3",
+  "data_type": "Bool",
+  "name": "R2_MotionSupervisionOn",
+  "comment": "R2_动作监控打开状态(DO11)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I601.4",
+  "data_type": "Bool",
+  "name": "R2_PathReturnRegionError",
+  "comment": "R2_返回路径失败状态，机器人当前位置离程序位置太远导致(DO12)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I601.5",
+  "data_type": "Bool",
+  "name": "R2_SimulatedI/O",
+  "comment": "R2_有IO信号处于仿真模式(DO13)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I601.6",
+  "data_type": "Bool",
+  "name": "R2_MechanicalUnitActive",
+  "comment": "R2_激活机械单元(DO14)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I601.7",
+  "data_type": "Bool",
+  "name": "R2_MechanicalUnitNotMoving",
+  "comment": "R2_机械单元没有运行(DO15)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I602.0",
+  "data_type": "Bool",
+  "name": "R2_BackupInProgress",
+  "comment": "R2_系统备份进行中，当备份结束后或者错误时信号复位(DO16)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I602.1",
+  "data_type": "Bool",
+  "name": "R2_BackupError",
+  "comment": "R2_备份错误报警(DO17)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I602.2",
+  "data_type": "Bool",
+  "name": "R2_CPUFanNotRunning",
+  "comment": "R2_CPU风扇没有运转(DO18)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I602.3",
+  "data_type": "Bool",
+  "name": "R2_TemperatureWarning",
+  "comment": "R2_CPU温度过热(DO19)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I602.4",
+  "data_type": "Bool",
+  "name": "R2_AbsoluteAccuracyActive",
+  "comment": "R2_绝对精度激活(DO20)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I602.5",
+  "data_type": "Bool",
+  "name": "R2_SMBBatteryChargeLow",
+  "comment": "R2_蓄电池电量低(DO21)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I602.6",
+  "data_type": "Bool",
+  "name": "R2_Home",
+  "comment": "R2_机器人在原点(DO22)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I602.7",
+  "data_type": "Bool",
+  "name": "%I602.7",
+  "comment": "R2_(DO23)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I603.0",
+  "data_type": "Bool",
+  "name": "R2_Handshake",
+  "comment": "R2_握手信号(DO24)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I603.1",
+  "data_type": "Bool",
+  "name": "R2_LoadModuleFinish",
+  "comment": "R2_加载完成(DO25)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I603.2",
+  "data_type": "Bool",
+  "name": "R2_UnLoadModuleFinish",
+  "comment": "R2_卸载完成(DO26)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I603.3",
+  "data_type": "Bool",
+  "name": "%I603.3",
+  "comment": "(DO27)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I603.4",
+  "data_type": "Bool",
+  "name": "%I603.4",
+  "comment": "(DO28)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I603.5",
+  "data_type": "Bool",
+  "name": "%I603.5",
+  "comment": "(DO29)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I603.6",
+  "data_type": "Bool",
+  "name": "%I603.6",
+  "comment": "(DO30)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I603.7",
+  "data_type": "Bool",
+  "name": "%I603.7",
+  "comment": "(DO31)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I604.0",
+  "data_type": "Bool",
+  "name": "R2_InitialRunning",
+  "comment": "R2_机器人在回原位过程中(DO32)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I604.1",
+  "data_type": "Bool",
+  "name": "R2_AutoRunning",
+  "comment": "R2_机器人在自动运行过程中(DO33)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I604.2",
+  "data_type": "Bool",
+  "name": "R2_ChangOverRuning",
+  "comment": "R2_机器人在换型运行过程中(DO34)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I604.3",
+  "data_type": "Bool",
+  "name": "R2_StandbyPOSRuning",
+  "comment": "R2_机器人到待机位置运行过程中(DO35)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I604.4",
+  "data_type": "Bool",
+  "name": "R2_CycleStartRuning",
+  "comment": "R2_机器人已启动起来(DO36)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I604.5",
+  "data_type": "Bool",
+  "name": "R2_ProgramCheck",
+  "comment": "R2_机器人程序号及版本确认信号(DO37)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I604.6",
+  "data_type": "Bool",
+  "name": "%I604.6",
+  "comment": "(DO38)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I604.7",
+  "data_type": "Bool",
+  "name": "%I604.7",
+  "comment": "(DO39)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I605.0",
+  "data_type": "Bool",
+  "name": "%I605.0",
+  "comment": "(DO40)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I605.1",
+  "data_type": "Bool",
+  "name": "%I605.1",
+  "comment": "(DO41)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I605.2",
+  "data_type": "Bool",
+  "name": "%I605.2",
+  "comment": "(DO42)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I605.3",
+  "data_type": "Bool",
+  "name": "%I605.3",
+  "comment": "(DO43)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I605.4",
+  "data_type": "Bool",
+  "name": "%I605.4",
+  "comment": "(DO44)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I605.5",
+  "data_type": "Bool",
+  "name": "%I605.5",
+  "comment": "(DO45)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I605.6",
+  "data_type": "Bool",
+  "name": "%I605.6",
+  "comment": "(DO46)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I605.7",
+  "data_type": "Bool",
+  "name": "%I605.7",
+  "comment": "(DO47)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I606.0",
+  "data_type": "Bool",
+  "name": "R2_InCutPOS",
+  "comment": "R2_机器人在修边位置(DO48)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I606.1",
+  "data_type": "Bool",
+  "name": "R2_InFlashGripperClosePos",
+  "comment": "R2_机器人在飞边夹具夹紧位置(DO49)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I606.2",
+  "data_type": "Bool",
+  "name": "R2_InThrowFlashPOS",
+  "comment": "R2_机器人在丢飞边位置(DO50)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I606.3",
+  "data_type": "Bool",
+  "name": "R2_InPunch1Pos",
+  "comment": "R2_机器人在冲孔1位置(DO51)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I606.4",
+  "data_type": "Bool",
+  "name": "R2_InThrowPunch1ScrapPOS",
+  "comment": "R2_机器人在丢冲孔1废料位置(DO52)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I606.5",
+  "data_type": "Bool",
+  "name": "R2_InCheckPOS",
+  "comment": "R2_达到检测位置（信号自检）(DO53)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I606.6",
+  "data_type": "Bool",
+  "name": "R2_InStandbyPOS",
+  "comment": "R2_机器人在待机等待位置(DO54)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I606.7",
+  "data_type": "Bool",
+  "name": "R2_InPunch2Pos",
+  "comment": "R2_机器人在冲孔2位置(DO55)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I607.0",
+  "data_type": "Bool",
+  "name": "R2_InThrowPunch2ScrapPOS",
+  "comment": "R2_机器人在丢冲孔2废料位置(DO56)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I607.1",
+  "data_type": "Bool",
+  "name": "R2_InFlashGripperOpenPos",
+  "comment": "R2_机器人在飞边夹具打开位置，且允许R1搬运机器人来搬运油箱(DO57)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I607.2",
+  "data_type": "Bool",
+  "name": "R2_InPunch1RetFinishPos",
+  "comment": "R2_机器人在冲切1后退完成位置，且允许打开吸盘称重(DO58)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I607.3",
+  "data_type": "Bool",
+  "name": "%I607.3",
+  "comment": "(DO59)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I607.4",
+  "data_type": "Bool",
+  "name": "%I607.4",
+  "comment": "(DO60)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I607.5",
+  "data_type": "Bool",
+  "name": "%I607.5",
+  "comment": "(DO61)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I607.6",
+  "data_type": "Bool",
+  "name": "%I607.6",
+  "comment": "(DO62)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I607.7",
+  "data_type": "Bool",
+  "name": "%I607.7",
+  "comment": "(DO63)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I608.0",
+  "data_type": "Bool",
+  "name": "R2_ToR1_LeaveSafeArea",
+  "comment": "告诉R1搬运机器人，本机器人已离开修边区域(DO64)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I608.1",
+  "data_type": "Bool",
+  "name": "R2_ToR3_LeaveHeadSafeArea",
+  "comment": "告诉R3修边机器人，本机器人已离开头部修边区域(DO65)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I608.2",
+  "data_type": "Bool",
+  "name": "R2_ToR3_LeaveTailSafeArea",
+  "comment": "告诉R3修边机器人，本机器人已离开尾部修边区域(DO66)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I608.3",
+  "data_type": "Bool",
+  "name": "R2_ToR3_LeaveScrapSafeArea",
+  "comment": "告诉R3修边机器人，本机器人已离开仍废料区域(DO67)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I608.4",
+  "data_type": "Bool",
+  "name": "R2_ToR3_LeaveInterfereArea1",
+  "comment": "告诉R3修边机器人，本机器人已离开修边过程中的干涉区域1(DO68)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I608.5",
+  "data_type": "Bool",
+  "name": "R2_ToR3_LeaveInterfereArea2",
+  "comment": "告诉R3修边机器人，本机器人已离开修边过程中的干涉区域2(DO69)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I608.6",
+  "data_type": "Bool",
+  "name": "R2_ToR3_LeaveInterfereArea3",
+  "comment": "告诉R3修边机器人，本机器人已离开修边过程中的干涉区域3(DO70)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I608.7",
+  "data_type": "Bool",
+  "name": "%I608.7",
+  "comment": "(DO71)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I609.0",
+  "data_type": "Bool",
+  "name": "%I609.0",
+  "comment": "(DO72)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I609.1",
+  "data_type": "Bool",
+  "name": "%I609.1",
+  "comment": "(DO73)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I609.2",
+  "data_type": "Bool",
+  "name": "%I609.2",
+  "comment": "(DO74)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I609.3",
+  "data_type": "Bool",
+  "name": "%I609.3",
+  "comment": "(DO75)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I609.4",
+  "data_type": "Bool",
+  "name": "%I609.4",
+  "comment": "(DO76)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I609.5",
+  "data_type": "Bool",
+  "name": "%I609.5",
+  "comment": "(DO77)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I609.6",
+  "data_type": "Bool",
+  "name": "%I609.6",
+  "comment": "(DO78)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I609.7",
+  "data_type": "Bool",
+  "name": "%I609.7",
+  "comment": "(DO79)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I610.0",
+  "data_type": "Bool",
+  "name": "R2_CutFinish",
+  "comment": "告诉PLC机器人修边完成(DO80)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I610.1",
+  "data_type": "Bool",
+  "name": "%I610.1",
+  "comment": "(DO81)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I610.2",
+  "data_type": "Bool",
+  "name": "%I610.2",
+  "comment": "(DO82)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I610.3",
+  "data_type": "Bool",
+  "name": "%I610.3",
+  "comment": "(DO83)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I610.4",
+  "data_type": "Bool",
+  "name": "%I610.4",
+  "comment": "(DO84)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I610.5",
+  "data_type": "Bool",
+  "name": "%I610.5",
+  "comment": "(DO85)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I610.6",
+  "data_type": "Bool",
+  "name": "%I610.6",
+  "comment": "(DO86)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I610.7",
+  "data_type": "Bool",
+  "name": "%I610.7",
+  "comment": "(DO87)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I611.0",
+  "data_type": "Bool",
+  "name": "%I611.0",
+  "comment": "(DO88)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I611.1",
+  "data_type": "Bool",
+  "name": "%I611.1",
+  "comment": "(DO89)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I611.2",
+  "data_type": "Bool",
+  "name": "%I611.2",
+  "comment": "(DO90)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I611.3",
+  "data_type": "Bool",
+  "name": "%I611.3",
+  "comment": "(DO91)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I611.4",
+  "data_type": "Bool",
+  "name": "%I611.4",
+  "comment": "(DO92)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I611.5",
+  "data_type": "Bool",
+  "name": "%I611.5",
+  "comment": "(DO93)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I611.6",
+  "data_type": "Bool",
+  "name": "%I611.6",
+  "comment": "(DO94)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I611.7",
+  "data_type": "Bool",
+  "name": "%I611.7",
+  "comment": "(DO95)",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW612",
+  "data_type": "Word",
+  "name": "R2_CurrentPostion",
+  "comment": "R2_机器人当前位置（DO96-DO111）",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IB614",
+  "data_type": "Byte",
+  "name": "R2_CurrentVersionRecipe",
+  "comment": "R2_机器人当前版本（DO112-DO119）",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IB615",
+  "data_type": "Byte",
+  "name": "R2_CurrentProgramNum",
+  "comment": "R2_机器人当前程序号（DO120-DO127）",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IB616",
+  "data_type": "Byte",
+  "name": "%IB616",
+  "comment": "",
+  "group": "Robot2ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%Q600.0",
+  "data_type": "Bool",
+  "name": "R2_MotorsOn",
+  "comment": "R2_电动机上电(DI0)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q600.1",
+  "data_type": "Bool",
+  "name": "R2_MotorsOff",
+  "comment": "R2_电动机下电(DI1)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q600.2",
+  "data_type": "Bool",
+  "name": "R2_Start",
+  "comment": "R2_启动运行(DI2)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q600.3",
+  "data_type": "Bool",
+  "name": "R2_StartAtMain",
+  "comment": "R2_从程序启动运行(DI3)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q600.4",
+  "data_type": "Bool",
+  "name": "R2_Stop",
+  "comment": "R2_停止(DI4)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q600.5",
+  "data_type": "Bool",
+  "name": "R2_QuickStop",
+  "comment": "R2_快速停止(DI5)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q600.6",
+  "data_type": "Bool",
+  "name": "R2_SoftStop",
+  "comment": "R2_软停止(DI6)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q600.7",
+  "data_type": "Bool",
+  "name": "R2_StopAtEndOfCycle",
+  "comment": "R2_在循环结束后停止(DI7)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q601.0",
+  "data_type": "Bool",
+  "name": "R2_Interrupt",
+  "comment": "R2_中断触发(DI8)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q601.1",
+  "data_type": "Bool",
+  "name": "R2_LoadAndStart",
+  "comment": "R2_加载程序并启动运行(DI9)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q601.2",
+  "data_type": "Bool",
+  "name": "R2_ResetEmergencyStop",
+  "comment": "R2_急停复位(DI10)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q601.3",
+  "data_type": "Bool",
+  "name": "R2_ResetExecutionErrorSignal",
+  "comment": "R2_报警复位(DI11)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q601.4",
+  "data_type": "Bool",
+  "name": "R2_MotorsOnAndStart",
+  "comment": "R2_电动机上电并启动运行(DI12)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q601.5",
+  "data_type": "Bool",
+  "name": "R2_StopAtEndOfInstruction",
+  "comment": "R2_在指令运行结束后停止(DI13)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q601.6",
+  "data_type": "Bool",
+  "name": "R2_SystemRestart",
+  "comment": "R2_重启系统(DI14)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q601.7",
+  "data_type": "Bool",
+  "name": "R2_Load",
+  "comment": "R2_加载程序文件(DI15)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q602.0",
+  "data_type": "Bool",
+  "name": "R2_Backup",
+  "comment": "R2_系统备份(DI16)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q602.1",
+  "data_type": "Bool",
+  "name": "R2_ProductionModel",
+  "comment": "R2_生产模式(DI17)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q602.2",
+  "data_type": "Bool",
+  "name": "R2_ChangeModuleModel",
+  "comment": "R2_换型模式(DI18)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q602.3",
+  "data_type": "Bool",
+  "name": "R2_ModuleLoad",
+  "comment": "R2_模块加载(DI19)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q602.4",
+  "data_type": "Bool",
+  "name": "R2_ModuleUnLoad",
+  "comment": "R2_模块卸载(DI20)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q602.5",
+  "data_type": "Bool",
+  "name": "%Q602.5",
+  "comment": "(DO21)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q602.6",
+  "data_type": "Bool",
+  "name": "%Q602.6",
+  "comment": "(DO22)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q602.7",
+  "data_type": "Bool",
+  "name": "%Q602.7",
+  "comment": "(DO23)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q603.0",
+  "data_type": "Bool",
+  "name": "%Q603.0",
+  "comment": "(DO24)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q603.1",
+  "data_type": "Bool",
+  "name": "%Q603.1",
+  "comment": "(DO25)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q603.2",
+  "data_type": "Bool",
+  "name": "%Q603.2",
+  "comment": "(DO26)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q603.3",
+  "data_type": "Bool",
+  "name": "%Q603.3",
+  "comment": "(DO27)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q603.4",
+  "data_type": "Bool",
+  "name": "%Q603.4",
+  "comment": "(DO28)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q603.5",
+  "data_type": "Bool",
+  "name": "%Q603.5",
+  "comment": "(DO29)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q603.6",
+  "data_type": "Bool",
+  "name": "%Q603.6",
+  "comment": "(DO30)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q603.7",
+  "data_type": "Bool",
+  "name": "%Q603.7",
+  "comment": "(DO31)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q604.0",
+  "data_type": "Bool",
+  "name": "R2_InitialRun",
+  "comment": "R2_机器人回原位(DI32)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q604.1",
+  "data_type": "Bool",
+  "name": "R2_AutoRun",
+  "comment": "R2_机器人自动运行(DI33)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q604.2",
+  "data_type": "Bool",
+  "name": "R2_ChangOverRun",
+  "comment": "R2_机器人换型运行(DI34)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q604.3",
+  "data_type": "Bool",
+  "name": "R2_StandbyPOSRun",
+  "comment": "R2_机器人去待机位运行(DI35)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q604.4",
+  "data_type": "Bool",
+  "name": "R2_CycleStart",
+  "comment": "R2_机器人启动运行(DI36)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q604.5",
+  "data_type": "Bool",
+  "name": "%Q604.5",
+  "comment": "(DI37)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q604.6",
+  "data_type": "Bool",
+  "name": "%Q604.6",
+  "comment": "(DI38)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q604.7",
+  "data_type": "Bool",
+  "name": "%Q604.7",
+  "comment": "(DI39)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q605.0",
+  "data_type": "Bool",
+  "name": "%Q605.0",
+  "comment": "(DI40)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q605.1",
+  "data_type": "Bool",
+  "name": "%Q605.1",
+  "comment": "(DI41)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q605.2",
+  "data_type": "Bool",
+  "name": "%Q605.2",
+  "comment": "(DI42)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q605.3",
+  "data_type": "Bool",
+  "name": "%Q605.3",
+  "comment": "(DI43)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q605.4",
+  "data_type": "Bool",
+  "name": "%Q605.4",
+  "comment": "(DI44)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q605.5",
+  "data_type": "Bool",
+  "name": "%Q605.5",
+  "comment": "(DI45)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q605.6",
+  "data_type": "Bool",
+  "name": "%Q605.6",
+  "comment": "(DI46)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q605.7",
+  "data_type": "Bool",
+  "name": "%Q605.7",
+  "comment": "(DI47)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q606.0",
+  "data_type": "Bool",
+  "name": "R2_ToPunch1",
+  "comment": "R2_去冲孔1(DI48)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q606.1",
+  "data_type": "Bool",
+  "name": "R2_ToCutFlash",
+  "comment": "R2_去修边(DI49)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q606.2",
+  "data_type": "Bool",
+  "name": "R2_ToGetFlash",
+  "comment": "R2_去取飞边(DI50)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q606.3",
+  "data_type": "Bool",
+  "name": "R2_ToThrowFlash",
+  "comment": "R2_去仍飞边(DI51)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q606.4",
+  "data_type": "Bool",
+  "name": "R2_ToThrowPunch1Scrap",
+  "comment": "R2_去仍冲孔1废料(DI52)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q606.5",
+  "data_type": "Bool",
+  "name": "R2_ToStandbyPOS",
+  "comment": "R2_去待机等待位(DI53)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q606.6",
+  "data_type": "Bool",
+  "name": "R2_ToPunch2",
+  "comment": "R2_去冲孔2(DI54)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q606.7",
+  "data_type": "Bool",
+  "name": "R2_ToThrowPunch2Scrap",
+  "comment": "R2_去仍冲孔2废料(DI55)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q607.0",
+  "data_type": "Bool",
+  "name": "%Q607.0",
+  "comment": "(DI56)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q607.1",
+  "data_type": "Bool",
+  "name": "%Q607.1",
+  "comment": "(DI57)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q607.2",
+  "data_type": "Bool",
+  "name": "%Q607.2",
+  "comment": "(DI58)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q607.3",
+  "data_type": "Bool",
+  "name": "%Q607.3",
+  "comment": "(DI59)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q607.4",
+  "data_type": "Bool",
+  "name": "%Q607.4",
+  "comment": "(DI60)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q607.5",
+  "data_type": "Bool",
+  "name": "%Q607.5",
+  "comment": "(DI61)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q607.6",
+  "data_type": "Bool",
+  "name": "%Q607.6",
+  "comment": "(DI62)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q607.7",
+  "data_type": "Bool",
+  "name": "%Q607.7",
+  "comment": "(DI63)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q608.0",
+  "data_type": "Bool",
+  "name": "R2_FromR1_LeaveSafeArea",
+  "comment": "R1搬运机器人已离开修边区域(DI64)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q608.1",
+  "data_type": "Bool",
+  "name": "R2_FromR3_LeaveHeadSafeArea",
+  "comment": "R3修边机器人已离开头部修边区域(DI65)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q608.2",
+  "data_type": "Bool",
+  "name": "R2_FromR3_LeaveTailSafeArea",
+  "comment": "R3修边机器人已离开尾部修边区域(DI66)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q608.3",
+  "data_type": "Bool",
+  "name": "R2_FromR3_LeaveScrapSafeArea",
+  "comment": "R3修边机器人已离开仍废料区域(DI67)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q608.4",
+  "data_type": "Bool",
+  "name": "R2_FromR3_LeaveInterfereArea1",
+  "comment": "R3修边机器人已离开修边过程中的干涉区域1(DI68)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q608.5",
+  "data_type": "Bool",
+  "name": "R2_FromR3_LeaveInterfereArea2",
+  "comment": "R3修边机器人已离开修边过程中的干涉区域2(DI69)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q608.6",
+  "data_type": "Bool",
+  "name": "R2_FromR3_LeaveInterfereArea3",
+  "comment": "R3修边机器人已离开修边过程中的干涉区域2(DI70)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q608.7",
+  "data_type": "Bool",
+  "name": "%Q608.7",
+  "comment": "(DI71)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q609.0",
+  "data_type": "Bool",
+  "name": "%Q609.0",
+  "comment": "(DI72)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q609.1",
+  "data_type": "Bool",
+  "name": "%Q609.1",
+  "comment": "(DI73)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q609.2",
+  "data_type": "Bool",
+  "name": "%Q609.2",
+  "comment": "(DI74)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q609.3",
+  "data_type": "Bool",
+  "name": "%Q609.3",
+  "comment": "(DI75)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q609.4",
+  "data_type": "Bool",
+  "name": "%Q609.4",
+  "comment": "(DI76)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q609.5",
+  "data_type": "Bool",
+  "name": "%Q609.5",
+  "comment": "(DI77)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q609.6",
+  "data_type": "Bool",
+  "name": "%Q609.6",
+  "comment": "(DI78)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q609.7",
+  "data_type": "Bool",
+  "name": "%Q609.7",
+  "comment": "(DI79)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q610.0",
+  "data_type": "Bool",
+  "name": "R2_Punch1Finish",
+  "comment": "R2_冲切1完成(DI80)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q610.1",
+  "data_type": "Bool",
+  "name": "R2_FlashGripperCylClosed",
+  "comment": "R2_飞边气缸已夹紧(DI81)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q610.2",
+  "data_type": "Bool",
+  "name": "R2_FlashGripperCylOpened",
+  "comment": "R2_飞边气缸已松开(DI82)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q610.3",
+  "data_type": "Bool",
+  "name": "R2_ThrowPunch1ScrapFinish",
+  "comment": "R2_仍冲切1废料完成(DI83)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q610.4",
+  "data_type": "Bool",
+  "name": "R2_Punch2Finish",
+  "comment": "R2_冲切2完成(DI84)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q610.5",
+  "data_type": "Bool",
+  "name": "R2_ThrowPunch2ScrapFinish",
+  "comment": "R2_仍冲切2废料完成(DI85)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q610.6",
+  "data_type": "Bool",
+  "name": "R2_FlashGripperOpenFinish",
+  "comment": "R2_飞边夹具打开完成(DI86)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q610.7",
+  "data_type": "Bool",
+  "name": "R2_GoHomeScrapThrowFinish",
+  "comment": "R2_回原位仍废料完成完成信号(DI87)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q611.0",
+  "data_type": "Bool",
+  "name": "%Q611.0",
+  "comment": "(DI88)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q611.1",
+  "data_type": "Bool",
+  "name": "%Q611.1",
+  "comment": "(DI89)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q611.2",
+  "data_type": "Bool",
+  "name": "%Q611.2",
+  "comment": "(DI90)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q611.3",
+  "data_type": "Bool",
+  "name": "%Q611.3",
+  "comment": "(DI91)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q611.4",
+  "data_type": "Bool",
+  "name": "%Q611.4",
+  "comment": "(DI92)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q611.5",
+  "data_type": "Bool",
+  "name": "%Q611.5",
+  "comment": "(DI93)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q611.6",
+  "data_type": "Bool",
+  "name": "%Q611.6",
+  "comment": "(DI94)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q611.7",
+  "data_type": "Bool",
+  "name": "%Q611.7",
+  "comment": "(DI95)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB612",
+  "data_type": "Byte",
+  "name": "R2_AutoSpeed",
+  "comment": "R2_机器人自动运行速度设定(DI96-DI103)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB613",
+  "data_type": "Byte",
+  "name": "R2_InitialSpeed",
+  "comment": "R2_机器人回原位速度(DI104-DI111)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB614",
+  "data_type": "Byte",
+  "name": "R2_VersionRecipe",
+  "comment": "R2_机器人版本选择(DI112-DI119)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB615",
+  "data_type": "Byte",
+  "name": "R2_ProgramNum",
+  "comment": "R2_机器人程序号选择(DI120-DI127)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW616",
+  "data_type": "Int",
+  "name": "R2_OffSetX",
+  "comment": "R2_机器人X方向偏移(DI128-DI143)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW618",
+  "data_type": "Int",
+  "name": "R2_OffSetY",
+  "comment": "R2_机器人Y方向偏移(DI144-DI159)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW620",
+  "data_type": "Int",
+  "name": "R2_OffSetZ",
+  "comment": "R2_机器人Z方向偏移(DI160-DI175)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW622",
+  "data_type": "Int",
+  "name": "R2_OffSetRX",
+  "comment": "R2_机器人RX方向偏移(DI176-DI191)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW624",
+  "data_type": "Int",
+  "name": "R2_OffSetRY",
+  "comment": "R2_机器人RY方向偏移(DI192-DI207)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW626",
+  "data_type": "Int",
+  "name": "R2_OffSetRZ",
+  "comment": "R2_机器人RZ方向偏移(DI208-DI223)",
+  "group": "Robot2ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%I700.0",
+  "data_type": "Bool",
+  "name": "R3_MotorOn_FeedBack",
+  "comment": "R3_电动机上电反馈(DO0)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I700.1",
+  "data_type": "Bool",
+  "name": "R3_MotorOff_FeedBack",
+  "comment": "R3_电动机下电反馈(DO1)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I700.2",
+  "data_type": "Bool",
+  "name": "R3_CycleOn",
+  "comment": "R3_程序运行状态(DO2)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I700.3",
+  "data_type": "Bool",
+  "name": "R3_EmergencyStop",
+  "comment": "R3_紧急停止(DO3)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I700.4",
+  "data_type": "Bool",
+  "name": "R3_AutoOn",
+  "comment": "R3_自动运行状态(DO4)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I700.5",
+  "data_type": "Bool",
+  "name": "R3_RunchainOK",
+  "comment": "R3_运行链处于正常状态(DO5)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I700.6",
+  "data_type": "Bool",
+  "name": "R3_ExecutionError",
+  "comment": "R3_程序执行错误报警(DO6)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I700.7",
+  "data_type": "Bool",
+  "name": "R3_MotorOnState",
+  "comment": "R3_电动机上电状态(DO7)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I701.0",
+  "data_type": "Bool",
+  "name": "R3_MotorOffState",
+  "comment": "R3_电动机下电状态(DO8)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I701.1",
+  "data_type": "Bool",
+  "name": "R3_PowerFailError",
+  "comment": "R3_动力供应失效状态，机器人断电后无法从当前位置运行(DO9)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I701.2",
+  "data_type": "Bool",
+  "name": "R3_MotionSupervisTriggered",
+  "comment": "R3_当碰撞检测被触发时信号置位(DO10)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I701.3",
+  "data_type": "Bool",
+  "name": "R3_MotionSupervisionOn",
+  "comment": "R3_动作监控打开状态(DO11)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I701.4",
+  "data_type": "Bool",
+  "name": "R3_PathReturnRegionError",
+  "comment": "R3_返回路径失败状态，机器人当前位置离程序位置太远导致(DO12)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I701.5",
+  "data_type": "Bool",
+  "name": "R3_SimulatedI/O",
+  "comment": "R3_有IO信号处于仿真模式(DO13)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I701.6",
+  "data_type": "Bool",
+  "name": "R3_MechanicalUnitActive",
+  "comment": "R3_激活机械单元(DO14)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I701.7",
+  "data_type": "Bool",
+  "name": "R3_MechanicalUnitNotMoving",
+  "comment": "R3_机械单元没有运行(DO15)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I702.0",
+  "data_type": "Bool",
+  "name": "R3_BackupInProgress",
+  "comment": "R3_系统备份进行中，当备份结束后或者错误时信号复位(DO16)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I702.1",
+  "data_type": "Bool",
+  "name": "R3_BackupError",
+  "comment": "R3_备份错误报警(DO17)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I702.2",
+  "data_type": "Bool",
+  "name": "R3_CPUFanNotRunning",
+  "comment": "R3_CPU风扇没有运转(DO18)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I702.3",
+  "data_type": "Bool",
+  "name": "R3_TemperatureWarning",
+  "comment": "R3_CPU温度过热(DO19)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I702.4",
+  "data_type": "Bool",
+  "name": "R3_AbsoluteAccuracyActive",
+  "comment": "R3_绝对精度激活(DO20)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I702.5",
+  "data_type": "Bool",
+  "name": "R3_SMBBatteryChargeLow",
+  "comment": "R3_蓄电池电量低(DO21)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I702.6",
+  "data_type": "Bool",
+  "name": "R3_Home",
+  "comment": "R3_机器人在原点(DO22)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I702.7",
+  "data_type": "Bool",
+  "name": "%I702.7",
+  "comment": "(DO23)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I703.0",
+  "data_type": "Bool",
+  "name": "R3_Handshake",
+  "comment": "R3_握手信号(DO24)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I703.1",
+  "data_type": "Bool",
+  "name": "R3_LoadModuleFinish",
+  "comment": "R3_加载完成(DO25)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I703.2",
+  "data_type": "Bool",
+  "name": "R3_UnLoadModuleFinish",
+  "comment": "R3_卸载完成(DO26)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I703.3",
+  "data_type": "Bool",
+  "name": "%I703.3",
+  "comment": "(DO27)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I703.4",
+  "data_type": "Bool",
+  "name": "%I703.4",
+  "comment": "(DO28)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I703.5",
+  "data_type": "Bool",
+  "name": "%I703.5",
+  "comment": "(DO29)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I703.6",
+  "data_type": "Bool",
+  "name": "%I703.6",
+  "comment": "(DO30)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I703.7",
+  "data_type": "Bool",
+  "name": "%I703.7",
+  "comment": "(DO31)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I704.0",
+  "data_type": "Bool",
+  "name": "R3_InitialRunning",
+  "comment": "R3_机器人在回原位过程中(DO32)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I704.1",
+  "data_type": "Bool",
+  "name": "R3_AutoRunning",
+  "comment": "R3_机器人在自动运行过程中(DO33)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I704.2",
+  "data_type": "Bool",
+  "name": "R3_ChangOverRuning",
+  "comment": "R3_机器人在换型运行过程中(DO34)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I704.3",
+  "data_type": "Bool",
+  "name": "R3_StandbyPOSRuning",
+  "comment": "R3_机器人到待机位置运行过程中(DO35)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I704.4",
+  "data_type": "Bool",
+  "name": "R3_CycleStartRuning",
+  "comment": "R3_机器人已启动起来(DO36)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I704.5",
+  "data_type": "Bool",
+  "name": "R3_ProgramCheck",
+  "comment": "R3_机器人程序号及版本确认信号(DO37)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I704.6",
+  "data_type": "Bool",
+  "name": "%I704.6",
+  "comment": "(DO38)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I704.7",
+  "data_type": "Bool",
+  "name": "%I704.7",
+  "comment": "(DO39)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I705.0",
+  "data_type": "Bool",
+  "name": "%I705.0",
+  "comment": "(DO40)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I705.1",
+  "data_type": "Bool",
+  "name": "%I705.1",
+  "comment": "(DO41)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I705.2",
+  "data_type": "Bool",
+  "name": "%I705.2",
+  "comment": "(DO42)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I705.3",
+  "data_type": "Bool",
+  "name": "%I705.3",
+  "comment": "(DO43)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I705.4",
+  "data_type": "Bool",
+  "name": "%I705.4",
+  "comment": "(DO44)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I705.5",
+  "data_type": "Bool",
+  "name": "%I705.5",
+  "comment": "(DO45)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I705.6",
+  "data_type": "Bool",
+  "name": "%I705.6",
+  "comment": "(DO46)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I705.7",
+  "data_type": "Bool",
+  "name": "%I705.7",
+  "comment": "(DO47)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I706.0",
+  "data_type": "Bool",
+  "name": "R3_InCutPOS",
+  "comment": "R3_机器人在修边位置(DO48)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I706.1",
+  "data_type": "Bool",
+  "name": "R3_InFlashGripperClosePos",
+  "comment": "R3_机器人在飞边夹具夹紧位置(DO49)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I706.2",
+  "data_type": "Bool",
+  "name": "R3_InThrowFlashPOS",
+  "comment": "R3_机器人在丢飞边位置(DO50)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I706.3",
+  "data_type": "Bool",
+  "name": "R3_InPunch1Pos",
+  "comment": "R3_机器人在冲孔1位置(DO51)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I706.4",
+  "data_type": "Bool",
+  "name": "R3_InThrowPunch1ScrapPOS",
+  "comment": "R3_机器人在丢冲孔1废料位置(DO52)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I706.5",
+  "data_type": "Bool",
+  "name": "R3_InCheckPOS",
+  "comment": "R3_达到检测位置（信号自检）(DO53)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I706.6",
+  "data_type": "Bool",
+  "name": "R3_InStandbyPOS",
+  "comment": "R3_机器人在待机等待位置(DO54)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I706.7",
+  "data_type": "Bool",
+  "name": "R3_InPunch2Pos",
+  "comment": "R3_机器人在冲孔2位置(DO55)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I707.0",
+  "data_type": "Bool",
+  "name": "R3_InThrowPunch2ScrapPOS",
+  "comment": "R3_机器人在丢冲孔2废料位置(DO56)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I707.1",
+  "data_type": "Bool",
+  "name": "R3_InFlashGripperOpenPos",
+  "comment": "R3_机器人在飞边夹具打开位置，且允许R1搬运机器人来搬运油箱(DO57)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I707.2",
+  "data_type": "Bool",
+  "name": "R3_InPunch1RetFinishPos",
+  "comment": "R3_机器人在冲切1后退完成位置，且允许打开吸盘称重(DO58)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I707.3",
+  "data_type": "Bool",
+  "name": "%I707.3",
+  "comment": "(DO59)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I707.4",
+  "data_type": "Bool",
+  "name": "%I707.4",
+  "comment": "(DO60)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I707.5",
+  "data_type": "Bool",
+  "name": "%I707.5",
+  "comment": "(DO61)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I707.6",
+  "data_type": "Bool",
+  "name": "%I707.6",
+  "comment": "(DO62)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I707.7",
+  "data_type": "Bool",
+  "name": "%I707.7",
+  "comment": "(DO63)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I708.0",
+  "data_type": "Bool",
+  "name": "R3_ToR1_LeaveSafeArea",
+  "comment": "告诉R1搬运机器人，本机器人已离开修边区域(DO64)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I708.1",
+  "data_type": "Bool",
+  "name": "R3_ToR2_LeaveHeadSafeArea",
+  "comment": "告诉R2修边机器人，本机器人已离开头部修边区域(DO65)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I708.2",
+  "data_type": "Bool",
+  "name": "R3_ToR2_LeaveTailSafeArea",
+  "comment": "告诉R2修边机器人，本机器人已离开尾部修边区域(DO66)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I708.3",
+  "data_type": "Bool",
+  "name": "R3_ToR2_LeaveScrapSafeArea",
+  "comment": "告诉R2修边机器人，本机器人已离开仍废料区域(DO67)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I708.4",
+  "data_type": "Bool",
+  "name": "R3_ToR2_LeaveInterfereArea1",
+  "comment": "告诉R2修边机器人，本机器人已离开修边过程中的干涉区域1(DO68)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I708.5",
+  "data_type": "Bool",
+  "name": "R3_ToR2_LeaveInterfereArea2",
+  "comment": "告诉R2修边机器人，本机器人已离开修边过程中的干涉区域2(DO69)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I708.6",
+  "data_type": "Bool",
+  "name": "R3_ToR2_LeaveInterfereArea3",
+  "comment": "告诉R2修边机器人，本机器人已离开修边过程中的干涉区域3(DO70)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I708.7",
+  "data_type": "Bool",
+  "name": "%I708.7",
+  "comment": "(DO71)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I709.0",
+  "data_type": "Bool",
+  "name": "%I709.0",
+  "comment": "(DO72)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I709.1",
+  "data_type": "Bool",
+  "name": "%I709.1",
+  "comment": "(DO73)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I709.2",
+  "data_type": "Bool",
+  "name": "%I709.2",
+  "comment": "(DO74)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I709.3",
+  "data_type": "Bool",
+  "name": "%I709.3",
+  "comment": "(DO75)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I709.4",
+  "data_type": "Bool",
+  "name": "%I709.4",
+  "comment": "(DO76)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I709.5",
+  "data_type": "Bool",
+  "name": "%I709.5",
+  "comment": "(DO77)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I709.6",
+  "data_type": "Bool",
+  "name": "%I709.6",
+  "comment": "(DO78)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I709.7",
+  "data_type": "Bool",
+  "name": "%I709.7",
+  "comment": "(DO79)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I710.0",
+  "data_type": "Bool",
+  "name": "R3_CutFinish",
+  "comment": "告诉PLC机器人修边完成(DO80)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I710.1",
+  "data_type": "Bool",
+  "name": "%I710.1",
+  "comment": "(DO81)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I710.2",
+  "data_type": "Bool",
+  "name": "%I710.2",
+  "comment": "(DO82)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I710.3",
+  "data_type": "Bool",
+  "name": "%I710.3",
+  "comment": "(DO83)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I710.4",
+  "data_type": "Bool",
+  "name": "%I710.4",
+  "comment": "(DO84)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I710.5",
+  "data_type": "Bool",
+  "name": "%I710.5",
+  "comment": "(DO85)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I710.6",
+  "data_type": "Bool",
+  "name": "%I710.6",
+  "comment": "(DO86)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I710.7",
+  "data_type": "Bool",
+  "name": "%I710.7",
+  "comment": "(DO87)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I711.0",
+  "data_type": "Bool",
+  "name": "%I711.0",
+  "comment": "(DO88)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I711.1",
+  "data_type": "Bool",
+  "name": "%I711.1",
+  "comment": "(DO89)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I711.2",
+  "data_type": "Bool",
+  "name": "%I711.2",
+  "comment": "(DO90)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I711.3",
+  "data_type": "Bool",
+  "name": "%I711.3",
+  "comment": "(DO91)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I711.4",
+  "data_type": "Bool",
+  "name": "%I711.4",
+  "comment": "(DO92)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I711.5",
+  "data_type": "Bool",
+  "name": "%I711.5",
+  "comment": "(DO93)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I711.6",
+  "data_type": "Bool",
+  "name": "%I711.6",
+  "comment": "(DO94)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I711.7",
+  "data_type": "Bool",
+  "name": "%I711.7",
+  "comment": "(DO95)",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW712",
+  "data_type": "Word",
+  "name": "R3_CurrentPostion",
+  "comment": "R3_机器人当前位置（DO96-DO111）",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IB714",
+  "data_type": "Byte",
+  "name": "R3_CurrentRecipe",
+  "comment": "R3_机器人当前版本（DO112-DO119）",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IB715",
+  "data_type": "Byte",
+  "name": "R3_CurrentProgramNum",
+  "comment": "R3_机器人当前程序号（DO120-DO127）",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IB716",
+  "data_type": "Byte",
+  "name": "%IB716",
+  "comment": "",
+  "group": "Robot3ProfinetIO",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%Q700.0",
+  "data_type": "Bool",
+  "name": "R3_MotorsOn",
+  "comment": "R3_电动机上电(DI0)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q700.1",
+  "data_type": "Bool",
+  "name": "R3_MotorsOff",
+  "comment": "R3_电动机下电(DI1)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q700.2",
+  "data_type": "Bool",
+  "name": "R3_Start",
+  "comment": "R3_启动运行(DI2)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q700.3",
+  "data_type": "Bool",
+  "name": "R3_StartAtMain",
+  "comment": "R3_从程序启动运行(DI3)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q700.4",
+  "data_type": "Bool",
+  "name": "R3_Stop",
+  "comment": "R3_停止(DI4)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q700.5",
+  "data_type": "Bool",
+  "name": "R3_QuickStop",
+  "comment": "R3_快速停止(DI5)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q700.6",
+  "data_type": "Bool",
+  "name": "R3_SoftStop",
+  "comment": "R3_软停止(DI6)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q700.7",
+  "data_type": "Bool",
+  "name": "R3_StopAtEndOfCycle",
+  "comment": "R3_在循环结束后停止(DI7)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q701.0",
+  "data_type": "Bool",
+  "name": "R3_Interrupt",
+  "comment": "R3_中断触发(DI8)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q701.1",
+  "data_type": "Bool",
+  "name": "R3_LoadAndStart",
+  "comment": "R3_加载程序并启动运行(DI9)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q701.2",
+  "data_type": "Bool",
+  "name": "R3_ResetEmergencyStop",
+  "comment": "R3_急停复位(DI10)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q701.3",
+  "data_type": "Bool",
+  "name": "R3_ResetExecutionErrorSignal",
+  "comment": "R3_报警复位(DI11)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q701.4",
+  "data_type": "Bool",
+  "name": "R3_MotorsOnAndStart",
+  "comment": "R3_电动机上电并启动运行(DI12)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q701.5",
+  "data_type": "Bool",
+  "name": "R3_StopAtEndOfInstruction",
+  "comment": "R3_在指令运行结束后停止(DI13)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q701.6",
+  "data_type": "Bool",
+  "name": "R3_SystemRestart",
+  "comment": "R3_重启系统(DI14)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q701.7",
+  "data_type": "Bool",
+  "name": "R3_Load",
+  "comment": "R3_加载程序文件(DI15)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q702.0",
+  "data_type": "Bool",
+  "name": "R3_Backup",
+  "comment": "R3_系统备份(DI16)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q702.1",
+  "data_type": "Bool",
+  "name": "R3_ProductionModel",
+  "comment": "R3_生产模式(DI17)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q702.2",
+  "data_type": "Bool",
+  "name": "R3_ChangeModuleModel",
+  "comment": "R3_换型模式(DI18)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q702.3",
+  "data_type": "Bool",
+  "name": "R3_ModuleLoad",
+  "comment": "R3_模块加载(DI19)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q702.4",
+  "data_type": "Bool",
+  "name": "R3_ModuleUnLoad",
+  "comment": "R3_模块卸载(DI20)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q702.5",
+  "data_type": "Bool",
+  "name": "%Q702.5",
+  "comment": "(DO21)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q702.6",
+  "data_type": "Bool",
+  "name": "%Q702.6",
+  "comment": "(DO22)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q702.7",
+  "data_type": "Bool",
+  "name": "%Q702.7",
+  "comment": "(DO23)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q703.0",
+  "data_type": "Bool",
+  "name": "%Q703.0",
+  "comment": "(DO24)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q703.1",
+  "data_type": "Bool",
+  "name": "%Q703.1",
+  "comment": "(DO25)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q703.2",
+  "data_type": "Bool",
+  "name": "%Q703.2",
+  "comment": "(DO26)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q703.3",
+  "data_type": "Bool",
+  "name": "%Q703.3",
+  "comment": "(DO27)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q703.4",
+  "data_type": "Bool",
+  "name": "%Q703.4",
+  "comment": "(DO28)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q703.5",
+  "data_type": "Bool",
+  "name": "%Q703.5",
+  "comment": "(DO29)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q703.6",
+  "data_type": "Bool",
+  "name": "%Q703.6",
+  "comment": "(DO30)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q703.7",
+  "data_type": "Bool",
+  "name": "%Q703.7",
+  "comment": "(DO31)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q704.0",
+  "data_type": "Bool",
+  "name": "R3_InitialRun",
+  "comment": "R3_机器人回原位(DI32)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q704.1",
+  "data_type": "Bool",
+  "name": "R3_AutoRun",
+  "comment": "R3_机器人自动运行(DI33)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q704.2",
+  "data_type": "Bool",
+  "name": "R3_ChangOverRun",
+  "comment": "R3_机器人换型运行(DI34)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q704.3",
+  "data_type": "Bool",
+  "name": "R3_StandbyPOSRun",
+  "comment": "R3_机器人去待机位运行(DI35)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q704.4",
+  "data_type": "Bool",
+  "name": "R3_CycleStart",
+  "comment": "R3_机器人启动运行(DI36)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q704.5",
+  "data_type": "Bool",
+  "name": "%Q704.5",
+  "comment": "(DI37)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q704.6",
+  "data_type": "Bool",
+  "name": "%Q704.6",
+  "comment": "(DI38)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q704.7",
+  "data_type": "Bool",
+  "name": "%Q704.7",
+  "comment": "(DI39)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q705.0",
+  "data_type": "Bool",
+  "name": "%Q705.0",
+  "comment": "(DI40)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q705.1",
+  "data_type": "Bool",
+  "name": "%Q705.1",
+  "comment": "(DI41)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q705.2",
+  "data_type": "Bool",
+  "name": "%Q705.2",
+  "comment": "(DI42)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q705.3",
+  "data_type": "Bool",
+  "name": "%Q705.3",
+  "comment": "(DI43)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q705.4",
+  "data_type": "Bool",
+  "name": "%Q705.4",
+  "comment": "(DI44)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q705.5",
+  "data_type": "Bool",
+  "name": "%Q705.5",
+  "comment": "(DI45)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q705.6",
+  "data_type": "Bool",
+  "name": "%Q705.6",
+  "comment": "(DI46)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q705.7",
+  "data_type": "Bool",
+  "name": "%Q705.7",
+  "comment": "(DI47)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q706.0",
+  "data_type": "Bool",
+  "name": "R3_ToPunch1",
+  "comment": "R3_去冲孔1(DI48)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q706.1",
+  "data_type": "Bool",
+  "name": "R3_ToCutFlash",
+  "comment": "R3_去修边(DI49)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q706.2",
+  "data_type": "Bool",
+  "name": "R3_ToGetFlash",
+  "comment": "R3_去取飞边(DI50)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q706.3",
+  "data_type": "Bool",
+  "name": "R3_ToThrowFlash",
+  "comment": "R3_去仍飞边(DI51)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q706.4",
+  "data_type": "Bool",
+  "name": "R3_ToThrowPunch1Scrap",
+  "comment": "R3_去仍冲孔1废料(DI52)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q706.5",
+  "data_type": "Bool",
+  "name": "R3_ToStandbyPOS",
+  "comment": "R3去待机等待位(DI53)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q706.6",
+  "data_type": "Bool",
+  "name": "R3_ToPunch2",
+  "comment": "R3_去冲孔2(DI54)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q706.7",
+  "data_type": "Bool",
+  "name": "R3_ToThrowPunch2Scrap",
+  "comment": "R3_去仍冲孔2废料(DI55)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q707.0",
+  "data_type": "Bool",
+  "name": "%Q707.0",
+  "comment": "(DI56)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q707.1",
+  "data_type": "Bool",
+  "name": "%Q707.1",
+  "comment": "(DI57)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q707.2",
+  "data_type": "Bool",
+  "name": "%Q707.2",
+  "comment": "(DI58)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q707.3",
+  "data_type": "Bool",
+  "name": "%Q707.3",
+  "comment": "(DI59)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q707.4",
+  "data_type": "Bool",
+  "name": "%Q707.4",
+  "comment": "(DI60)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q707.5",
+  "data_type": "Bool",
+  "name": "%Q707.5",
+  "comment": "(DI61)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q707.6",
+  "data_type": "Bool",
+  "name": "%Q707.6",
+  "comment": "(DI62)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q707.7",
+  "data_type": "Bool",
+  "name": "%Q707.7",
+  "comment": "(DI63)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q708.0",
+  "data_type": "Bool",
+  "name": "R3_FromR1_LeaveSafeArea",
+  "comment": "R1搬运机器人已离开修边区域(DI64)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q708.1",
+  "data_type": "Bool",
+  "name": "R3_FromR2_LeaveHeadSafeArea",
+  "comment": "R2修边机器人已离开头部修边区域(DI65)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q708.2",
+  "data_type": "Bool",
+  "name": "R3_FromR2_LeaveTailSafeArea",
+  "comment": "R2修边机器人已离开尾部修边区域(DI66)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q708.3",
+  "data_type": "Bool",
+  "name": "R3_FromR2_LeaveScrapSafeArea",
+  "comment": "R2修边机器人已离开尾部修边区域(DI67)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q708.4",
+  "data_type": "Bool",
+  "name": "R3_FromR2_LeaveInterfereArea1",
+  "comment": "R2修边机器人已离开修边过程中的干涉区域1(DI68)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q708.5",
+  "data_type": "Bool",
+  "name": "R3_FromR2_LeaveInterfereArea2",
+  "comment": "R2修边机器人已离开修边过程中的干涉区域2(DI69)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q708.6",
+  "data_type": "Bool",
+  "name": "R3_FromR2_LeaveInterfereArea3",
+  "comment": "R2修边机器人已离开修边过程中的干涉区域2(DI70)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q708.7",
+  "data_type": "Bool",
+  "name": "%Q708.7",
+  "comment": "(DI71)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q709.0",
+  "data_type": "Bool",
+  "name": "%Q709.0",
+  "comment": "(DI72)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q709.1",
+  "data_type": "Bool",
+  "name": "%Q709.1",
+  "comment": "(DI73)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q709.2",
+  "data_type": "Bool",
+  "name": "%Q709.2",
+  "comment": "(DI74)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q709.3",
+  "data_type": "Bool",
+  "name": "%Q709.3",
+  "comment": "(DI75)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q709.4",
+  "data_type": "Bool",
+  "name": "%Q709.4",
+  "comment": "(DI76)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q709.5",
+  "data_type": "Bool",
+  "name": "%Q709.5",
+  "comment": "(DI77)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q709.6",
+  "data_type": "Bool",
+  "name": "%Q709.6",
+  "comment": "(DI78)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q709.7",
+  "data_type": "Bool",
+  "name": "%Q709.7",
+  "comment": "(DI79)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q710.0",
+  "data_type": "Bool",
+  "name": "R3_Punch1Finish",
+  "comment": "R3_冲切1完成(DI80)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q710.1",
+  "data_type": "Bool",
+  "name": "R3_FlashGripperCylClosed",
+  "comment": "R3_夹飞边气缸已夹紧(DI81)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q710.2",
+  "data_type": "Bool",
+  "name": "R3_FlashGripperCylOpened",
+  "comment": "R3_仍飞边气缸已松开(DI82)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q710.3",
+  "data_type": "Bool",
+  "name": "R3_ThrowPunch1ScrapFinish",
+  "comment": "R3_仍冲切1废料完成(DI83)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q710.4",
+  "data_type": "Bool",
+  "name": "R3_Punch2Finish",
+  "comment": "R3_冲切2完成(DI80)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q710.5",
+  "data_type": "Bool",
+  "name": "R3_ThrowPunch2ScrapFinish",
+  "comment": "R3_仍冲切2废料完成(DI83)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q710.6",
+  "data_type": "Bool",
+  "name": "R3_FlashGripperOpenFinish",
+  "comment": "R3_飞边夹具打开完成(DI86)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q710.7",
+  "data_type": "Bool",
+  "name": "R3_GoHomeScrapThrowFinish",
+  "comment": "R3_回原位仍废料完成完成信号(DI87)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q711.0",
+  "data_type": "Bool",
+  "name": "%Q711.0",
+  "comment": "(DI88)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q711.1",
+  "data_type": "Bool",
+  "name": "%Q711.1",
+  "comment": "(DI89)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q711.2",
+  "data_type": "Bool",
+  "name": "%Q711.2",
+  "comment": "(DI90)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q711.3",
+  "data_type": "Bool",
+  "name": "%Q711.3",
+  "comment": "(DI91)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q711.4",
+  "data_type": "Bool",
+  "name": "%Q711.4",
+  "comment": "(DI92)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q711.5",
+  "data_type": "Bool",
+  "name": "%Q711.5",
+  "comment": "(DI93)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q711.6",
+  "data_type": "Bool",
+  "name": "%Q711.6",
+  "comment": "(DI94)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q711.7",
+  "data_type": "Bool",
+  "name": "%Q711.7",
+  "comment": "(DI95)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB712",
+  "data_type": "Byte",
+  "name": "R3_AutoSpeed",
+  "comment": "R3_机器人自动运行速度设定(DI96-DI103)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB713",
+  "data_type": "Byte",
+  "name": "R3_InitialSpeed",
+  "comment": "R3_机器人回原位速度(DI104-DI111)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB714",
+  "data_type": "Byte",
+  "name": "R3_Recipe",
+  "comment": "R3_机器人版本选择(DI112-DI119)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB715",
+  "data_type": "Byte",
+  "name": "R3_ProgramNum",
+  "comment": "R3_机器人程序号选择(DI120-DI127)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW716",
+  "data_type": "Int",
+  "name": "R3_OffSetX",
+  "comment": "R3_机器人X方向偏移(DI128-DI143)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW718",
+  "data_type": "Int",
+  "name": "R3_OffSetY",
+  "comment": "R3_机器人Y方向偏移(DI144-DI159)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW720",
+  "data_type": "Int",
+  "name": "R3_OffSetZ",
+  "comment": "R3_机器人Z方向偏移(DI160-DI175)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW722",
+  "data_type": "Int",
+  "name": "R3_OffSetRX",
+  "comment": "R3_机器人RX方向偏移(DI176-DI191)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW724",
+  "data_type": "Int",
+  "name": "R3_OffSetRY",
+  "comment": "R3_机器人RY方向偏移(DI192-DI207)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW726",
+  "data_type": "Int",
+  "name": "R3_OffSetRZ",
+  "comment": "R3_机器人RZ方向偏移(DI208-DI223)",
+  "group": "Robot3ProfinetIO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%M2.0",
+  "data_type": "Bool",
+  "name": "Debug",
+  "comment": "调试屏蔽",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.1",
+  "data_type": "Bool",
+  "name": "%M2.1",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.2",
+  "data_type": "Bool",
+  "name": "%M2.2",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.3",
+  "data_type": "Bool",
+  "name": "%M2.3",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.4",
+  "data_type": "Bool",
+  "name": "%M2.4",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.5",
+  "data_type": "Bool",
+  "name": "%M2.5",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.6",
+  "data_type": "Bool",
+  "name": "%M2.6",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.7",
+  "data_type": "Bool",
+  "name": "%M2.7",
+  "comment": "",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%I11.0",
+  "data_type": "Bool",
+  "name": "I11.0_InletTableLiftCylHP",
+  "comment": "上料平台升降气缸底点（磁性开关）",
+  "group": "DI\\Inlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.1",
+  "data_type": "Bool",
+  "name": "I11.1_InletTableLiftCylWP",
+  "comment": "上料平台升降气缸顶点（磁性开关）",
+  "group": "DI\\Inlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.2",
+  "data_type": "Bool",
+  "name": "I11.2_InletTableDownLockCylHP",
+  "comment": "上料平台底部锁位气缸锁紧位（磁性开关）",
+  "group": "DI\\Inlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.3",
+  "data_type": "Bool",
+  "name": "I11.3_InletTableDownLockCylWP",
+  "comment": "上料平台底部锁位气缸松开位（磁性开关）",
+  "group": "DI\\Inlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.4",
+  "data_type": "Bool",
+  "name": "I11.4_InletTableUpLockCylHP",
+  "comment": "上料平台顶部锁位气缸松开位（磁性开关）",
+  "group": "DI\\Inlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.5",
+  "data_type": "Bool",
+  "name": "I11.5_InletTableUpLockCylWP",
+  "comment": "上料平台顶部锁位气缸锁紧位（磁性开关）",
+  "group": "DI\\Inlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.6",
+  "data_type": "Bool",
+  "name": "I11.6_InletTableTankDetect1",
+  "comment": "上料平台油箱检测1（对射光电）",
+  "group": "DI\\Inlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.7",
+  "data_type": "Bool",
+  "name": "I11.7_InletTableTankDetect2",
+  "comment": "上料平台油箱检测2（对射光电）",
+  "group": "DI\\Inlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I14.6",
+  "data_type": "Bool",
+  "name": "I14.6_DeflshTableWeightCylHP",
+  "comment": "修边工作台称重气缸原位（磁性开关）",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I14.7",
+  "data_type": "Bool",
+  "name": "I14.7_DeflshTableWeightCylWP",
+  "comment": "修边工作台称重气缸到位（磁性开关）",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.0",
+  "data_type": "Bool",
+  "name": "I15.0_DeflshTablePunchingCyl1HP",
+  "comment": "修边工作台冲切气缸1原位（磁性开关）",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.1",
+  "data_type": "Bool",
+  "name": "I15.1_DeflshTablePunchingCyl1WP",
+  "comment": "修边工作台冲切气缸1到位（磁性开关）",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.2",
+  "data_type": "Bool",
+  "name": "I15.2_DeflshTablePunchingCyl2HP",
+  "comment": "修边工作台冲切气缸2原位（磁性开关）",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.3",
+  "data_type": "Bool",
+  "name": "I15.3_DeflshTablePunchingCyl2WP",
+  "comment": "修边工作台冲切气缸2到位（磁性开关）",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.4",
+  "data_type": "Bool",
+  "name": "I15.4_DeflshTableTankDetect1",
+  "comment": "修边工作台油箱检测1（接近开关）",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.5",
+  "data_type": "Bool",
+  "name": "I15.5_DeflshTableTankDetect2",
+  "comment": "修边工作台油箱检测2（接近开关）",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.6",
+  "data_type": "Bool",
+  "name": "I15.6_FlashScrapDetect",
+  "comment": "废料滑槽废料检测（对射光电）",
+  "group": "DI\\ScrapConvey_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.7",
+  "data_type": "Bool",
+  "name": "I15.7_ConveyorLine1FlashDetect",
+  "comment": "废料输送线1废料检测（修边机器人飞边不是仍废料滑槽时，就仍到此输送线上）",
+  "group": "DI\\ScrapConvey_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.0",
+  "data_type": "Bool",
+  "name": "I16.0_DeflshTableID1",
+  "comment": "修边工作台ID1",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.1",
+  "data_type": "Bool",
+  "name": "I16.1_DeflshTableID2",
+  "comment": "修边工作台ID2",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.2",
+  "data_type": "Bool",
+  "name": "I16.2_DeflshTableID3",
+  "comment": "修边工作台ID3",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.3",
+  "data_type": "Bool",
+  "name": "I16.3_DeflshTableID4",
+  "comment": "修边工作台ID4",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.4",
+  "data_type": "Bool",
+  "name": "I16.4_DeflshTableID5",
+  "comment": "修边工作台ID5",
+  "group": "DI\\DeflshTable_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.0",
+  "data_type": "Bool",
+  "name": "I10.0_SafetyDoorOpenReq",
+  "comment": "安全门开门请求(蓝色按钮)",
+  "group": "DI\\SafeDoor_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.1",
+  "data_type": "Bool",
+  "name": "I10.1_SafetyDoorCloseReq",
+  "comment": "安全门关门确认（白色带灯按钮）",
+  "group": "DI\\SafeDoor_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.2",
+  "data_type": "Bool",
+  "name": "I10.2_FlashScrapCoverOpened1",
+  "comment": "废料滑槽盖板打开检测1（接近开关）",
+  "group": "DI\\ScrapConvey_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.3",
+  "data_type": "Bool",
+  "name": "I10.3_FlashScrapCoverOpened2",
+  "comment": "废料滑槽盖板打开检测2（接近开关）",
+  "group": "DI\\ScrapConvey_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.4",
+  "data_type": "Bool",
+  "name": "I10.4_OutletMainCyl1HP",
+  "comment": "下料平台整体移动气缸1原位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.5",
+  "data_type": "Bool",
+  "name": "I10.5_OutletMainCyl1WP",
+  "comment": "下料平台整体移动气缸1到位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.6",
+  "data_type": "Bool",
+  "name": "I10.6_OutletMainCyl2HP",
+  "comment": "下料平台整体移动气缸2原位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.7",
+  "data_type": "Bool",
+  "name": "I10.7_OutletMainCyl2WP",
+  "comment": "下料平台整体移动气缸2到位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.0",
+  "data_type": "Bool",
+  "name": "I12.0_OutletFlipCylHP",
+  "comment": "下料平台翻转气缸倾斜位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.1",
+  "data_type": "Bool",
+  "name": "I12.1_OutletFlipCylWP",
+  "comment": "下料平台翻转气缸水平位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.2",
+  "data_type": "Bool",
+  "name": "I12.2_OutletLiftCylHP",
+  "comment": "下料平台整体升降气缸底点（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.3",
+  "data_type": "Bool",
+  "name": "I12.3_OutletLiftCylWP",
+  "comment": "下料平台整体升降气缸顶点（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.4",
+  "data_type": "Bool",
+  "name": "I12.4_OutletUpLockCylHP",
+  "comment": "下料平台顶部锁位气缸原位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.5",
+  "data_type": "Bool",
+  "name": "I12.5_OutletUpLockCylWP",
+  "comment": "下料平台顶部锁位气缸到位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.6",
+  "data_type": "Bool",
+  "name": "I12.6_OutletDoorSlideCylHP",
+  "comment": "下料平台维修门推动原位（接近开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.7",
+  "data_type": "Bool",
+  "name": "I12.7_OutletDoorSlideCylWP",
+  "comment": "下料平台维修门推动到位（接近开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.0",
+  "data_type": "Bool",
+  "name": "I13.0_OutletDoorlockCylHP",
+  "comment": "下料平台维修门松开位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.1",
+  "data_type": "Bool",
+  "name": "I13.1_OutletDoorlockCylWP",
+  "comment": "下料平台维修门锁紧位（磁性开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.2",
+  "data_type": "Bool",
+  "name": "I13.2_OutletTankDetect1",
+  "comment": "下料平台油箱检测1（光电开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.3",
+  "data_type": "Bool",
+  "name": "I13.3_OutletTankDetect2",
+  "comment": "下料平台油箱检测2（光电开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.4",
+  "data_type": "Bool",
+  "name": "I13.4_OutletLiftServoLimitHP",
+  "comment": "下料平台升降伺服上极限位（行程开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.5",
+  "data_type": "Bool",
+  "name": "I13.5_OutletLiftServoLimitWP",
+  "comment": "下料平台升降伺服下极限位（行程开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.6",
+  "data_type": "Bool",
+  "name": "I13.6_OutletLiftServoHP",
+  "comment": "下料平台升降伺服原点（接近开关）（不需要）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.7",
+  "data_type": "Bool",
+  "name": "I13.7_OutletDoorManuallockPos",
+  "comment": "下料平台维修门手动锁定检测（接近开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I14.0",
+  "data_type": "Bool",
+  "name": "I14.0_OutletDoorManualUnlockPos",
+  "comment": "下料平台维修门手动解锁检测（接近开关）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I14.1",
+  "data_type": "Bool",
+  "name": "%I14.1",
+  "comment": "",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I14.2",
+  "data_type": "Bool",
+  "name": "I14.2_OutletFixtureID1",
+  "comment": "下料平台夹具ID1",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I14.3",
+  "data_type": "Bool",
+  "name": "I14.3_OutletFixtureID2",
+  "comment": "下料平台夹具ID2",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I14.4",
+  "data_type": "Bool",
+  "name": "I14.4_OutletFixtureID3",
+  "comment": "下料平台夹具ID3",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I14.5",
+  "data_type": "Bool",
+  "name": "I14.5_OutletFixtureID4",
+  "comment": "下料平台夹具ID4",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.5",
+  "data_type": "Bool",
+  "name": "I16.5_R1JigTankDetect1",
+  "comment": "R1抓取机器人夹具油箱检测1（光电开关）",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.6",
+  "data_type": "Bool",
+  "name": "I16.6_R1JigTankDetect2",
+  "comment": "R1抓取机器人夹具油箱检测2（光电开关）",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.7",
+  "data_type": "Bool",
+  "name": "I16.7_R1Fixed1JigDetect",
+  "comment": "R1抓取机器人换型架1工装检测信号（接近开关）",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I17.0",
+  "data_type": "Bool",
+  "name": "I17.0_R1FixtureID1",
+  "comment": "R1抓取机器人夹具ID1",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I17.1",
+  "data_type": "Bool",
+  "name": "I17.1_R1FixtureID2",
+  "comment": "R1抓取机器人夹具ID2",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I17.2",
+  "data_type": "Bool",
+  "name": "I17.2_R1FixtureID3",
+  "comment": "R1抓取机器人夹具ID3",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I17.3",
+  "data_type": "Bool",
+  "name": "I17.3_R1FixtureID4",
+  "comment": "R1抓取机器人夹具ID4",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I17.4",
+  "data_type": "Bool",
+  "name": "I17.4_R1JigLocked",
+  "comment": "R1抓取机器人夹具快换锁紧检测(无)",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I17.5",
+  "data_type": "Bool",
+  "name": "I17.5_R1JigUnLocked",
+  "comment": "R1抓取机器人夹具快换松开检测(无)",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I17.6",
+  "data_type": "Bool",
+  "name": "I17.6_R1JigFaceSignal",
+  "comment": "R1抓取机器人夹具快换面贴合检测(无)",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I17.7",
+  "data_type": "Bool",
+  "name": "I17.7_R1Fixed2JigDetect",
+  "comment": "R1抓取机器人换型架2工装检测信号（接近开关）",
+  "group": "DI\\R1_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I18.0",
+  "data_type": "Bool",
+  "name": "I18.0_R2FlashClampCyl HP",
+  "comment": "R2修边机器人1飞边夹取气缸夹紧位（磁性开关）",
+  "group": "DI\\R2_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I18.1",
+  "data_type": "Bool",
+  "name": "I18.1_R2FlashClampCyl WP",
+  "comment": "R2修边机器人1飞边夹取气缸松开位（磁性开关）",
+  "group": "DI\\R2_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I18.2",
+  "data_type": "Bool",
+  "name": "I18.2_R2ClipPunchingCyl HP",
+  "comment": "R2修边机器人1卡扣冲切气缸原位（磁性开关）",
+  "group": "DI\\R2_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I18.3",
+  "data_type": "Bool",
+  "name": "I18.3_R2ClipPunchingCyl WP",
+  "comment": "R2修边机器人1卡扣冲切气缸到位（磁性开关）",
+  "group": "DI\\R2_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I18.4",
+  "data_type": "Bool",
+  "name": "I18.4",
+  "comment": "",
+  "group": "DI\\R2_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I18.5",
+  "data_type": "Bool",
+  "name": "I18.5",
+  "comment": "",
+  "group": "DI\\R2_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I18.6",
+  "data_type": "Bool",
+  "name": "I18.6",
+  "comment": "",
+  "group": "DI\\R2_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I18.7",
+  "data_type": "Bool",
+  "name": "I18.7",
+  "comment": "",
+  "group": "DI\\R2_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I19.0",
+  "data_type": "Bool",
+  "name": "I19.0_R3FlashClampCyl HP",
+  "comment": "R3修边机器人2飞边夹取气缸夹紧位（磁性开关）",
+  "group": "DI\\R3_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I19.1",
+  "data_type": "Bool",
+  "name": "I19.1_R3FlashClampCyl WP",
+  "comment": "R3修边机器人2飞边夹取气缸松开位（磁性开关）",
+  "group": "DI\\R3_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I19.2",
+  "data_type": "Bool",
+  "name": "I19.2_R3ClipPunchingCyl HP",
+  "comment": "R3修边机器人2卡扣冲切气缸原位（磁性开关）",
+  "group": "DI\\R3_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I19.3",
+  "data_type": "Bool",
+  "name": "I19.3_R3ClipPunchingCyl WP",
+  "comment": "R3修边机器人2卡扣冲切气缸到位（磁性开关）",
+  "group": "DI\\R3_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I19.4",
+  "data_type": "Bool",
+  "name": "%I19.4",
+  "comment": "",
+  "group": "DI\\R3_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I19.5",
+  "data_type": "Bool",
+  "name": "%I19.5",
+  "comment": "",
+  "group": "DI\\R3_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I19.6",
+  "data_type": "Bool",
+  "name": "%I19.6",
+  "comment": "",
+  "group": "DI\\R3_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I19.7",
+  "data_type": "Bool",
+  "name": "%I19.7",
+  "comment": "",
+  "group": "DI\\R3_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%Q0.0",
+  "data_type": "Bool",
+  "name": "%Q0.0",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.1",
+  "data_type": "Bool",
+  "name": "%Q0.1",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.2",
+  "data_type": "Bool",
+  "name": "%Q0.2",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.3",
+  "data_type": "Bool",
+  "name": "%Q0.3",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.4",
+  "data_type": "Bool",
+  "name": "%Q0.4",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.5",
+  "data_type": "Bool",
+  "name": "%Q0.5",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.6",
+  "data_type": "Bool",
+  "name": "%Q0.6",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.7",
+  "data_type": "Bool",
+  "name": "%Q0.7",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.0",
+  "data_type": "Bool",
+  "name": "%Q1.0",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.1",
+  "data_type": "Bool",
+  "name": "%Q1.1",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.2",
+  "data_type": "Bool",
+  "name": "%Q1.2",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.3",
+  "data_type": "Bool",
+  "name": "%Q1.3",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.4",
+  "data_type": "Bool",
+  "name": "%Q1.4",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.5",
+  "data_type": "Bool",
+  "name": "%Q1.5",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.6",
+  "data_type": "Bool",
+  "name": "%Q1.6",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.7",
+  "data_type": "Bool",
+  "name": "%Q1.7",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.0",
+  "data_type": "Bool",
+  "name": "Q2.0_FaultLED",
+  "comment": "故障灯[电柜和主面板红色灯]",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.1",
+  "data_type": "Bool",
+  "name": "Q2.1_ManualLED",
+  "comment": "手动灯[主面板黄色灯]",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.2",
+  "data_type": "Bool",
+  "name": "Q2.2_MachineHP_LED",
+  "comment": "原位灯[电柜和主面板蓝色带灯按钮]",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.3",
+  "data_type": "Bool",
+  "name": "Q2.3_InletHP_LED",
+  "comment": "上料平台原位指示灯（入口按钮盒蓝色带灯按钮）",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.4",
+  "data_type": "Bool",
+  "name": "Q2.4_InletFault_LED",
+  "comment": "上料平台故障指示灯（入口按钮盒红色带灯按钮）",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.5",
+  "data_type": "Bool",
+  "name": "Q2.5_InletGratingLED",
+  "comment": "上料平台光栅保护指示灯（黄色圆灯）",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.6",
+  "data_type": "Bool",
+  "name": "Q2.6_MachineAutoMode",
+  "comment": "设备在自动模式（安全PLC信号）",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.7",
+  "data_type": "Bool",
+  "name": "%Q2.7",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.0",
+  "data_type": "Bool",
+  "name": "Q3.0_InletGratingON",
+  "comment": "上料平台光栅保护开启(0V有效)（安全PLC信号）",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.1",
+  "data_type": "Bool",
+  "name": "Q3.1_InletGratingON",
+  "comment": "上料平台光栅保护开启(24V有效)（安全继电器信号，长春项目用）中间继电器",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.2",
+  "data_type": "Bool",
+  "name": "Q3.2_SafeDoorLocked",
+  "comment": "安全门已锁（安全继电器信号，长春项目用）中间继电器",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.3",
+  "data_type": "Bool",
+  "name": "Q3.3_ManualMode",
+  "comment": "手动模式（安全继电器信号，长春项目用）中间继电器",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.4",
+  "data_type": "Bool",
+  "name": "Q3.4_FlashConveyorLine1Start",
+  "comment": "飞边废料输送线1启动",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.5",
+  "data_type": "Bool",
+  "name": "Q3.5_FlashConveyorLine2Start",
+  "comment": "飞边废料输送线2启动",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.6",
+  "data_type": "Bool",
+  "name": "Q3.6_FlashConveyorLine1Speed",
+  "comment": "飞边废料输送线1变速",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.7",
+  "data_type": "Bool",
+  "name": "%Q3.7",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.0",
+  "data_type": "Bool",
+  "name": "Q4.0_DeflashFCRobotMode",
+  "comment": "修边设备在机器人模式（告诉水冷集成）1为机器人模式",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.1",
+  "data_type": "Bool",
+  "name": "Q4.1_DeflashFCOuletLeave",
+  "comment": "修边设备下料平台已离开（水冷集成在人工模式时，告诉水冷集成灭光栅灯，可以人工取油箱）1为离开",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.2",
+  "data_type": "Bool",
+  "name": "Q4.2_DeflashFCInRobotGetPos",
+  "comment": "修边下料平台已达到水冷机器人取油箱位置",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.3",
+  "data_type": "Bool",
+  "name": "%Q4.3",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.4",
+  "data_type": "Bool",
+  "name": "%Q4.4",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.5",
+  "data_type": "Bool",
+  "name": "%Q4.5",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.6",
+  "data_type": "Bool",
+  "name": "%Q4.6",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.7",
+  "data_type": "Bool",
+  "name": "%Q4.7",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.0",
+  "data_type": "Bool",
+  "name": "%Q5.0",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.1",
+  "data_type": "Bool",
+  "name": "%Q5.1",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.2",
+  "data_type": "Bool",
+  "name": "%Q5.2",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.3",
+  "data_type": "Bool",
+  "name": "%Q5.3",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.4",
+  "data_type": "Bool",
+  "name": "%Q5.4",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.5",
+  "data_type": "Bool",
+  "name": "%Q5.5",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.6",
+  "data_type": "Bool",
+  "name": "%Q5.6",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.7",
+  "data_type": "Bool",
+  "name": "%Q5.7",
+  "comment": "",
+  "group": "DO\\Cabit_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q18.0",
+  "data_type": "Bool",
+  "name": "Q18.0_InletTableLiftCylAdv",
+  "comment": "上料平台升降气缸上升(三位五通E阀)  **** 电源3开始****",
+  "group": "DO\\Inlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q18.1",
+  "data_type": "Bool",
+  "name": "Q18.1_InletTableLiftCylRet",
+  "comment": "上料平台升降气缸下降(三位五通E阀)",
+  "group": "DO\\Inlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q18.2",
+  "data_type": "Bool",
+  "name": "Q18.2_InletTableDownLockCylAdv",
+  "comment": "上料平台底部锁位气缸松开（两位三通J阀）",
+  "group": "DO\\Inlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q18.3",
+  "data_type": "Bool",
+  "name": "Q18.3_InletTableDownLockCylRet",
+  "comment": "上料平台底部锁位气缸锁紧（两位三通J阀）",
+  "group": "DO\\Inlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q18.4",
+  "data_type": "Bool",
+  "name": "Q18.4_InletTableUpLockCylAdv",
+  "comment": "上料平台顶部锁位气缸锁紧（两位三通J阀）",
+  "group": "DO\\Inlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q18.5",
+  "data_type": "Bool",
+  "name": "Q18.5_InletTableUpLockCylRet",
+  "comment": "上料平台顶部锁位气缸松开（两位三通J阀）",
+  "group": "DO\\Inlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q18.6",
+  "data_type": "Bool",
+  "name": "%Q18.6",
+  "comment": "",
+  "group": "DO\\Inlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q18.7",
+  "data_type": "Bool",
+  "name": "%Q18.7",
+  "comment": "**** 电源3结束****",
+  "group": "DO\\Inlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.2",
+  "data_type": "Bool",
+  "name": "Q13.2_OutletVacuumON",
+  "comment": "下料平台真空打开",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.3",
+  "data_type": "Bool",
+  "name": "%Q13.3",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.4",
+  "data_type": "Bool",
+  "name": "%Q13.4",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.5",
+  "data_type": "Bool",
+  "name": "%Q13.5",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.6",
+  "data_type": "Bool",
+  "name": "%Q13.6",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.7",
+  "data_type": "Bool",
+  "name": "%Q13.7",
+  "comment": "**** 电源1结束****",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.0",
+  "data_type": "Bool",
+  "name": "Q20.0_OutletLiftCylAdv",
+  "comment": "下料平台整体升降气缸上升(三位五通E阀)  **** 电源4开始****",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.1",
+  "data_type": "Bool",
+  "name": "Q20.1_OutletLiftCylRet",
+  "comment": "下料平台整体升降气缸下降(三位五通E阀) （无）",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.2",
+  "data_type": "Bool",
+  "name": "%Q20.2",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.3",
+  "data_type": "Bool",
+  "name": "%Q20.3",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.4",
+  "data_type": "Bool",
+  "name": "%Q20.4",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.5",
+  "data_type": "Bool",
+  "name": "%Q20.5",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.6",
+  "data_type": "Bool",
+  "name": "%Q20.6",
+  "comment": "",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.7",
+  "data_type": "Bool",
+  "name": "%Q20.7",
+  "comment": "**** 电源4结束****",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q16.0",
+  "data_type": "Bool",
+  "name": "Q16.0_OutletLiftUpLockCylAdv",
+  "comment": "下料平台升降顶部锁位气缸前进（两位三通J阀）",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q16.1",
+  "data_type": "Bool",
+  "name": "Q16.1_OutletLiftUpLockCylRet",
+  "comment": "下料平台升降顶部锁位气缸后退（两位三通J阀）",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q16.2",
+  "data_type": "Bool",
+  "name": "Q16.2_OutletDoorSlideCylAdv",
+  "comment": "下料平台维修门推动前进（两位三通J阀）",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q16.3",
+  "data_type": "Bool",
+  "name": "Q16.3_OutletDoorSlideCylRet",
+  "comment": "下料平台维修门推动后退（两位三通J阀）",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q16.4",
+  "data_type": "Bool",
+  "name": "Q16.4_OutletDoorlockCylAdv",
+  "comment": "下料平台维修门锁位锁紧（两位三通J阀）",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q16.5",
+  "data_type": "Bool",
+  "name": "Q16.5_OutletDoorlockCylRet",
+  "comment": "下料平台维修门锁位松开（两位三通J阀）",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q16.6",
+  "data_type": "Bool",
+  "name": "Q16.6_OutletFlipCylAdv",
+  "comment": "下料平台翻转气缸前进到水平位置(三位五通E阀)",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q16.7",
+  "data_type": "Bool",
+  "name": "Q16.7_OutletFlipCylRet",
+  "comment": "下料平台翻转气缸后退到倾斜位置(三位五通E阀)",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q17.0",
+  "data_type": "Bool",
+  "name": "Q17.0_OutletMainCylAdv",
+  "comment": "下料平台整体移动气缸前进(三位五通E阀)",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q17.1",
+  "data_type": "Bool",
+  "name": "Q17.1_OutletMainCylRet",
+  "comment": "下料平台整体移动气缸后退(三位五通E阀)",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q17.2",
+  "data_type": "Bool",
+  "name": "Q17.2_FlashDoorSlideCylAdv",
+  "comment": "废料滑槽防护门推动气缸推动关闭(两位五通J阀)",
+  "group": "DO\\ScrapConvey_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q17.3",
+  "data_type": "Bool",
+  "name": "Q17.3_FlashDoorSlideCylRet",
+  "comment": "废料滑槽防护门推动气缸推动打开(两位五通J阀)",
+  "group": "DO\\ScrapConvey_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q17.4",
+  "data_type": "Bool",
+  "name": "Q17.4_FlashDoorLockCylAdv",
+  "comment": "废料滑槽防护门锁位气缸锁紧(两位五通J阀)",
+  "group": "DO\\ScrapConvey_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q17.5",
+  "data_type": "Bool",
+  "name": "Q17.5_FlashDoorLockCylRet",
+  "comment": "废料滑槽防护门锁位气缸松开(两位五通J阀)",
+  "group": "DO\\ScrapConvey_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q17.6",
+  "data_type": "Bool",
+  "name": "Q17.6_OutletLiftDownLockCylAdv",
+  "comment": "下料平台升降底部锁位气缸前进（两位三通J阀）",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q17.7",
+  "data_type": "Bool",
+  "name": "Q17.7_OutletLiftDownLockCylRet",
+  "comment": "下料平台升降底部锁位气缸后退（两位三通J阀）**** 电源2结束****",
+  "group": "DO\\Outlet_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.1",
+  "data_type": "Bool",
+  "name": "Q13.1_R1VacuumON",
+  "comment": "R1搬运机器人真空打开",
+  "group": "DO\\R1_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.0",
+  "data_type": "Bool",
+  "name": "Q12.0_R2FlashClampCylAdv",
+  "comment": "R2修边机器人飞边夹取气缸松开（两位三通J阀）",
+  "group": "DO\\R2_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.1",
+  "data_type": "Bool",
+  "name": "Q12.1_R2FlashClampCylRet",
+  "comment": "R2修边机器人飞边夹取气缸夹紧（两位三通J阀）",
+  "group": "DO\\R2_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.0",
+  "data_type": "Bool",
+  "name": "Q15.0_R2ClipPunchingCyl Adv",
+  "comment": "R2修边机器人1卡扣冲切气缸前进（两位三通J阀）",
+  "group": "DO\\R2_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.1",
+  "data_type": "Bool",
+  "name": "Q15.1_R2ClipPunchingCyl Ret",
+  "comment": "R2修边机器人1卡扣冲切气缸后退（两位三通J阀）",
+  "group": "DO\\R2_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.2",
+  "data_type": "Bool",
+  "name": "%Q15.2",
+  "comment": "",
+  "group": "DO\\R2_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.3",
+  "data_type": "Bool",
+  "name": "%Q15.3",
+  "comment": "",
+  "group": "DO\\R2_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.2",
+  "data_type": "Bool",
+  "name": "Q12.2_R3FlashClampCylAdv",
+  "comment": "R3修边机器人飞边夹取气缸松开（两位三通J阀）",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.3",
+  "data_type": "Bool",
+  "name": "Q12.3_R3FlashClampCylRet",
+  "comment": "R3修边机器人飞边夹取气缸夹紧（两位三通J阀）",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.4",
+  "data_type": "Bool",
+  "name": "%Q12.4",
+  "comment": "",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.5",
+  "data_type": "Bool",
+  "name": "%Q12.5",
+  "comment": "",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.6",
+  "data_type": "Bool",
+  "name": "%Q12.6",
+  "comment": "",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.7",
+  "data_type": "Bool",
+  "name": "%Q12.7",
+  "comment": "",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.4",
+  "data_type": "Bool",
+  "name": "Q15.4_R3ClipPunchingCyl Adv",
+  "comment": "R3修边机器人2卡扣冲切气缸前进（两位三通J阀）",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.5",
+  "data_type": "Bool",
+  "name": "Q15.5_R3ClipPunchingCyl Ret",
+  "comment": "R3修边机器人2卡扣冲切气缸后退（两位三通J阀）",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.6",
+  "data_type": "Bool",
+  "name": "%Q15.6",
+  "comment": "",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.7",
+  "data_type": "Bool",
+  "name": "%Q15.7",
+  "comment": "",
+  "group": "DO\\R3_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.0",
+  "data_type": "Bool",
+  "name": "Q13.0_DeflshTableVacuumON",
+  "comment": "修边工作台真空打开",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q14.0",
+  "data_type": "Bool",
+  "name": "Q14.0_DeflshTablePunchingCyl1Adv",
+  "comment": "修边工作台ICV冲切气缸1前进（两位三通J阀） **** 电源2开始****",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q14.1",
+  "data_type": "Bool",
+  "name": "Q14.1_DeflshTablePunchingCyl1Ret",
+  "comment": "修边工作台ICV冲切气缸1后退（两位三通J阀）",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q14.2",
+  "data_type": "Bool",
+  "name": "Q14.2_DeflshTablePunchingCyl2Adv",
+  "comment": "修边工作台ICV冲切气缸2前进（两位三通J阀）",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q14.3",
+  "data_type": "Bool",
+  "name": "Q14.3_DeflshTablePunchingCyl2Ret",
+  "comment": "修边工作台ICV冲切气缸2后退（两位三通J阀）",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q14.4",
+  "data_type": "Bool",
+  "name": "Q14.4_DeflshTableWeightCylAdv",
+  "comment": "修边工作台称重气缸上升（三位五通G阀）",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q14.5",
+  "data_type": "Bool",
+  "name": "Q14.5_DeflshTableWeightCylRet",
+  "comment": "修边工作台称重气缸下降（三位五通G阀）",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q14.6",
+  "data_type": "Bool",
+  "name": "%Q14.6",
+  "comment": "",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q14.7",
+  "data_type": "Bool",
+  "name": "%Q14.7",
+  "comment": "",
+  "group": "DO\\DeflshTable_DO",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%IW114",
+  "data_type": "Word",
+  "name": "Reserved",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%MD520",
+  "data_type": "DWord",
+  "name": "Tag_1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%ID184",
+  "data_type": "DInt",
+  "name": "Result Data 7",
+  "comment": "检测结果数据7",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID188",
+  "data_type": "DInt",
+  "name": "Result Data 8",
+  "comment": "检测结果数据8",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID192",
+  "data_type": "DInt",
+  "name": "Result Data 9",
+  "comment": "检测结果数据9",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%ID196",
+  "data_type": "DInt",
+  "name": "Result Data 10",
+  "comment": "检测结果数据10",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%M300.0",
+  "data_type": "Bool",
+  "name": "Tag_2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M600.0",
+  "data_type": "Bool",
+  "name": "Tag_3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M600.1",
+  "data_type": "Bool",
+  "name": "Tag_4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M600.2",
+  "data_type": "Bool",
+  "name": "Tag_5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD620",
+  "data_type": "DInt",
+  "name": "Tag_6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%I104.0",
+  "data_type": "Bool",
+  "name": "ResultNG",
+  "comment": "综合判断NG",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I104.1",
+  "data_type": "Bool",
+  "name": "ResultOK",
+  "comment": "综合判断OK",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I104.2",
+  "data_type": "Bool",
+  "name": "%I104.2",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I104.3",
+  "data_type": "Bool",
+  "name": "%I104.3",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I104.4",
+  "data_type": "Bool",
+  "name": "%I104.4",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I104.5",
+  "data_type": "Bool",
+  "name": "%I104.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I104.6",
+  "data_type": "Bool",
+  "name": "%I104.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I104.7",
+  "data_type": "Bool",
+  "name": "%I104.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I105.0",
+  "data_type": "Bool",
+  "name": "%I105.0",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I105.1",
+  "data_type": "Bool",
+  "name": "%I105.1",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I105.2",
+  "data_type": "Bool",
+  "name": "%I105.2",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I105.3",
+  "data_type": "Bool",
+  "name": "%I105.3",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I105.4",
+  "data_type": "Bool",
+  "name": "%I105.4",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I105.5",
+  "data_type": "Bool",
+  "name": "%I105.5",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I105.6",
+  "data_type": "Bool",
+  "name": "%I105.6",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I105.7",
+  "data_type": "Bool",
+  "name": "%I105.7",
+  "comment": "",
+  "group": "3DVision_ProfinetDI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.0",
+  "data_type": "Bool",
+  "name": "I20.0_OutletSucker1Vacuum",
+  "comment": "下料平台吸盘1真空度检测",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.1",
+  "data_type": "Bool",
+  "name": "I20.1_OutletSucker2Vacuum",
+  "comment": "下料平台吸盘2真空度检测",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.2",
+  "data_type": "Bool",
+  "name": "I20.2_OutletSucker3Vacuum",
+  "comment": "下料平台吸盘3真空度检测",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.3",
+  "data_type": "Bool",
+  "name": "I20.3_OutletSucker4Vacuum",
+  "comment": "下料平台吸盘4真空度检测",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.4",
+  "data_type": "Bool",
+  "name": "I20.4_OutletSucker5Vacuum",
+  "comment": "下料平台吸盘5真空度检测",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.5",
+  "data_type": "Bool",
+  "name": "I20.5_OutletSucker6Vacuum",
+  "comment": "下料平台吸盘6真空度检测",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.6",
+  "data_type": "Bool",
+  "name": "I20.6_OutletSucker7Vacuum",
+  "comment": "下料平台吸盘7真空度检测",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.7",
+  "data_type": "Bool",
+  "name": "I20.7_OutletSucker8Vacuum",
+  "comment": "下料平台吸盘8真空度检测",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.0",
+  "data_type": "Bool",
+  "name": "I21.0_FlashDoorSlideCylHP",
+  "comment": "废料滑槽防护门推动气缸推动原位（磁性开关）",
+  "group": "DI\\ScrapConvey_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.1",
+  "data_type": "Bool",
+  "name": "I21.1_FlashDoorSlideCylWP",
+  "comment": "废料滑槽防护门推动气缸推动到位（磁性开关）",
+  "group": "DI\\ScrapConvey_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.2",
+  "data_type": "Bool",
+  "name": "I21.2_FlashDoorLockCylHP",
+  "comment": "废料滑槽防护门锁位气缸松开位（磁性开关）",
+  "group": "DI\\ScrapConvey_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.3",
+  "data_type": "Bool",
+  "name": "I21.3_FlashDoorLockCylWP",
+  "comment": "废料滑槽防护门锁位气缸锁紧位（磁性开关）",
+  "group": "DI\\ScrapConvey_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.4",
+  "data_type": "Bool",
+  "name": "I21.4_OutletDownLockCylHP",
+  "comment": "下料平台底部锁位气缸原位（磁性开关）（与上料平台结构一致，原位一致）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.5",
+  "data_type": "Bool",
+  "name": "I21.5_OutletDownLockCylWP",
+  "comment": "下料平台底部锁位气缸到位（磁性开关）（与上料平台结构一致，原位一致）",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.6",
+  "data_type": "Bool",
+  "name": "%I21.6",
+  "comment": "",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.7",
+  "data_type": "Bool",
+  "name": "%I21.7",
+  "comment": "",
+  "group": "DI\\Outlet_DI",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%M521.0",
+  "data_type": "Bool",
+  "name": "Tag_7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M532.0",
+  "data_type": "Bool",
+  "name": "Tag_8",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M533.0",
+  "data_type": "Bool",
+  "name": "Tag_9",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M533.1",
+  "data_type": "Bool",
+  "name": "Tag_10",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M533.2",
+  "data_type": "Bool",
+  "name": "Tag_11",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M533.3",
+  "data_type": "Bool",
+  "name": "Tag_12",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M533.4",
+  "data_type": "Bool",
+  "name": "Tag_13",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M533.5",
+  "data_type": "Bool",
+  "name": "Tag_14",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M533.6",
+  "data_type": "Bool",
+  "name": "Tag_15",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M540.0",
+  "data_type": "Bool",
+  "name": "Tag_16",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.0",
+  "data_type": "Bool",
+  "name": "DataSaveFlag",
+  "comment": "数据保存变量",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.1",
+  "data_type": "Bool",
+  "name": "DataSave",
+  "comment": "数据保存",
+  "group": "M",
+  "kind": "memory",
+  "station": null
+ }
+]

@@ -1,0 +1,6 @@
+python-telegram-bot==21.6
+google-genai==2.22.0
+groq==1.7.0
+openai==3.13.0
+python-dotenv==1.0.1
+openpyxl==3.1.5
