@@ -1,0 +1,6941 @@
+[
+ {
+  "address": "%IW64",
+  "data_type": "Word",
+  "name": "CirculateWaterTem",
+  "comment": "循环水温度",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW80",
+  "data_type": "Int",
+  "name": "CoolWaterInPress",
+  "comment": "冷却进水压力",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW82",
+  "data_type": "Int",
+  "name": "FilterWaterOutPress",
+  "comment": "过滤器出水压力",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I32.3",
+  "data_type": "Bool",
+  "name": "I      32.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I32.4",
+  "data_type": "Bool",
+  "name": "I      32.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I32.5",
+  "data_type": "Bool",
+  "name": "I      32.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I32.6",
+  "data_type": "Bool",
+  "name": "I      32.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I32.7",
+  "data_type": "Bool",
+  "name": "I      32.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I50.0",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPV",
+  "comment": "左上模原位中间变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I50.1",
+  "data_type": "Bool",
+  "name": "L_WholeModeLHMV",
+  "comment": "左整体上限变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I50.2",
+  "data_type": "Bool",
+  "name": "L_WholeModeLLMV",
+  "comment": "左整体下限变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I50.3",
+  "data_type": "Bool",
+  "name": "L_WholeModeWPV",
+  "comment": "左整体到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I50.4",
+  "data_type": "Bool",
+  "name": "L_UpsideModeWPV",
+  "comment": "左上模到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I50.5",
+  "data_type": "Bool",
+  "name": "I      50.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I52.0",
+  "data_type": "Bool",
+  "name": "L_ICVPlugMainWPV",
+  "comment": "左水冷架加油口堵头整体到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I52.1",
+  "data_type": "Bool",
+  "name": "L_ICVPlugWPV",
+  "comment": "左水冷架加油口堵头到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I52.2",
+  "data_type": "Bool",
+  "name": "L_FLVPlugMainWPV",
+  "comment": "左水冷架排气口堵头整体到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I52.3",
+  "data_type": "Bool",
+  "name": "L_FLVPlugWPV",
+  "comment": "左水冷架排气口堵头到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I52.4",
+  "data_type": "Bool",
+  "name": "L_FSUPlugWPV",
+  "comment": "左水冷架油泵口堵头到位(水盘升降)变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I52.5",
+  "data_type": "Bool",
+  "name": "L_PushWPV",
+  "comment": "左水冷架推顶到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I52.6",
+  "data_type": "Bool",
+  "name": "I      52.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I52.7",
+  "data_type": "Bool",
+  "name": "I      52.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I53.4",
+  "data_type": "Bool",
+  "name": "I      53.4",
+  "comment": "备用",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I55.2",
+  "data_type": "Bool",
+  "name": "I      55.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I55.3",
+  "data_type": "Bool",
+  "name": "I      55.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I90.0",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPV",
+  "comment": "右上模原位中间变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I90.1",
+  "data_type": "Bool",
+  "name": "R_WholeModeLHMV",
+  "comment": "右整体上限变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I90.2",
+  "data_type": "Bool",
+  "name": "R_WholeModeLLMV",
+  "comment": "右整体下限变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I90.3",
+  "data_type": "Bool",
+  "name": "R_WholeModeWPV",
+  "comment": "右整体到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I90.4",
+  "data_type": "Bool",
+  "name": "R_UpsideModeWPV",
+  "comment": "右上模到位变量",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I90.5",
+  "data_type": "Bool",
+  "name": "I      90.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I92.6",
+  "data_type": "Bool",
+  "name": "I      92.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I92.7",
+  "data_type": "Bool",
+  "name": "I      92.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I93.5",
+  "data_type": "Bool",
+  "name": "I      93.5",
+  "comment": "备用",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I95.3",
+  "data_type": "Bool",
+  "name": "I      95.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I96.0",
+  "data_type": "Bool",
+  "name": "I      96.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I96.1",
+  "data_type": "Bool",
+  "name": "I      96.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I96.2",
+  "data_type": "Bool",
+  "name": "L_NewTank",
+  "comment": "左工位新油箱判断",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I96.3",
+  "data_type": "Bool",
+  "name": "I      96.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I96.4",
+  "data_type": "Bool",
+  "name": "I      96.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I96.5",
+  "data_type": "Bool",
+  "name": "I      96.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I96.6",
+  "data_type": "Bool",
+  "name": "I      96.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I96.7",
+  "data_type": "Bool",
+  "name": "I      96.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW66",
+  "data_type": "Word",
+  "name": "CoolWaterInTem",
+  "comment": "冷却进水温度",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW100",
+  "data_type": "Int",
+  "name": "L_TankPressureAct",
+  "comment": "左油箱压力",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW120",
+  "data_type": "Int",
+  "name": "R_TankPressureAct",
+  "comment": "右油箱压力",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.0",
+  "data_type": "Bool",
+  "name": "L_AutoMenu",
+  "comment": "左工位自动_手动",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.1",
+  "data_type": "Bool",
+  "name": "MainStop",
+  "comment": "主控使能",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.2",
+  "data_type": "Bool",
+  "name": "Reset",
+  "comment": "故障复位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.3",
+  "data_type": "Bool",
+  "name": "R_AutoMenu",
+  "comment": "右工位自动_手动",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.4",
+  "data_type": "Bool",
+  "name": "L_AutoStart",
+  "comment": "左工位启动",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.5",
+  "data_type": "Bool",
+  "name": "L_AutoStop",
+  "comment": "左工位停止",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.6",
+  "data_type": "Bool",
+  "name": "L_LightCurtain",
+  "comment": "左工位光栅",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I0.7",
+  "data_type": "Bool",
+  "name": "L_LightCurtainReset",
+  "comment": "左光栅复位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.0",
+  "data_type": "Bool",
+  "name": "L_GoToBasic",
+  "comment": "左工位回原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.1",
+  "data_type": "Bool",
+  "name": "R_AutoStart",
+  "comment": "右工位启动",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.2",
+  "data_type": "Bool",
+  "name": "R_AutoStop",
+  "comment": "右工位停止",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.3",
+  "data_type": "Bool",
+  "name": "R_LightCurtain",
+  "comment": "右工位光栅",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.4",
+  "data_type": "Bool",
+  "name": "R_LightCurtainReset",
+  "comment": "右光栅复位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I1.5",
+  "data_type": "Bool",
+  "name": "R_GoToBasic",
+  "comment": "右工位回原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.7",
+  "data_type": "Bool",
+  "name": "PhaseSequencRelay",
+  "comment": "相序保护",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.4",
+  "data_type": "Bool",
+  "name": "%I2.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I6.0",
+  "data_type": "Bool",
+  "name": "CycPumpOverloadI",
+  "comment": "循环泵电机过载",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I6.1",
+  "data_type": "Bool",
+  "name": "FilterPumpOverloadI",
+  "comment": "过滤泵电机过载",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.6",
+  "data_type": "Bool",
+  "name": "L_ModCoolPumpOverloadI",
+  "comment": "左模架冷却泵电机过载",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.7",
+  "data_type": "Bool",
+  "name": "R_ModCoolPumpOverloadI",
+  "comment": "右模架冷却泵电机过载",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I6.4",
+  "data_type": "Bool",
+  "name": "CyclelPumpRun",
+  "comment": "循环泵电机运行",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I6.5",
+  "data_type": "Bool",
+  "name": "FilterPumpRun",
+  "comment": "过滤泵电机运行",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I6.6",
+  "data_type": "Bool",
+  "name": "L_LiftingMotorRun",
+  "comment": "左升降电机运行",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I6.7",
+  "data_type": "Bool",
+  "name": "R_LiftingMotorRun",
+  "comment": "右升降电机运行",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.0",
+  "data_type": "Bool",
+  "name": "L_SafetyDoor",
+  "comment": "左工位门开关",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.1",
+  "data_type": "Bool",
+  "name": "R_SafetyDoor",
+  "comment": "右工位门开关",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.2",
+  "data_type": "Bool",
+  "name": "WaterLHM",
+  "comment": "水位上限",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.3",
+  "data_type": "Bool",
+  "name": "WaterLLM",
+  "comment": "水位下限",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I22.4",
+  "data_type": "Bool",
+  "name": "%I22.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.5",
+  "data_type": "Bool",
+  "name": "%I4.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I22.6",
+  "data_type": "Bool",
+  "name": "%I22.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.7",
+  "data_type": "Bool",
+  "name": "%I4.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.0",
+  "data_type": "Bool",
+  "name": "左工位启动（KUKA）",
+  "comment": "KAUTEX机器人提供信号",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.1",
+  "data_type": "Bool",
+  "name": "左工位油箱取出（KUKA）",
+  "comment": "KAUTEX机器人提供信号",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.2",
+  "data_type": "Bool",
+  "name": "右工位启动（KUKA）",
+  "comment": "KAUTEX机器人提供信号",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I2.3",
+  "data_type": "Bool",
+  "name": "右工位油箱取出（KUKA）",
+  "comment": "KAUTEX机器人提供信号",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I7.0",
+  "data_type": "Bool",
+  "name": "%I7.0",
+  "comment": "KAUTEX机器人提供信号（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I7.1",
+  "data_type": "Bool",
+  "name": "%I7.1",
+  "comment": "KAUTEX机器人提供信号（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.0",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHP",
+  "comment": "左上模上位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.1",
+  "data_type": "Bool",
+  "name": "L_UpsideModeWP",
+  "comment": "左上模下位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.2",
+  "data_type": "Bool",
+  "name": "L_CoolModeLock1HP",
+  "comment": "左模具锁位1原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.3",
+  "data_type": "Bool",
+  "name": "L_CoolModeLock2HP",
+  "comment": "左模具锁位2原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.4",
+  "data_type": "Bool",
+  "name": "L_CoolModeLock3HP",
+  "comment": "左模具锁位3原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.5",
+  "data_type": "Bool",
+  "name": "L_CoolModeLock4HP",
+  "comment": "左模具锁位4原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.6",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPLock1HP",
+  "comment": "左上模原位锁位1原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I10.7",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPLock1WP",
+  "comment": "左上模原位锁位1到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.0",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPLock2HP",
+  "comment": "左上模原位锁位2原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.1",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPLock2WP",
+  "comment": "左上模原位锁位2到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.2",
+  "data_type": "Bool",
+  "name": "L_TankPush1HP（SP）",
+  "comment": "左推顶1原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.3",
+  "data_type": "Bool",
+  "name": "L_TankPush1WP（SP）",
+  "comment": "左推顶1到位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.4",
+  "data_type": "Bool",
+  "name": "L_TankPush2HP（SP）",
+  "comment": "左推顶2原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.5",
+  "data_type": "Bool",
+  "name": "L_TankPush2WP（SP）",
+  "comment": "左推顶2到位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.6",
+  "data_type": "Bool",
+  "name": "L_TankPush3HP（SP）",
+  "comment": "左推顶3原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I11.7",
+  "data_type": "Bool",
+  "name": "L_TankPush3WP（SP）",
+  "comment": "左推顶3到位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.0",
+  "data_type": "Bool",
+  "name": "L_WholeModeLock1HP",
+  "comment": "左整体锁位1原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.1",
+  "data_type": "Bool",
+  "name": "L_WholeModeLock1WP",
+  "comment": "左整体锁位1到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.2",
+  "data_type": "Bool",
+  "name": "L_WholeModeLock2HP",
+  "comment": "左整体锁位2原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.3",
+  "data_type": "Bool",
+  "name": "L_WholeModeLock2WP",
+  "comment": "左整体锁位2到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.0",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHP",
+  "comment": "右上模上位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.1",
+  "data_type": "Bool",
+  "name": "R_UpsideModeWP",
+  "comment": "右上模下位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.2",
+  "data_type": "Bool",
+  "name": "R_CoolModeLock1HP",
+  "comment": "右模具锁位1原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.3",
+  "data_type": "Bool",
+  "name": "R_CoolModeLock2HP",
+  "comment": "右模具锁位2原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.4",
+  "data_type": "Bool",
+  "name": "R_CoolModeLock3HP",
+  "comment": "右模具锁位3原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.5",
+  "data_type": "Bool",
+  "name": "R_CoolModeLock4HP",
+  "comment": "右模具锁位4原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.6",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPLock1HP",
+  "comment": "右上模原位锁位1原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I20.7",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPLock1WP",
+  "comment": "右上模原位锁位1到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.0",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPLock2HP",
+  "comment": "右上模原位锁位2原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.1",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPLock2WP",
+  "comment": "右上模原位锁位2到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I25.2",
+  "data_type": "Bool",
+  "name": "右泵口夹紧原位",
+  "comment": "右泵口夹紧原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I25.3",
+  "data_type": "Bool",
+  "name": "右泵口夹紧到位",
+  "comment": "右泵口夹紧到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I25.4",
+  "data_type": "Bool",
+  "name": "%I21.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I25.5",
+  "data_type": "Bool",
+  "name": "%I21.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I25.6",
+  "data_type": "Bool",
+  "name": "%I21.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I25.7",
+  "data_type": "Bool",
+  "name": "%I21.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I22.0",
+  "data_type": "Bool",
+  "name": "R_WholeModeLock1HP",
+  "comment": "右整体锁位1原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I22.1",
+  "data_type": "Bool",
+  "name": "R_WholeModeLock1WP",
+  "comment": "右整体锁位1到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I22.2",
+  "data_type": "Bool",
+  "name": "R_WholeModeLock2HP",
+  "comment": "右整体锁位2原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I22.3",
+  "data_type": "Bool",
+  "name": "R_WholeModeLock2WP",
+  "comment": "右整体锁位2到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.1",
+  "data_type": "Bool",
+  "name": "L_UpsideModeClampCyl1HP",
+  "comment": "左油箱夹持1原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.2",
+  "data_type": "Bool",
+  "name": "L_UpsideModeClampCyl2HP",
+  "comment": "左油箱夹持2原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I23.1",
+  "data_type": "Bool",
+  "name": "R_UpsideModeClampCyl1HP",
+  "comment": "右油箱夹持1原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I23.2",
+  "data_type": "Bool",
+  "name": "R_UpsideModeClampCyl2HP",
+  "comment": "右油箱夹持2原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I23.3",
+  "data_type": "Bool",
+  "name": "%I23.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I23.4",
+  "data_type": "Bool",
+  "name": "%I23.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I23.5",
+  "data_type": "Bool",
+  "name": "%I23.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I23.6",
+  "data_type": "Bool",
+  "name": "%I23.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I23.7",
+  "data_type": "Bool",
+  "name": "%I23.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I30.0",
+  "data_type": "Bool",
+  "name": "RobotPutLeftTankOK",
+  "comment": "左工位油箱放好机器启动（KUKA→PLC）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I30.1",
+  "data_type": "Bool",
+  "name": "RobotGetLeftTankFinish",
+  "comment": "左工位油箱已经取出（KUKA→PLC）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I30.2",
+  "data_type": "Bool",
+  "name": "RobotPutRightTankOK",
+  "comment": "右工位油箱放好机器启动（KUKA→PLC）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I30.3",
+  "data_type": "Bool",
+  "name": "RobotGetRightTankFinish",
+  "comment": "右工位油箱已经取出（KUKA→PLC）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I30.4",
+  "data_type": "Bool",
+  "name": "RobotModeRemotelyOn",
+  "comment": "机器人模式远程打开",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I30.5",
+  "data_type": "Bool",
+  "name": "RobotAlarmReset",
+  "comment": "机器人出现非正常情况后远程清除水冷机里的通讯信息，注意一定要把油箱清空",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I32.0",
+  "data_type": "Bool",
+  "name": "Tag_56",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I32.1",
+  "data_type": "Bool",
+  "name": "水冷集成故障",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I31.0",
+  "data_type": "Bool",
+  "name": "L_GoHome",
+  "comment": "水冷机左工位回原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I31.1",
+  "data_type": "Bool",
+  "name": "R_GoHome",
+  "comment": "水冷机右工位回原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I31.2",
+  "data_type": "Bool",
+  "name": "L_PushRet",
+  "comment": "水冷机左工位推顶后退",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I31.3",
+  "data_type": "Bool",
+  "name": "R_PushRet",
+  "comment": "水冷机右工位推顶后退",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I31.4",
+  "data_type": "Bool",
+  "name": "L_Can'tGetTank",
+  "comment": "左工位回原位机器人不可以取油箱",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I31.5",
+  "data_type": "Bool",
+  "name": "R_Can'tGetTank",
+  "comment": "右工位回原位机器人不可以取油箱",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I31.6",
+  "data_type": "Bool",
+  "name": "Tag_64",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I31.7",
+  "data_type": "Bool",
+  "name": "LifeBitGet",
+  "comment": "水冷机获得机器人PLC 生命周期",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I6.2",
+  "data_type": "Bool",
+  "name": "L_LiftingMotorOverloadI",
+  "comment": "左升降电机过载",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I6.3",
+  "data_type": "Bool",
+  "name": "R_LiftingMotorOverloadI",
+  "comment": "右升降电机过载",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.3",
+  "data_type": "Bool",
+  "name": "%I13.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.4",
+  "data_type": "Bool",
+  "name": "%I13.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.5",
+  "data_type": "Bool",
+  "name": "%I13.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.6",
+  "data_type": "Bool",
+  "name": "%I13.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.7",
+  "data_type": "Bool",
+  "name": "%I13.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.0",
+  "data_type": "Bool",
+  "name": "%I3.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.1",
+  "data_type": "Bool",
+  "name": "%I3.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.7",
+  "data_type": "Bool",
+  "name": "PressureSwitch",
+  "comment": "压力开关",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.2",
+  "data_type": "Bool",
+  "name": "L_WholeModeHP",
+  "comment": "左整体原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.3",
+  "data_type": "Bool",
+  "name": "L_WholeModeWP",
+  "comment": "左整体工作位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.4",
+  "data_type": "Bool",
+  "name": "L_WholeModeLHM",
+  "comment": "左整体上限",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.5",
+  "data_type": "Bool",
+  "name": "L_WholeModeLLM",
+  "comment": "左整体下限",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I3.6",
+  "data_type": "Bool",
+  "name": "L_WholeModeDebug",
+  "comment": "左整体调试位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.0",
+  "data_type": "Bool",
+  "name": "L_LiftingTransducerAlarm",
+  "comment": "左变频器报警输出",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.1",
+  "data_type": "Bool",
+  "name": "R_LiftingTransducerAlarm",
+  "comment": "右变频器报警输出",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.6",
+  "data_type": "Bool",
+  "name": "%I12.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.7",
+  "data_type": "Bool",
+  "name": "%I12.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I13.0",
+  "data_type": "Bool",
+  "name": "L_UpModeTankDete",
+  "comment": "左工位检测上模是否有油箱（SP）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.0",
+  "data_type": "Bool",
+  "name": "%I13.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I16.1",
+  "data_type": "Bool",
+  "name": "%I13.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.2",
+  "data_type": "Bool",
+  "name": "R_WholeModeHP",
+  "comment": "右整体原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.3",
+  "data_type": "Bool",
+  "name": "R_WholeModeWP",
+  "comment": "右整体工作位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.4",
+  "data_type": "Bool",
+  "name": "R_WholeModeLHM",
+  "comment": "右整体上限",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.5",
+  "data_type": "Bool",
+  "name": "R_WholeModeLLM",
+  "comment": "右整体下限",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I5.6",
+  "data_type": "Bool",
+  "name": "R_WholeModeDebug",
+  "comment": "右整体调试位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.4",
+  "data_type": "Bool",
+  "name": "%I4.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I4.6",
+  "data_type": "Bool",
+  "name": "%I4.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I22.7",
+  "data_type": "Bool",
+  "name": "%I22.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I23.0",
+  "data_type": "Bool",
+  "name": "R_UpModeTankDete",
+  "comment": "右工位检测上模是否有油箱",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I25.0",
+  "data_type": "Bool",
+  "name": "%I25.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I25.1",
+  "data_type": "Bool",
+  "name": "%I25.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW102",
+  "data_type": "Int",
+  "name": "L_TankInputPressureAct",
+  "comment": "左油箱输入压力",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%IW122",
+  "data_type": "Int",
+  "name": "R_TankInputPressureAct",
+  "comment": "右油箱输入压力",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.2",
+  "data_type": "Bool",
+  "name": "左泵口夹紧原位",
+  "comment": "左泵口夹紧原位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.3",
+  "data_type": "Bool",
+  "name": "左泵口夹紧到位",
+  "comment": "左泵口夹紧到位",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.4",
+  "data_type": "Bool",
+  "name": "版本防错检测1",
+  "comment": "版本防错检测1",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.5",
+  "data_type": "Bool",
+  "name": "版本防错检测2",
+  "comment": "版本防错检测2",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.6",
+  "data_type": "Bool",
+  "name": "版本防错检测3",
+  "comment": "版本防错检测3",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I15.7",
+  "data_type": "Bool",
+  "name": "%I11.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.2",
+  "data_type": "Bool",
+  "name": "R_TankPush1HP（SP）",
+  "comment": "右推顶1原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.3",
+  "data_type": "Bool",
+  "name": "R_TankPush1WP（SP）",
+  "comment": "右推顶1到位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.4",
+  "data_type": "Bool",
+  "name": "R_TankPush2HP（SP）",
+  "comment": "右推顶2原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.5",
+  "data_type": "Bool",
+  "name": "R_TankPush2WP（SP）",
+  "comment": "右推顶2到位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.6",
+  "data_type": "Bool",
+  "name": "R_TankPush3HP（SP）",
+  "comment": "右推顶3原位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I21.7",
+  "data_type": "Bool",
+  "name": "R_TankPush3WP",
+  "comment": "右推顶3到位（备用）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%QW100",
+  "data_type": "Int",
+  "name": "L_ChargeRegulatorAQW",
+  "comment": "左油箱初始压力输出",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW102",
+  "data_type": "Int",
+  "name": "L_PressConRegulatorAQW",
+  "comment": "左油箱比例阀PID控制压力",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW122",
+  "data_type": "Int",
+  "name": "R_PressConRegulatorAQW",
+  "comment": "右油箱比例阀PID控制压力",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QW120",
+  "data_type": "Int",
+  "name": "R_ChargeRegulatorAQW",
+  "comment": "右油箱初始压力输出",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB10",
+  "data_type": "Byte",
+  "name": "Tag_5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%QB20",
+  "data_type": "Byte",
+  "name": "Tag_18",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.0",
+  "data_type": "Bool",
+  "name": "左工位待启动（KUKA）",
+  "comment": "左工位待启动（KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.1",
+  "data_type": "Bool",
+  "name": "左工位油箱待取出（KUKA)",
+  "comment": "左工位油箱待取出（KUKA)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.2",
+  "data_type": "Bool",
+  "name": "左工位冷却合格（KUKA）",
+  "comment": "左工位冷却合格（KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.3",
+  "data_type": "Bool",
+  "name": "右工位待启动（KUKA）",
+  "comment": "右工位待启动（KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.4",
+  "data_type": "Bool",
+  "name": "右工位油箱待取出（KUKA)",
+  "comment": "右工位油箱待取出（KUKA)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.5",
+  "data_type": "Bool",
+  "name": "右工位冷却合格（KUKA）",
+  "comment": "右工位冷却合格（KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.6",
+  "data_type": "Bool",
+  "name": "LeftDriverFReset",
+  "comment": "左变频器报警复位",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q0.7",
+  "data_type": "Bool",
+  "name": "rightDriverFReset",
+  "comment": "右变频器报警复位",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.0",
+  "data_type": "Bool",
+  "name": "左工位开模信号（KUKA）",
+  "comment": "水冷机左开模KUKA机器外等待",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q1.1",
+  "data_type": "Bool",
+  "name": "右工位开模信号（KUKA）",
+  "comment": "水冷机右开模KUKA机器外等待",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.0",
+  "data_type": "Bool",
+  "name": "L_LightCurtainErrorLED",
+  "comment": "左光栅故障指示",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.1",
+  "data_type": "Bool",
+  "name": "L_FaultLED",
+  "comment": "左故障灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.2",
+  "data_type": "Bool",
+  "name": "L_HPLED",
+  "comment": "左原位及运行灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.3",
+  "data_type": "Bool",
+  "name": "L_LightCurtainLED",
+  "comment": "左工位光栅保护灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.4",
+  "data_type": "Bool",
+  "name": "R_LightCurtainErrorLED",
+  "comment": "右光栅故障灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.5",
+  "data_type": "Bool",
+  "name": "R_FaultLED",
+  "comment": "右故障灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.6",
+  "data_type": "Bool",
+  "name": "R_HPLED",
+  "comment": "右原位及运行灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q2.7",
+  "data_type": "Bool",
+  "name": "R_LightCurtainLED",
+  "comment": "右工位光栅保护灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.0",
+  "data_type": "Bool",
+  "name": "MachineFaultLED",
+  "comment": "故障指示灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.1",
+  "data_type": "Bool",
+  "name": "L_ManuModeLED",
+  "comment": "左手动灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.2",
+  "data_type": "Bool",
+  "name": "R_ManuModeLED",
+  "comment": "右手动灯",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.3",
+  "data_type": "Bool",
+  "name": "L_LightCurtainRelay",
+  "comment": "左工位光栅保护继电器",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.4",
+  "data_type": "Bool",
+  "name": "R_LightCurtainRelay",
+  "comment": "右工位光栅保护继电器",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.5",
+  "data_type": "Bool",
+  "name": "左油箱夹持打开信号（KUKA)",
+  "comment": "左油箱夹持打开信号（KUKA)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.6",
+  "data_type": "Bool",
+  "name": "右油箱夹持打开信号（KUKA)",
+  "comment": "右油箱夹持打开信号（KUKA)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q3.7",
+  "data_type": "Bool",
+  "name": "WaterLightRelay",
+  "comment": "水箱灯开(取消)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.0",
+  "data_type": "Bool",
+  "name": "CyclePumpRelay",
+  "comment": "循环泵启停(接触器)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.1",
+  "data_type": "Bool",
+  "name": "FilterPumpRelay",
+  "comment": "过滤泵启停(接触器)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.2",
+  "data_type": "Bool",
+  "name": "L_WholeModeUpRelay",
+  "comment": "左整体上升(接触器正转)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.3",
+  "data_type": "Bool",
+  "name": "L_WholeModeDownRelay",
+  "comment": "左整体下降(接触器反转)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.4",
+  "data_type": "Bool",
+  "name": "R_WholeModeUpRelay",
+  "comment": "右整体上升(接触器正转)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.5",
+  "data_type": "Bool",
+  "name": "R_WholeModeDownRelay",
+  "comment": "右整体下降(接触器反转)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.2",
+  "data_type": "Bool",
+  "name": "WaterGiveAdv/Ret",
+  "comment": "水箱自动补水",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.3",
+  "data_type": "Bool",
+  "name": "CoolWaterAdv/Ret",
+  "comment": "冷却阀启停流量控制（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.0",
+  "data_type": "Bool",
+  "name": "L_CoolModeLockAdv",
+  "comment": "左模具锁位进（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.1",
+  "data_type": "Bool",
+  "name": "L_CoolModeLockRet",
+  "comment": "左模具锁位退（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.2",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPLockAdv",
+  "comment": "左上模原位锁位进（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.3",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPLockRet",
+  "comment": "左上模原位锁位退（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.4",
+  "data_type": "Bool",
+  "name": "L_ICVPlugAdv",
+  "comment": "左密封堵头进（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.5",
+  "data_type": "Bool",
+  "name": "L_ICVPlugRet",
+  "comment": "左密封堵头退（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.6",
+  "data_type": "Bool",
+  "name": "L_WholeModeLockAdv",
+  "comment": "左整体锁位前进（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q10.7",
+  "data_type": "Bool",
+  "name": "L_WholeModeLockRet",
+  "comment": "左整体锁位后退（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.0",
+  "data_type": "Bool",
+  "name": "L_PIDOnOffCON",
+  "comment": "左小压力PID控制",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.1",
+  "data_type": "Bool",
+  "name": "L_ProporValveSwitch",
+  "comment": "左比例阀控制切换（双电控三位五通中封电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.2",
+  "data_type": "Bool",
+  "name": "L_UpSideModeAdv",
+  "comment": "左上模下降（双电控三位五通中封电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.3",
+  "data_type": "Bool",
+  "name": "L_UpSideModeRet",
+  "comment": "左上模上升（双电控三位五通中封电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.4",
+  "data_type": "Bool",
+  "name": "L_PushAdv/Ret",
+  "comment": "左推顶气缸进退（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.5",
+  "data_type": "Bool",
+  "name": "L_Pressureswitch",
+  "comment": "左压力控制切换（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.6",
+  "data_type": "Bool",
+  "name": "左外置排气",
+  "comment": "左外置排气（单电控两位三通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q11.7",
+  "data_type": "Bool",
+  "name": "L_Externalblow",
+  "comment": "左外置吹气（单电控两位三通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.0",
+  "data_type": "Bool",
+  "name": "L_SprayWaterBlowAir",
+  "comment": "左喷水吹气（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.1",
+  "data_type": "Bool",
+  "name": "L_SafetyExhaust",
+  "comment": "左安全阀（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.2",
+  "data_type": "Bool",
+  "name": "L_BlowerON/OFF",
+  "comment": "左吹水阀（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.4",
+  "data_type": "Bool",
+  "name": "L_CoolModePumpSwitch",
+  "comment": "左模架冷却泵三通开关（控制水路电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.0",
+  "data_type": "Bool",
+  "name": "R_CoolModeLockAdv",
+  "comment": "右模具锁位进（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.1",
+  "data_type": "Bool",
+  "name": "R_CoolModeLockRet",
+  "comment": "右模具锁位退（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.2",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPLockAdv",
+  "comment": "右上模原位锁位进（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.3",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPLockRet",
+  "comment": "右上模原位锁位退（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.4",
+  "data_type": "Bool",
+  "name": "R_ICVPlugAdv",
+  "comment": "右密封堵头进（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.5",
+  "data_type": "Bool",
+  "name": "R_ICVPlugRet",
+  "comment": "右密封堵头退（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.6",
+  "data_type": "Bool",
+  "name": "R_WholeModeLockAdv",
+  "comment": "右整体锁位前进（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q20.7",
+  "data_type": "Bool",
+  "name": "R_WholeModeLockRet",
+  "comment": "右整体锁位后退（双电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q21.0",
+  "data_type": "Bool",
+  "name": "R_PIDOnOffCON",
+  "comment": "右小压力PID控制",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q21.1",
+  "data_type": "Bool",
+  "name": "R_ProporValveSwitch",
+  "comment": "右比例阀控制切换（双电控三位五通中封电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q21.2",
+  "data_type": "Bool",
+  "name": "R_UpSideModeAdv",
+  "comment": "右上模下降（双电控三位五通中封电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q21.3",
+  "data_type": "Bool",
+  "name": "R_UpSideModeRet",
+  "comment": "右上模上升（双电控三位五通中封电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q21.4",
+  "data_type": "Bool",
+  "name": "R_PushAdv/Ret",
+  "comment": "右推顶气缸进退（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q21.5",
+  "data_type": "Bool",
+  "name": "R_Pressureswitch",
+  "comment": "右压力控制切换（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q21.6",
+  "data_type": "Bool",
+  "name": "右外置排气",
+  "comment": "右外置排气（单电控两位三通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q21.7",
+  "data_type": "Bool",
+  "name": "R_Externalblow",
+  "comment": "右外置吹气（单电控两位三通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q22.0",
+  "data_type": "Bool",
+  "name": "R_SprayWaterBlowAir",
+  "comment": "右喷水吹气（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q22.1",
+  "data_type": "Bool",
+  "name": "R_SafetyExhaust",
+  "comment": "右安全阀（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q22.2",
+  "data_type": "Bool",
+  "name": "R_BlowerON/OFF",
+  "comment": "右吹水阀（单电控两位五通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.6",
+  "data_type": "Bool",
+  "name": "R_CoolModePumpSwitch",
+  "comment": "右模架冷却泵三通开关（控制水路电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q22.3",
+  "data_type": "Bool",
+  "name": "右外置慢速排气",
+  "comment": "右外置慢速排气（单电控两位三通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.3",
+  "data_type": "Bool",
+  "name": "左外置慢速排气",
+  "comment": "左外置慢速排气（单电控两位三通电磁阀）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.4",
+  "data_type": "Bool",
+  "name": "L_TankClampAdv",
+  "comment": "左油箱夹持前进（双电控三位五通中封电磁阀）无此信号",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.5",
+  "data_type": "Bool",
+  "name": "L_TankClampRet",
+  "comment": "左油箱夹持后退（双电控三位五通中封电磁阀）无此信号",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.7",
+  "data_type": "Bool",
+  "name": "L_UpsideModePushAdv/Ret",
+  "comment": "左上模架推顶进退（单电控两位五通电磁阀）无此信号",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q22.4",
+  "data_type": "Bool",
+  "name": "R_TankClampAdv",
+  "comment": "右油箱夹持前进（双电控三位五通中封电磁阀）无此信号",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q22.5",
+  "data_type": "Bool",
+  "name": "R_TankClampRet",
+  "comment": "右油箱夹持后退（双电控三位五通中封电磁阀）无此信号",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q6.0",
+  "data_type": "Bool",
+  "name": "%Q6.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q6.1",
+  "data_type": "Bool",
+  "name": "%Q6.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q6.2",
+  "data_type": "Bool",
+  "name": "%Q6.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q6.3",
+  "data_type": "Bool",
+  "name": "%Q6.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q6.4",
+  "data_type": "Bool",
+  "name": "%Q6.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q6.5",
+  "data_type": "Bool",
+  "name": "%Q6.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q6.6",
+  "data_type": "Bool",
+  "name": "%Q6.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q6.7",
+  "data_type": "Bool",
+  "name": "%Q6.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.5",
+  "data_type": "Bool",
+  "name": "Q 5.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.7",
+  "data_type": "Bool",
+  "name": "Q 5.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q23.6",
+  "data_type": "Bool",
+  "name": "Tag_52",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q30.0",
+  "data_type": "Bool",
+  "name": "KUKALeftCanPutTankHP",
+  "comment": "左工位可以放油箱原位（PLC-KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q30.1",
+  "data_type": "Bool",
+  "name": "L15LeftTankCanGet",
+  "comment": "左工位开模油箱可以取出（PLC-KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q30.2",
+  "data_type": "Bool",
+  "name": "L15LeftTankOK",
+  "comment": "左为1合格（PLC-KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q30.3",
+  "data_type": "Bool",
+  "name": "KUKARightCanPutTankHP",
+  "comment": "KUKA右位可以放油箱原位（PLC-KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q30.4",
+  "data_type": "Bool",
+  "name": "L15RightTankCanGet",
+  "comment": "右工位开模油箱可以取出（PLC-KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q30.5",
+  "data_type": "Bool",
+  "name": "L15RightTankOK",
+  "comment": "右位1合格（PLC-KUKA）",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q30.6",
+  "data_type": "Bool",
+  "name": "L15Alarm",
+  "comment": "水冷机故障",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q30.7",
+  "data_type": "Bool",
+  "name": "Q      30.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q31.0",
+  "data_type": "Bool",
+  "name": "L15RobotMode",
+  "comment": "水冷机在机器人控制模式",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q31.1",
+  "data_type": "Bool",
+  "name": "L15LeftTankNG",
+  "comment": "左水冷位油箱冷却NG",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q31.2",
+  "data_type": "Bool",
+  "name": "L15RightTankNG",
+  "comment": "右水冷位油箱冷却NG",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q31.3",
+  "data_type": "Bool",
+  "name": "L_HPSignal",
+  "comment": "告诉机器人左工位不在原位",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q31.4",
+  "data_type": "Bool",
+  "name": "R_HPSignal",
+  "comment": "告诉机器人右工位不在原位",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q31.5",
+  "data_type": "Bool",
+  "name": "Q      31.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q31.6",
+  "data_type": "Bool",
+  "name": "Q      31.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q31.7",
+  "data_type": "Bool",
+  "name": "LifeBitSend",
+  "comment": "水冷机应答输出",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.6",
+  "data_type": "Bool",
+  "name": "L_CoolModePumpRelay",
+  "comment": "左模架冷却泵(接触器)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q4.7",
+  "data_type": "Bool",
+  "name": "R_CoolModePumpRelay",
+  "comment": "右模架冷却泵(接触器)",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.0",
+  "data_type": "Bool",
+  "name": "%Q5.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q5.1",
+  "data_type": "Bool",
+  "name": "%Q5.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q22.7",
+  "data_type": "Bool",
+  "name": "R_UpsideModePushAdv/Ret",
+  "comment": "右上模架推顶进退（单电控两位五通电磁阀）无此信号",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q25.0",
+  "data_type": "Bool",
+  "name": "Tag_61",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q25.1",
+  "data_type": "Bool",
+  "name": "Tag_62",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q25.2",
+  "data_type": "Bool",
+  "name": "Tag_63",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q23.0",
+  "data_type": "Bool",
+  "name": "R_泵口夹紧",
+  "comment": "右泵口夹紧气缸前进",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q23.1",
+  "data_type": "Bool",
+  "name": "R_泵口松开",
+  "comment": "右泵口夹紧气缸后退",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q23.2",
+  "data_type": "Bool",
+  "name": "%Q23.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q23.3",
+  "data_type": "Bool",
+  "name": "%Q23.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.0",
+  "data_type": "Bool",
+  "name": "%Q13.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.1",
+  "data_type": "Bool",
+  "name": "%Q13.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.2",
+  "data_type": "Bool",
+  "name": "%Q15.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q12.6",
+  "data_type": "Bool",
+  "name": "%Q12.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.0",
+  "data_type": "Bool",
+  "name": "L_泵口夹紧",
+  "comment": "左泵口夹紧气缸前进",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q15.1",
+  "data_type": "Bool",
+  "name": "L_泵口松开",
+  "comment": "左泵口夹紧气缸后退",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.2",
+  "data_type": "Bool",
+  "name": "%Q13.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.3",
+  "data_type": "Bool",
+  "name": "%Q13.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q23.4",
+  "data_type": "Bool",
+  "name": "%Q23.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q13.4",
+  "data_type": "Bool",
+  "name": "%Q13.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%M81.1",
+  "data_type": "Bool",
+  "name": "R_KUKAPressErrorGoBasic",
+  "comment": "右KUKA机器人抓取报废油箱",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M231.0",
+  "data_type": "Bool",
+  "name": "M     231.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M231.7",
+  "data_type": "Bool",
+  "name": "M     231.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M231.6",
+  "data_type": "Bool",
+  "name": "M     231.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M231.5",
+  "data_type": "Bool",
+  "name": "M     231.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M231.4",
+  "data_type": "Bool",
+  "name": "M     231.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M231.3",
+  "data_type": "Bool",
+  "name": "M     231.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M231.2",
+  "data_type": "Bool",
+  "name": "M     231.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M231.1",
+  "data_type": "Bool",
+  "name": "M     231.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M23.7",
+  "data_type": "Bool",
+  "name": "M      23.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M23.6",
+  "data_type": "Bool",
+  "name": "M      23.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M36.7",
+  "data_type": "Bool",
+  "name": "M      36.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M36.6",
+  "data_type": "Bool",
+  "name": "M      36.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M36.5",
+  "data_type": "Bool",
+  "name": "M      36.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M36.4",
+  "data_type": "Bool",
+  "name": "M      36.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M36.3",
+  "data_type": "Bool",
+  "name": "M      36.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M36.2",
+  "data_type": "Bool",
+  "name": "M      36.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M36.1",
+  "data_type": "Bool",
+  "name": "GoHomeR_Pushadv",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M36.0",
+  "data_type": "Bool",
+  "name": "M      36.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M39.7",
+  "data_type": "Bool",
+  "name": "M      39.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M39.6",
+  "data_type": "Bool",
+  "name": "M      39.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M39.5",
+  "data_type": "Bool",
+  "name": "M      39.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M39.4",
+  "data_type": "Bool",
+  "name": "M      39.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M39.3",
+  "data_type": "Bool",
+  "name": "M      39.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M39.2",
+  "data_type": "Bool",
+  "name": "M      39.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M39.1",
+  "data_type": "Bool",
+  "name": "右回原位停止报警标志",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M39.0",
+  "data_type": "Bool",
+  "name": "左回原位停止报警标志",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M232.3",
+  "data_type": "Bool",
+  "name": "M     232.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M232.2",
+  "data_type": "Bool",
+  "name": "M     232.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M232.1",
+  "data_type": "Bool",
+  "name": "M     232.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M232.0",
+  "data_type": "Bool",
+  "name": "M     232.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M151.1",
+  "data_type": "Bool",
+  "name": "M     151.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M12.7",
+  "data_type": "Bool",
+  "name": "R_CoolModeLockWP",
+  "comment": "右模具锁位到位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M31.0",
+  "data_type": "Bool",
+  "name": "R_StemRet_P",
+  "comment": "右整体锁位锁紧阶段、左密封堵头后退、水盘后退阶段、模具锁位松开阶段 9",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M6.3",
+  "data_type": "Bool",
+  "name": "L_OnOffPIDON",
+  "comment": "左工位小压力PID打开",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M31.3",
+  "data_type": "Bool",
+  "name": "R_UpModeHPLock_P",
+  "comment": "右上模原位锁位锁紧阶段 12",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M4.3",
+  "data_type": "Bool",
+  "name": "R_AutoRunFlag",
+  "comment": "右工位自动运行标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M32.0",
+  "data_type": "Bool",
+  "name": "R_ChargTankPreCon",
+  "comment": "右工位油箱初始检测充气压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M30.3",
+  "data_type": "Bool",
+  "name": "R_ChargeTank_P",
+  "comment": "右油箱充气阶段 4",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M5.1",
+  "data_type": "Bool",
+  "name": "R_AlarmMemoaryTag",
+  "comment": "右工位报警记忆变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M30.5",
+  "data_type": "Bool",
+  "name": "R_WholeModeAdv_P",
+  "comment": "右整体下降阶段 6",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M32.1",
+  "data_type": "Bool",
+  "name": "R_Phase1Con",
+  "comment": "右工位阶段1压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M4.2",
+  "data_type": "Bool",
+  "name": "R_AutoMode",
+  "comment": "右工位自动模式",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.3",
+  "data_type": "Bool",
+  "name": "M       1.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M0.1",
+  "data_type": "Bool",
+  "name": "AlwaysOff",
+  "comment": "OFF",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M0.0",
+  "data_type": "Bool",
+  "name": "AlwaysOn",
+  "comment": "ON",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.1",
+  "data_type": "Bool",
+  "name": "AutoModeTag",
+  "comment": "自动模式",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M10.4",
+  "data_type": "Bool",
+  "name": "L_WholeModeLockHP",
+  "comment": "左整体锁位原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.7",
+  "data_type": "Bool",
+  "name": "L_WholeModeLockRetTag",
+  "comment": "左整体锁位后退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M10.5",
+  "data_type": "Bool",
+  "name": "L_WholeModeLockWP",
+  "comment": "左整体锁位到位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M20.6",
+  "data_type": "Bool",
+  "name": "L_CoolPhase_P",
+  "comment": "左油箱冷却吹气阶段 7",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M101.2",
+  "data_type": "Bool",
+  "name": "L_WholeUpTag",
+  "comment": "左整体上升变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M20.4",
+  "data_type": "Bool",
+  "name": "L_ChecKTank_P",
+  "comment": "左油箱充气后检测阶段 5",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.6",
+  "data_type": "Bool",
+  "name": "L_WholeModeLockAdvTag",
+  "comment": "左整体锁位前进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M151.2",
+  "data_type": "Bool",
+  "name": "M     151.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.0",
+  "data_type": "Bool",
+  "name": "StepModeTag",
+  "comment": "手动模式",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M10.2",
+  "data_type": "Bool",
+  "name": "L_TankPushHP",
+  "comment": "左工位油箱推顶原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M10.3",
+  "data_type": "Bool",
+  "name": "L_TankPushWP",
+  "comment": "左工位油箱推顶到位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M101.3",
+  "data_type": "Bool",
+  "name": "L_WholeDownTag",
+  "comment": "左整体下降变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M150.6",
+  "data_type": "Bool",
+  "name": "R_WholeModeLockAdvTag",
+  "comment": "右整体锁位前进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M12.4",
+  "data_type": "Bool",
+  "name": "R_WholeModeLockHP",
+  "comment": "右整体锁位原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M150.7",
+  "data_type": "Bool",
+  "name": "R_WholeModeLockRetTag",
+  "comment": "右整体锁位后退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M12.5",
+  "data_type": "Bool",
+  "name": "R_WholeModeLockWP",
+  "comment": "右整体锁位到位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M30.6",
+  "data_type": "Bool",
+  "name": "R_CoolPhase_P",
+  "comment": "右油箱冷却吹气阶段 7",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.5",
+  "data_type": "Bool",
+  "name": "L_UpModeWPLockRetTag",
+  "comment": "左上模到位锁位退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M20.2",
+  "data_type": "Bool",
+  "name": "L_UpModeWPLock_P",
+  "comment": "左上模模具锁位锁紧、密封堵头、水盘前进阶段 3",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M10.0",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPLockHP",
+  "comment": "左上模原位锁位原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M10.1",
+  "data_type": "Bool",
+  "name": "L_UpsideModeHPLockWP",
+  "comment": "左上模原位锁位到位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M12.2",
+  "data_type": "Bool",
+  "name": "R_TankPushHP",
+  "comment": "右工位油箱推顶原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M102.2",
+  "data_type": "Bool",
+  "name": "L_FLVPlugAdvTag",
+  "comment": "左排气口密封堵头进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M102.0",
+  "data_type": "Bool",
+  "name": "L_FLVPlugMainAdvTag",
+  "comment": "左排气口密封堵头整体进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M151.7",
+  "data_type": "Bool",
+  "name": "M     151.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M151.6",
+  "data_type": "Bool",
+  "name": "M     151.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M101.7",
+  "data_type": "Bool",
+  "name": "L_ICVPlugRetTag",
+  "comment": "左加油口密封堵头退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M101.6",
+  "data_type": "Bool",
+  "name": "L_ICVPlugAdvTag",
+  "comment": "左加油口密封堵头进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M13.7",
+  "data_type": "Bool",
+  "name": "M      13.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M102.7",
+  "data_type": "Bool",
+  "name": "L_PushRetTag",
+  "comment": "左推顶后退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M102.3",
+  "data_type": "Bool",
+  "name": "L_FLVPlugRetTag",
+  "comment": "左排气口密封堵头退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M102.1",
+  "data_type": "Bool",
+  "name": "L_FLVPlugMainRetTag",
+  "comment": "左排气口密封堵头整体退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M11.7",
+  "data_type": "Bool",
+  "name": "M      11.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M11.2",
+  "data_type": "Bool",
+  "name": "R_达合模压力时间监控变量",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M35.1",
+  "data_type": "Bool",
+  "name": "GoHomeL_Pushadv",
+  "comment": "左工位回原位推顶前进",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M238.0",
+  "data_type": "Bool",
+  "name": "M     238.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M238.1",
+  "data_type": "Bool",
+  "name": "M     238.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M238.5",
+  "data_type": "Bool",
+  "name": "M     238.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M238.4",
+  "data_type": "Bool",
+  "name": "M     238.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M238.3",
+  "data_type": "Bool",
+  "name": "M     238.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M238.2",
+  "data_type": "Bool",
+  "name": "M     238.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M42.4",
+  "data_type": "Bool",
+  "name": "M      42.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M42.3",
+  "data_type": "Bool",
+  "name": "M      42.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M42.2",
+  "data_type": "Bool",
+  "name": "M      42.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M42.1",
+  "data_type": "Bool",
+  "name": "右工位反向充气标志",
+  "comment": "右工位反向充气标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M42.0",
+  "data_type": "Bool",
+  "name": "左工位反向充气标志",
+  "comment": "左工位反向充气标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M238.6",
+  "data_type": "Bool",
+  "name": "M     238.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M238.7",
+  "data_type": "Bool",
+  "name": "M     238.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M239.0",
+  "data_type": "Bool",
+  "name": "M     239.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M239.1",
+  "data_type": "Bool",
+  "name": "M     239.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M239.2",
+  "data_type": "Bool",
+  "name": "M     239.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M239.4",
+  "data_type": "Bool",
+  "name": "M     239.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M239.3",
+  "data_type": "Bool",
+  "name": "M     239.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M239.6",
+  "data_type": "Bool",
+  "name": "M     239.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M239.5",
+  "data_type": "Bool",
+  "name": "M     239.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M239.7",
+  "data_type": "Bool",
+  "name": "M     239.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M240.0",
+  "data_type": "Bool",
+  "name": "M     240.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M11.5",
+  "data_type": "Bool",
+  "name": "M      11.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M3.3",
+  "data_type": "Bool",
+  "name": "左工位废油箱记忆",
+  "comment": "左工位废油箱记忆",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M5.3",
+  "data_type": "Bool",
+  "name": "右工位挡光栅报警记忆",
+  "comment": "右工位挡光栅报警记忆",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M232.5",
+  "data_type": "Bool",
+  "name": "M     232.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M232.4",
+  "data_type": "Bool",
+  "name": "M     232.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M232.7",
+  "data_type": "Bool",
+  "name": "M     232.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M232.6",
+  "data_type": "Bool",
+  "name": "M     232.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M11.3",
+  "data_type": "Bool",
+  "name": "L_达阶段一时间监控变量",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M13.3",
+  "data_type": "Bool",
+  "name": "M       13.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M5.7",
+  "data_type": "Bool",
+  "name": "右工位挡光栅气压低报警记忆",
+  "comment": "右工位挡光栅气压低报警记忆",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M5.6",
+  "data_type": "Bool",
+  "name": "右工位自动运行过程中气缸运动故障记忆变量",
+  "comment": "右工位自动运行过程中气缸运动故障记忆变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M5.5",
+  "data_type": "Bool",
+  "name": "右工位废油箱记忆",
+  "comment": "右工位废油箱记忆",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M5.4",
+  "data_type": "Bool",
+  "name": "右工位自动启动报警记忆",
+  "comment": "右工位自动启动报警记忆",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M3.7",
+  "data_type": "Bool",
+  "name": "M       3.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M3.6",
+  "data_type": "Bool",
+  "name": "左工位挡光栅报警记忆",
+  "comment": "左工位挡光栅报警记忆",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M3.5",
+  "data_type": "Bool",
+  "name": "左工位挡光栅气压低报警记忆",
+  "comment": "左工位挡光栅气压低报警记忆",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M3.4",
+  "data_type": "Bool",
+  "name": "左工位自动运行过程中气缸运动故障记忆变量",
+  "comment": "左工位自动运行过程中气缸运动故障记忆变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M6.5",
+  "data_type": "Bool",
+  "name": "R_OnOffPIDON",
+  "comment": "右工位小压力PID打开",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M6.4",
+  "data_type": "Bool",
+  "name": "R_ProPortionalPIDOn",
+  "comment": "右工位比例阀PID打开",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.4",
+  "data_type": "Bool",
+  "name": "L_AutoRun",
+  "comment": "左工位自动运行",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.5",
+  "data_type": "Bool",
+  "name": "L_AutoRunFinish",
+  "comment": "左循环结束 (控制结束)13",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M4.5",
+  "data_type": "Bool",
+  "name": "R_AutoRunFinish",
+  "comment": "右循环结束(控制结束) 13",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M4.4",
+  "data_type": "Bool",
+  "name": "R_AutoRun",
+  "comment": "右工位自动运行",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M4.6",
+  "data_type": "Bool",
+  "name": "R_AutoStartFlag",
+  "comment": "右工位自动启动变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.6",
+  "data_type": "Bool",
+  "name": "M       2.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M233.1",
+  "data_type": "Bool",
+  "name": "M     233.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M233.0",
+  "data_type": "Bool",
+  "name": "M     233.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M233.2",
+  "data_type": "Bool",
+  "name": "M     233.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M233.5",
+  "data_type": "Bool",
+  "name": "M     233.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M233.4",
+  "data_type": "Bool",
+  "name": "M     233.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M233.3",
+  "data_type": "Bool",
+  "name": "M     233.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M4.7",
+  "data_type": "Bool",
+  "name": "M       4.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.7",
+  "data_type": "Bool",
+  "name": "M       2.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M233.6",
+  "data_type": "Bool",
+  "name": "M     233.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M233.7",
+  "data_type": "Bool",
+  "name": "M     233.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M234.0",
+  "data_type": "Bool",
+  "name": "M     234.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M234.6",
+  "data_type": "Bool",
+  "name": "M     234.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M234.5",
+  "data_type": "Bool",
+  "name": "M     234.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M234.4",
+  "data_type": "Bool",
+  "name": "M     234.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M234.3",
+  "data_type": "Bool",
+  "name": "M     234.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW32",
+  "data_type": "Int",
+  "name": "R_PreControlTag",
+  "comment": "右油箱压力控制变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M34.0",
+  "data_type": "Bool",
+  "name": "右整体电机上限报警确认触摸屏返回",
+  "comment": "右整体电机上限报警确认触摸屏返回",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M6.1",
+  "data_type": "Bool",
+  "name": "R_ResetFlag",
+  "comment": "右工位复位变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MB4",
+  "data_type": "Byte",
+  "name": "R_RunTag",
+  "comment": "右油箱运行变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M10.7",
+  "data_type": "Bool",
+  "name": "L_CoolModeLockWP",
+  "comment": "左模具锁位到位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M21.0",
+  "data_type": "Bool",
+  "name": "L_StemRet_P",
+  "comment": "左整体锁位锁紧阶段、左密封堵头后退、水盘后退阶段、模具锁位松开阶段 9",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.0",
+  "data_type": "Bool",
+  "name": "L_EnableOutputTag",
+  "comment": "左工位使能输出",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M22.2",
+  "data_type": "Bool",
+  "name": "L_Phase2Con",
+  "comment": "左工位阶段2压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW34",
+  "data_type": "Word",
+  "name": "右整体电机极限报警确认触摸屏返回",
+  "comment": "右整体电机极限报警确认触摸屏返回",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW30",
+  "data_type": "Int",
+  "name": "R_PhaseControlTag",
+  "comment": "右循环阶段控制变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M101.0",
+  "data_type": "Bool",
+  "name": "L_CoolModeLockAdvTag",
+  "comment": "左模具锁位进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M10.6",
+  "data_type": "Bool",
+  "name": "L_CoolModeLockHP",
+  "comment": "左模具锁位原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M101.1",
+  "data_type": "Bool",
+  "name": "L_CoolModeLockRetTag",
+  "comment": "左模具锁位退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M4.0",
+  "data_type": "Bool",
+  "name": "R_EnableOutputTag",
+  "comment": "右工位使能输出",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M32.2",
+  "data_type": "Bool",
+  "name": "R_Phase2Con",
+  "comment": "右工位阶段2压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M5.0",
+  "data_type": "Bool",
+  "name": "R_GoToBasicFlag",
+  "comment": "右工位回原位运行标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M13.0",
+  "data_type": "Bool",
+  "name": "R_HP",
+  "comment": "右工位原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M3.1",
+  "data_type": "Bool",
+  "name": "L_AlarmMemoaryTag",
+  "comment": "左工位报警记忆变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M20.5",
+  "data_type": "Bool",
+  "name": "L_WholeModeAdv_P",
+  "comment": "左整体下降阶段 6",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M22.1",
+  "data_type": "Bool",
+  "name": "L_Phase1Con",
+  "comment": "左工位阶段1压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.2",
+  "data_type": "Bool",
+  "name": "L_AutoMode",
+  "comment": "左工位自动模式",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M21.3",
+  "data_type": "Bool",
+  "name": "L_UpModeHPLock_P",
+  "comment": "左上模原位锁位锁紧阶段12",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.3",
+  "data_type": "Bool",
+  "name": "L_AutoRunFlag",
+  "comment": "左工位自动运行标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M22.0",
+  "data_type": "Bool",
+  "name": "L_ChargTankPreCon",
+  "comment": "左工位油箱初始检测充气压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M20.3",
+  "data_type": "Bool",
+  "name": "L_ChargeTank_P",
+  "comment": "左油箱充气阶段 4",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M151.0",
+  "data_type": "Bool",
+  "name": "M     151.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M12.6",
+  "data_type": "Bool",
+  "name": "R_CoolModeLockHP",
+  "comment": "右模具锁位原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M240.2",
+  "data_type": "Bool",
+  "name": "M     240.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M240.1",
+  "data_type": "Bool",
+  "name": "M     240.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M240.6",
+  "data_type": "Bool",
+  "name": "M     240.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M240.5",
+  "data_type": "Bool",
+  "name": "M     240.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M240.4",
+  "data_type": "Bool",
+  "name": "M     240.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M240.3",
+  "data_type": "Bool",
+  "name": "M     240.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M241.0",
+  "data_type": "Bool",
+  "name": "M     241.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M240.7",
+  "data_type": "Bool",
+  "name": "M     240.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M241.1",
+  "data_type": "Bool",
+  "name": "M     241.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M242.0",
+  "data_type": "Bool",
+  "name": "M     242.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M35.2",
+  "data_type": "Bool",
+  "name": "油箱取走吹水标志",
+  "comment": "油箱取走吹水标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M242.1",
+  "data_type": "Bool",
+  "name": "M     242.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M241.2",
+  "data_type": "Bool",
+  "name": "M     241.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M234.2",
+  "data_type": "Bool",
+  "name": "M     234.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M234.1",
+  "data_type": "Bool",
+  "name": "M     234.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M235.0",
+  "data_type": "Bool",
+  "name": "M     235.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M234.7",
+  "data_type": "Bool",
+  "name": "M     234.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M235.1",
+  "data_type": "Bool",
+  "name": "M     235.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.7",
+  "data_type": "Bool",
+  "name": "OneCycStartFlag",
+  "comment": "单循环启动变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.6",
+  "data_type": "Bool",
+  "name": "M       1.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M235.2",
+  "data_type": "Bool",
+  "name": "M     235.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M235.3",
+  "data_type": "Bool",
+  "name": "M     235.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M235.5",
+  "data_type": "Bool",
+  "name": "M     235.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M235.4",
+  "data_type": "Bool",
+  "name": "M     235.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M235.7",
+  "data_type": "Bool",
+  "name": "M     235.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M235.6",
+  "data_type": "Bool",
+  "name": "M     235.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.2",
+  "data_type": "Bool",
+  "name": "MachineAlarmTag",
+  "comment": "机器发生故障",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M210.0",
+  "data_type": "Bool",
+  "name": "M     210.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M210.1",
+  "data_type": "Bool",
+  "name": "M     210.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M210.2",
+  "data_type": "Bool",
+  "name": "M     210.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M210.3",
+  "data_type": "Bool",
+  "name": "M     210.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M220.0",
+  "data_type": "Bool",
+  "name": "M     220.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M220.1",
+  "data_type": "Bool",
+  "name": "M     220.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M220.2",
+  "data_type": "Bool",
+  "name": "M     220.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M220.3",
+  "data_type": "Bool",
+  "name": "M     220.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M220.4",
+  "data_type": "Bool",
+  "name": "M     220.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M230.0",
+  "data_type": "Bool",
+  "name": "M     230.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M230.1",
+  "data_type": "Bool",
+  "name": "M     230.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M3.2",
+  "data_type": "Bool",
+  "name": "L_AlarmTag",
+  "comment": "左工位报警变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M5.2",
+  "data_type": "Bool",
+  "name": "R_AlarmTag",
+  "comment": "右工位报警变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M6.2",
+  "data_type": "Bool",
+  "name": "L_ProPortionalPIDOn",
+  "comment": "左工位比例阀PID打开",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M11.1",
+  "data_type": "Bool",
+  "name": "L_达合模压力时间监控变量",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M21.4",
+  "data_type": "Bool",
+  "name": "L_RobortTakeTank_P",
+  "comment": "左机器人取油箱阶段",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M22.3",
+  "data_type": "Bool",
+  "name": "L_Phase3Con",
+  "comment": "左工位阶段3压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M31.4",
+  "data_type": "Bool",
+  "name": "R_RobortTakeTank_P",
+  "comment": "右机器人取油箱阶段",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M32.3",
+  "data_type": "Bool",
+  "name": "R_Phase3Con",
+  "comment": "右工位阶段3压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M32.4",
+  "data_type": "Bool",
+  "name": "R_PressureCon",
+  "comment": "右油箱压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M230.2",
+  "data_type": "Bool",
+  "name": "M     230.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M230.3",
+  "data_type": "Bool",
+  "name": "M     230.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.5",
+  "data_type": "Bool",
+  "name": "R_BarcodeModeOkTag",
+  "comment": "右条码型号正确",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M1.4",
+  "data_type": "Bool",
+  "name": "L_BarcodeModeOkTag",
+  "comment": "左条码型号正确",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M34.1",
+  "data_type": "Bool",
+  "name": "右整体电机下限报警确认触摸屏返回",
+  "comment": "右整体电机下限报警确认触摸屏返回",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M35.0",
+  "data_type": "Bool",
+  "name": "SupplyWaterManual",
+  "comment": "水箱自动补水手动开关",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M101.4",
+  "data_type": "Bool",
+  "name": "L_ICVPlugMainAdvTag",
+  "comment": "左加油口密封堵头整体进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M101.5",
+  "data_type": "Bool",
+  "name": "L_ICVPlugMainRetTag",
+  "comment": "左加油口密封堵头整体退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M151.5",
+  "data_type": "Bool",
+  "name": "M     151.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M151.4",
+  "data_type": "Bool",
+  "name": "M     151.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M102.6",
+  "data_type": "Bool",
+  "name": "L_PushAdvTag",
+  "comment": "左推顶前进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M102.5",
+  "data_type": "Bool",
+  "name": "L_FSUPlugRetTag",
+  "comment": "左油泵口密封堵头退(水盘升降)变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M102.4",
+  "data_type": "Bool",
+  "name": "L_FSUPlugAdvTag",
+  "comment": "左油泵口密封堵头进(水盘升降)变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M230.4",
+  "data_type": "Bool",
+  "name": "M     230.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M230.5",
+  "data_type": "Bool",
+  "name": "M     230.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M230.6",
+  "data_type": "Bool",
+  "name": "M     230.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M21.5",
+  "data_type": "Bool",
+  "name": "M      21.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M230.7",
+  "data_type": "Bool",
+  "name": "M     230.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M31.5",
+  "data_type": "Bool",
+  "name": "M      31.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M12.3",
+  "data_type": "Bool",
+  "name": "R_TankPushWP",
+  "comment": "右工位油箱推顶到位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M151.3",
+  "data_type": "Bool",
+  "name": "M     151.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M30.4",
+  "data_type": "Bool",
+  "name": "R_ChecKTank_P",
+  "comment": "右油箱充气后检测阶段 5",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M23.1",
+  "data_type": "Bool",
+  "name": "M      23.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M23.5",
+  "data_type": "Bool",
+  "name": "M      23.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.1",
+  "data_type": "Bool",
+  "name": "L_UpModeAdvTag",
+  "comment": "左上模下降变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.2",
+  "data_type": "Bool",
+  "name": "L_UpModeHPLockAdvTag",
+  "comment": "左上模原位锁位进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.3",
+  "data_type": "Bool",
+  "name": "L_UpModeHPLockRetTag",
+  "comment": "左上模原位锁位退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M21.2",
+  "data_type": "Bool",
+  "name": "L_UpModeToHP_P",
+  "comment": "左上模上升阶段11",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M20.0",
+  "data_type": "Bool",
+  "name": "L_UpModeHPUnLock_P",
+  "comment": "左上模原位锁位松开阶段 1",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.0",
+  "data_type": "Bool",
+  "name": "L_UpModeRetTag",
+  "comment": "左上模上升变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M21.1",
+  "data_type": "Bool",
+  "name": "L_CoolModeWPUnLock_P",
+  "comment": "左模具锁位松开阶段（空） 10",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M20.1",
+  "data_type": "Bool",
+  "name": "L_UpModeToWP_P",
+  "comment": "左上模下降、整体锁位松开阶段 2",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M100.4",
+  "data_type": "Bool",
+  "name": "L_UpModeWPLockAdvTag",
+  "comment": "左上模到位锁位进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M12.0",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPLockHP",
+  "comment": "右上模原位锁位原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M12.1",
+  "data_type": "Bool",
+  "name": "R_UpsideModeHPLockWP",
+  "comment": "右上模原位锁位到位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M6.0",
+  "data_type": "Bool",
+  "name": "L_ResetFlag",
+  "comment": "左工位复位变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MB2",
+  "data_type": "Byte",
+  "name": "L_RunTag",
+  "comment": "左油箱运行变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M20.7",
+  "data_type": "Bool",
+  "name": "L_WholeModeRet_P",
+  "comment": "左整体上升/放气阶段 8",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M2.1",
+  "data_type": "Bool",
+  "name": "L_StepMode",
+  "comment": "左工位手动模式",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M23.2",
+  "data_type": "Bool",
+  "name": "M      23.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M23.3",
+  "data_type": "Bool",
+  "name": "M      23.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M23.0",
+  "data_type": "Bool",
+  "name": "M      23.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M23.4",
+  "data_type": "Bool",
+  "name": "M      23.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M150.3",
+  "data_type": "Bool",
+  "name": "R_UpModeHPLockRetTag",
+  "comment": "右上模原位锁位退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M31.2",
+  "data_type": "Bool",
+  "name": "R_UpModeToHP_P",
+  "comment": "右上模上升阶段 11",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M30.0",
+  "data_type": "Bool",
+  "name": "R_UpModeHPUnLock_P",
+  "comment": "右上模原位锁位松开阶段 1",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M150.0",
+  "data_type": "Bool",
+  "name": "R_UpModeRetTag",
+  "comment": "右上模上升变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M31.1",
+  "data_type": "Bool",
+  "name": "R_CoolModeWPUnLock_P",
+  "comment": "右模具锁位松开阶段（空） 10",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M30.1",
+  "data_type": "Bool",
+  "name": "R_UpModeToWP_P",
+  "comment": "右上模下降、整体锁位松开阶段 2",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M150.4",
+  "data_type": "Bool",
+  "name": "R_UpModeWPLockAdvTag",
+  "comment": "右上模到位锁位进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M150.5",
+  "data_type": "Bool",
+  "name": "R_UpModeWPLockRetTag",
+  "comment": "右上模到位锁位退变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M30.2",
+  "data_type": "Bool",
+  "name": "R_UpModeWPLock_P",
+  "comment": "右上模模具锁位锁紧、密封堵头、水盘前进阶段 3",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW20",
+  "data_type": "Int",
+  "name": "L_PhaseControlTag",
+  "comment": "左循环阶段控制变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW22",
+  "data_type": "Int",
+  "name": "L_PreControlTag",
+  "comment": "左油箱压力控制变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M30.7",
+  "data_type": "Bool",
+  "name": "R_WholeModeRet_P",
+  "comment": "右整体上升/放气阶段 8",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M4.1",
+  "data_type": "Bool",
+  "name": "R_StepMode",
+  "comment": "右工位手动模式",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M33.2",
+  "data_type": "Bool",
+  "name": "M      33.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M33.3",
+  "data_type": "Bool",
+  "name": "M      33.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M33.0",
+  "data_type": "Bool",
+  "name": "M      33.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M33.4",
+  "data_type": "Bool",
+  "name": "M      33.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M33.1",
+  "data_type": "Bool",
+  "name": "M      33.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M33.5",
+  "data_type": "Bool",
+  "name": "M      33.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M150.1",
+  "data_type": "Bool",
+  "name": "R_UpModeAdvTag",
+  "comment": "右上模下降变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M150.2",
+  "data_type": "Bool",
+  "name": "R_UpModeHPLockAdvTag",
+  "comment": "右上模原位锁位进变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M3.0",
+  "data_type": "Bool",
+  "name": "L_GoToBasicFlag",
+  "comment": "左工位回原位运行标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M11.0",
+  "data_type": "Bool",
+  "name": "L_HP",
+  "comment": "左工位原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M236.0",
+  "data_type": "Bool",
+  "name": "M     236.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M236.1",
+  "data_type": "Bool",
+  "name": "M     236.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M236.3",
+  "data_type": "Bool",
+  "name": "M     236.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M236.2",
+  "data_type": "Bool",
+  "name": "M     236.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M0.3",
+  "data_type": "Bool",
+  "name": "M       0.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M0.2",
+  "data_type": "Bool",
+  "name": "M       0.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M0.7",
+  "data_type": "Bool",
+  "name": "Debug",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M0.6",
+  "data_type": "Bool",
+  "name": "M       0.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M0.5",
+  "data_type": "Bool",
+  "name": "M       0.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M0.4",
+  "data_type": "Bool",
+  "name": "M       0.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M84.1",
+  "data_type": "Bool",
+  "name": "右整体到调试位反向使能",
+  "comment": "右整体到调试位反向使能",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M84.0",
+  "data_type": "Bool",
+  "name": "左整体到调试位反向使能",
+  "comment": "左整体到调试位反向使能",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M236.5",
+  "data_type": "Bool",
+  "name": "M     236.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M236.4",
+  "data_type": "Bool",
+  "name": "M     236.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M236.7",
+  "data_type": "Bool",
+  "name": "M     236.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M236.6",
+  "data_type": "Bool",
+  "name": "M     236.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M237.1",
+  "data_type": "Bool",
+  "name": "M     237.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M237.0",
+  "data_type": "Bool",
+  "name": "M     237.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M237.3",
+  "data_type": "Bool",
+  "name": "M     237.3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M237.2",
+  "data_type": "Bool",
+  "name": "M     237.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M237.5",
+  "data_type": "Bool",
+  "name": "M     237.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M237.4",
+  "data_type": "Bool",
+  "name": "M     237.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M237.6",
+  "data_type": "Bool",
+  "name": "M     237.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M237.7",
+  "data_type": "Bool",
+  "name": "M     237.7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M11.4",
+  "data_type": "Bool",
+  "name": "R_达阶段一时间监控变量",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M13.4",
+  "data_type": "Bool",
+  "name": "MachineHP",
+  "comment": "机器原位",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M13.6",
+  "data_type": "Bool",
+  "name": "M      13.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M11.6",
+  "data_type": "Bool",
+  "name": "M      11.6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M131.0",
+  "data_type": "Bool",
+  "name": "L_UpSideModeRetCon",
+  "comment": "左上模上升控制变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M130.1",
+  "data_type": "Bool",
+  "name": "R_UpSideModeAdvCon",
+  "comment": "右上模下降控制变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M131.1",
+  "data_type": "Bool",
+  "name": "L_UpSideModeAdvCon",
+  "comment": "左上模下降控制变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M130.0",
+  "data_type": "Bool",
+  "name": "R_UpSideModeRetCon",
+  "comment": "右上模上升控制变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M22.4",
+  "data_type": "Bool",
+  "name": "L_PressureCon",
+  "comment": "左油箱压力控制",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M22.5",
+  "data_type": "Bool",
+  "name": "L_PressureFinish",
+  "comment": "左油箱压力控制完成",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M22.6",
+  "data_type": "Bool",
+  "name": "L_PressureConFlag",
+  "comment": "左油箱压力控制标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD890",
+  "data_type": "Real",
+  "name": "R_PidSetValue",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M131.2",
+  "data_type": "Bool",
+  "name": "Tag_2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD880",
+  "data_type": "Real",
+  "name": "L_PidSetValue",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M81.0",
+  "data_type": "Bool",
+  "name": "L_KUKAPressErrorGoBasic",
+  "comment": "左KUKA机器人抓取报废油箱",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M120.0",
+  "data_type": "Bool",
+  "name": "L_WholeModeDebugdelay",
+  "comment": "左整体在调试位（手动）锁位延时",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M120.1",
+  "data_type": "Bool",
+  "name": "R_WholeModeDebugdelay",
+  "comment": "右整体在调试位（手动）锁位延时",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M250.0",
+  "data_type": "Bool",
+  "name": "Tag_6",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M250.1",
+  "data_type": "Bool",
+  "name": "Tag_1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M250.2",
+  "data_type": "Bool",
+  "name": "Tag_7",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M250.3",
+  "data_type": "Bool",
+  "name": "Tag_8",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M250.4",
+  "data_type": "Bool",
+  "name": "Tag_9",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M250.5",
+  "data_type": "Bool",
+  "name": "Tag_10",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M250.6",
+  "data_type": "Bool",
+  "name": "Tag_11",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M250.7",
+  "data_type": "Bool",
+  "name": "Tag_12",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M251.0",
+  "data_type": "Bool",
+  "name": "Tag_13",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M251.1",
+  "data_type": "Bool",
+  "name": "Tag_14",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M251.2",
+  "data_type": "Bool",
+  "name": "Tag_15",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M251.3",
+  "data_type": "Bool",
+  "name": "Tag_16",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M251.4",
+  "data_type": "Bool",
+  "name": "Tag_21",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M251.5",
+  "data_type": "Bool",
+  "name": "Tag_23",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M251.6",
+  "data_type": "Bool",
+  "name": "Tag_24",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M251.7",
+  "data_type": "Bool",
+  "name": "Tag_25",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M170.0",
+  "data_type": "Bool",
+  "name": "Tag_3",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M170.1",
+  "data_type": "Bool",
+  "name": "Tag_4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M260.0",
+  "data_type": "Bool",
+  "name": "M   260.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M260.1",
+  "data_type": "Bool",
+  "name": "M   260.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M82.0",
+  "data_type": "Bool",
+  "name": "左推顶置位变量",
+  "comment": "左推顶置位变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M82.1",
+  "data_type": "Bool",
+  "name": "右推顶置位变量",
+  "comment": "右推顶置位变量",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M32.5",
+  "data_type": "Bool",
+  "name": "R_PressureFinish",
+  "comment": "右油箱压力控制完成",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M32.6",
+  "data_type": "Bool",
+  "name": "R_PressureConFlag",
+  "comment": "右油箱压力控制标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD440",
+  "data_type": "Real",
+  "name": "L_PidManulSetValue",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD490",
+  "data_type": "Real",
+  "name": "R_PidManulSetValue",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M290.0",
+  "data_type": "Bool",
+  "name": "M   290.0",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M290.1",
+  "data_type": "Bool",
+  "name": "M   290.1",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M186.0",
+  "data_type": "Bool",
+  "name": "Tag_17",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M500.6",
+  "data_type": "Bool",
+  "name": "Tag_19",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M456.0",
+  "data_type": "Bool",
+  "name": "Tag_20",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M298.0",
+  "data_type": "Bool",
+  "name": "Tag_22",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M500.0",
+  "data_type": "Bool",
+  "name": "Tag_26",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M500.1",
+  "data_type": "Bool",
+  "name": "Tag_27",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M500.2",
+  "data_type": "Bool",
+  "name": "Tag_28",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M500.3",
+  "data_type": "Bool",
+  "name": "Tag_29",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M500.4",
+  "data_type": "Bool",
+  "name": "Tag_30",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M500.5",
+  "data_type": "Bool",
+  "name": "Tag_31",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M500.7",
+  "data_type": "Bool",
+  "name": "Tag_32",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M600.0",
+  "data_type": "Bool",
+  "name": "Tag_33",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MB190",
+  "data_type": "Byte",
+  "name": "System_Byte",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M190.0",
+  "data_type": "Bool",
+  "name": "FirstScan",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M190.1",
+  "data_type": "Bool",
+  "name": "DiagStatusUpdate",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M190.2",
+  "data_type": "Bool",
+  "name": "AlwaysTRUE",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M190.3",
+  "data_type": "Bool",
+  "name": "AlwaysFALSE",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW600",
+  "data_type": "Int",
+  "name": "Tag_34",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW610",
+  "data_type": "Word",
+  "name": "版本切换",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M510.0",
+  "data_type": "Bool",
+  "name": "Tag_36",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M510.1",
+  "data_type": "Bool",
+  "name": "Tag_37",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M180.1",
+  "data_type": "Bool",
+  "name": "R_CoolPumpStart",
+  "comment": "右泵口冷却喷水泵启动",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M180.0",
+  "data_type": "Bool",
+  "name": "L_CoolPumpStart",
+  "comment": "左泵口冷却喷水泵启动",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M180.2",
+  "data_type": "Bool",
+  "name": "L_CoolPumpStop",
+  "comment": "左泵口冷却喷水泵停止",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M180.3",
+  "data_type": "Bool",
+  "name": "R_CoolPumpStop",
+  "comment": "右泵口冷却喷水泵停止",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M90.0",
+  "data_type": "Bool",
+  "name": "L_KUKAGoBasicFlag",
+  "comment": "左机器人模式回原位标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M90.1",
+  "data_type": "Bool",
+  "name": "R_KUKAGoBasicFlag",
+  "comment": "右机器人模式回原位标志",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M215.0",
+  "data_type": "Bool",
+  "name": "Tag_38",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M243.0",
+  "data_type": "Bool",
+  "name": "Tag_39",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M243.1",
+  "data_type": "Bool",
+  "name": "Tag_40",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M510.2",
+  "data_type": "Bool",
+  "name": "Tag_41",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M510.4",
+  "data_type": "Bool",
+  "name": "Tag_42",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M510.5",
+  "data_type": "Bool",
+  "name": "Tag_43",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M510.6",
+  "data_type": "Bool",
+  "name": "Tag_44",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M510.7",
+  "data_type": "Bool",
+  "name": "Tag_45",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M510.3",
+  "data_type": "Bool",
+  "name": "Tag_46",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M511.1",
+  "data_type": "Bool",
+  "name": "Tag_47",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M511.0",
+  "data_type": "Bool",
+  "name": "Tag_48",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD900",
+  "data_type": "Real",
+  "name": "L_InandOutTolerance",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M37.0",
+  "data_type": "Bool",
+  "name": "Tag_50",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M37.1",
+  "data_type": "Bool",
+  "name": "Tag_51",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.0",
+  "data_type": "Bool",
+  "name": "Clock_10Hz",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.1",
+  "data_type": "Bool",
+  "name": "Clock_5Hz",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.2",
+  "data_type": "Bool",
+  "name": "Clock_2.5Hz",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.3",
+  "data_type": "Bool",
+  "name": "Clock_2Hz",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.4",
+  "data_type": "Bool",
+  "name": "Clock_1.25Hz",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.5",
+  "data_type": "Bool",
+  "name": "Clock_1Hz",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.6",
+  "data_type": "Bool",
+  "name": "Clock_0.625Hz",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M200.7",
+  "data_type": "Bool",
+  "name": "Clock_0.5Hz",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M70.1",
+  "data_type": "Bool",
+  "name": "Tag_53",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M70.2",
+  "data_type": "Bool",
+  "name": "Tag_54",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M300.0",
+  "data_type": "Bool",
+  "name": "Tag_55",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M300.1",
+  "data_type": "Bool",
+  "name": "Tag_58",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M300.2",
+  "data_type": "Bool",
+  "name": "Tag_59",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M300.3",
+  "data_type": "Bool",
+  "name": "Tag_60",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW330",
+  "data_type": "Int",
+  "name": "Tag_65",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD904",
+  "data_type": "Real",
+  "name": "R_InandOutTolerance",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD908",
+  "data_type": "Real",
+  "name": "L_ToleranceSet",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD912",
+  "data_type": "Real",
+  "name": "R_ToleranceSet",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD920",
+  "data_type": "Real",
+  "name": "L_合模压力差峰值变量值",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD924",
+  "data_type": "Real",
+  "name": "L_阶段一压力差峰值变量值",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD928",
+  "data_type": "Real",
+  "name": "L_阶段二压力差峰值变量值",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD932",
+  "data_type": "Real",
+  "name": "L_阶段三压力差峰值变量值",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD936",
+  "data_type": "Real",
+  "name": "R_合模压力差峰值变量值",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD940",
+  "data_type": "Real",
+  "name": "R_阶段一压力差峰值变量值",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD944",
+  "data_type": "Real",
+  "name": "R_阶段二压力差峰值变量值",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MD948",
+  "data_type": "Real",
+  "name": "R_阶段三压力差峰值变量值",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M110.0",
+  "data_type": "Bool",
+  "name": "Tag_49",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M110.1",
+  "data_type": "Bool",
+  "name": "Tag_67",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW614",
+  "data_type": "Word",
+  "name": "版本文本",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M211.0",
+  "data_type": "Bool",
+  "name": "Tag_35",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%I30.6",
+  "data_type": "Bool",
+  "name": "L_PushBack",
+  "comment": "左推顶后退（机器人模式）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I30.7",
+  "data_type": "Bool",
+  "name": "R_PushBack",
+  "comment": "右推顶后退（机器人模式）",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I32.2",
+  "data_type": "Bool",
+  "name": "%I32.2",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.4",
+  "data_type": "Bool",
+  "name": "%I12.4",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%I12.5",
+  "data_type": "Bool",
+  "name": "%I12.5",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "input",
+  "station": null
+ },
+ {
+  "address": "%Q13.7",
+  "data_type": "Bool",
+  "name": "一工位条码赋予",
+  "comment": "一工位条码赋予",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": 1
+ },
+ {
+  "address": "%Q23.7",
+  "data_type": "Bool",
+  "name": "二工位条码赋予",
+  "comment": "二工位条码赋予",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": 2
+ },
+ {
+  "address": "%M800.0",
+  "data_type": "Bool",
+  "name": "Tag_57",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%M800.1",
+  "data_type": "Bool",
+  "name": "Tag_66",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%MW802",
+  "data_type": "Word",
+  "name": "Tag_68",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ },
+ {
+  "address": "%Q32.0",
+  "data_type": "Bool",
+  "name": "L_AutoStartFinish",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q32.1",
+  "data_type": "Bool",
+  "name": "L_AutoRunFinish(1)",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q32.2",
+  "data_type": "Bool",
+  "name": "R_AutoStartFinish",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%Q32.3",
+  "data_type": "Bool",
+  "name": "R_AutoRunFinish(1)",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "output",
+  "station": null
+ },
+ {
+  "address": "%M298.1",
+  "data_type": "Bool",
+  "name": "Tag_69",
+  "comment": "",
+  "group": "默认变量表",
+  "kind": "memory",
+  "station": null
+ }
+]
