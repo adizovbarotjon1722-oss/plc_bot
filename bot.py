@@ -70,7 +70,10 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "openrouter/free")
 LINES_CONFIG_PATH = os.getenv("LINES_CONFIG_PATH", "lines.json")
 PERSISTENCE_PATH = os.getenv("PERSISTENCE_PATH", "bot_state.pickle")
-MAX_CANDIDATE_TAGS = int(os.getenv("MAX_CANDIDATE_TAGS", "40"))
+MAX_CANDIDATE_TAGS = int(os.getenv("MAX_CANDIDATE_TAGS", "25"))
+CACHE_PATH = os.getenv("CACHE_PATH", "answer_cache.json")
+CACHE_TTL_HOURS = float(os.getenv("CACHE_TTL_HOURS", "72"))
+MIN_LOCAL_CANDIDATES = int(os.getenv("MIN_LOCAL_CANDIDATES", "3"))
 
 if not TELEGRAM_BOT_TOKEN:
     raise RuntimeError("TELEGRAM_BOT_TOKEN topilmadi. .env faylni tekshiring.")
@@ -427,13 +430,50 @@ def get_selected_line(context: ContextTypes.DEFAULT_TYPE):
 ADDR_RE = re.compile(r"^%?[A-Za-z]{1,4}\d+(\.\d+)?$")
 WORD_RE = re.compile(r"[a-zA-Z\u4e00-\u9fff]+")
 
+# Ko'p ishlatiladigan o'zbek/rus so'zlarini inglizcha texnik atamalarga
+# moslashtiruvchi lug'at. Bu orqali ko'pgina so'rovlarda AI'ga alohida
+# "kalit so'z ajratish" so'rovi yuborilmasdan, to'g'ridan-to'g'ri mahalliy
+# qidiruv orqali natija topiladi — bu bitta AI so'rovini butunlay tejaydi.
+GLOSSARY = {
+    "konveyer": ["conveyor"], "konveer": ["conveyor"], "tasma": ["conveyor", "belt"],
+    "motor": ["motor"], "dvigatel": ["motor"],
+    "sensor": ["sensor"], "datchik": ["sensor"],
+    "silindr": ["cylinder"], "cilindr": ["cylinder"],
+    "klapan": ["valve"], "ventil": ["valve"],
+    "robot": ["robot"],
+    "payvand": ["weld", "welding"], "svarka": ["weld", "welding"], "payvandlash": ["welding"],
+    "bosim": ["pressure"], "davleniye": ["pressure"], "davlenie": ["pressure"],
+    "sovutish": ["cooling", "water"], "suv": ["water", "cooling"], "sovutuvchi": ["cooling"],
+    "isitish": ["heat", "heater"], "isitgich": ["heater"],
+    "xavfsizlik": ["safety"], "tor": ["light curtain", "curtain"], "parda": ["curtain", "light curtain"],
+    "ushlagich": ["gripper"], "grip": ["gripper"],
+    "kabel": ["cable"],
+    "rele": ["relay"],
+    "stansiya": ["station"], "stantsiya": ["station"], "uchastka": ["station"],
+    "nasos": ["pump"],
+    "signal": ["signal"],
+    "harakat": ["motion", "move"],
+    "eshik": ["door"], "kapok": ["cover", "door"],
+    "tugma": ["button"],
+    "lampa": ["lamp", "light"], "chiroq": ["lamp", "light"],
+    "gaz": ["gas"], "havo": ["air"],
+    "flesh": ["flash", "deflash"], "flash": ["flash", "deflash"],
+    "zolotnik": ["valve"], "datчik": ["sensor"],
+}
+
 
 def looks_like_address(text: str) -> bool:
     return bool(ADDR_RE.match(text.strip()))
 
 
 def local_keywords(text: str):
-    return {w.lower() for w in WORD_RE.findall(text) if len(w) >= 3}
+    words = {w.lower() for w in WORD_RE.findall(text) if len(w) >= 3}
+    expanded = set(words)
+    for w in words:
+        for gk, terms in GLOSSARY.items():
+            if gk in w or w in gk:
+                expanded.update(terms)
+    return expanded
 
 
 def score_tag(tag: dict, keywords: set) -> int:
@@ -577,6 +617,42 @@ def log_query(update: Update, line_id: str, text: str, answer: str):
 
 
 # ---------------------------------------------------------------------------
+# Javoblarni keshlash — bir xil savol qayta so'ralsa, AI'ga murojaat qilmasdan
+# darhol javob beriladi (token va vaqt tejaydi, chunki zavodda bir xil
+# muammolar tez-tez takrorlanadi).
+# ---------------------------------------------------------------------------
+
+try:
+    with open(CACHE_PATH, "r", encoding="utf-8") as f:
+        ANSWER_CACHE = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    ANSWER_CACHE = {}
+
+
+def _cache_key(scope: str, lang: str, text: str) -> str:
+    return f"{scope}:{lang}:{text.strip().lower()}"
+
+
+def cache_get(scope: str, lang: str, text: str):
+    entry = ANSWER_CACHE.get(_cache_key(scope, lang, text))
+    if not entry:
+        return None
+    ts, answer = entry
+    if time.time() - ts > CACHE_TTL_HOURS * 3600:
+        return None
+    return answer
+
+
+def cache_set(scope: str, lang: str, text: str, answer: str):
+    ANSWER_CACHE[_cache_key(scope, lang, text)] = [time.time(), answer]
+    try:
+        with open(CACHE_PATH, "w", encoding="utf-8") as f:
+            json.dump(ANSWER_CACHE, f, ensure_ascii=False)
+    except Exception as e:
+        logger.warning("Keshni saqlashda xatolik: %s", e)
+
+
+# ---------------------------------------------------------------------------
 # Telegram handlerlar
 # ---------------------------------------------------------------------------
 
@@ -645,17 +721,29 @@ async def tag_lookup(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
     lang = get_lang(context)
+
+    cached = cache_get("general", lang, user_text)
+    if cached:
+        await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=machine_keyboard())
+        return
+
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
     answer = await ask_ai(general_ai_prompt(lang), user_text)
     if not answer:
         await update.message.reply_text(t(lang, "ai_busy_general"), reply_markup=machine_keyboard())
         return
     await update.message.reply_text(answer, parse_mode="Markdown", reply_markup=machine_keyboard())
+    cache_set("general", lang, user_text, answer)
 
 
 async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYPE, ln: MachineLine, user_text: str):
     lang = get_lang(context)
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
+
+    cached = cache_get(ln.id, lang, user_text)
+    if cached:
+        await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=machine_keyboard())
+        return
 
     if looks_like_address(user_text):
         exact = ln.find_tag(user_text)
@@ -668,11 +756,16 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
             )
             return
     else:
+        # Avval faqat mahalliy lug'at/so'z moslashuvi orqali qidiramiz —
+        # agar yetarlicha natija topilsa, AI'dan kalit so'z so'rashning
+        # hojati yo'q (bitta AI so'rovini tejaydi).
         keywords = local_keywords(user_text)
-        ai_keywords_raw = await ask_ai(KEYWORD_SYSTEM_PROMPT, user_text)
-        if ai_keywords_raw:
-            keywords |= {w.strip().lower() for w in ai_keywords_raw.replace("\n", ",").split(",") if w.strip()}
         candidates = local_search(ln.tags, keywords)
+        if len(candidates) < MIN_LOCAL_CANDIDATES:
+            ai_keywords_raw = await ask_ai(KEYWORD_SYSTEM_PROMPT, user_text)
+            if ai_keywords_raw:
+                keywords |= {w.strip().lower() for w in ai_keywords_raw.replace("\n", ",").split(",") if w.strip()}
+                candidates = local_search(ln.tags, keywords)
         found_all = False
         if not candidates:
             await update.message.reply_text(t(lang, "no_match"), reply_markup=machine_keyboard())
@@ -690,6 +783,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
 
     await update.message.reply_text(answer, parse_mode="Markdown", reply_markup=machine_keyboard())
     log_query(update, ln.id, user_text, answer)
+    cache_set(ln.id, lang, user_text, answer)
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
