@@ -97,6 +97,11 @@ NO_MATCH_LOG_PATH = os.getenv("NO_MATCH_LOG_PATH", "no_match.log")
 HEALTHCHECK_PING_URL = os.getenv("HEALTHCHECK_PING_URL", "").strip()
 HEALTHCHECK_INTERVAL_MIN = int(os.getenv("HEALTHCHECK_INTERVAL_MIN", "5"))
 
+# --- ESP32 zavod monitoring integratsiyasi (ixtiyoriy) ---
+# ESP32'dagi /status endpoint manzili, masalan: http://192.168.1.50/status
+ESP32_STATUS_URL = os.getenv("ESP32_STATUS_URL", "").strip()
+ESP32_TIMEOUT_SEC = int(os.getenv("ESP32_TIMEOUT_SEC", "5"))
+
 if not TELEGRAM_BOT_TOKEN:
     raise RuntimeError("TELEGRAM_BOT_TOKEN topilmadi. .env faylni tekshiring.")
 if not GEMINI_API_KEY:
@@ -248,6 +253,23 @@ TEXT = {
         "photo_processing": "🖼 Rasmni o'qiyapman...",
         "photo_no_text": "Rasmda o'qiladigan xatolik matni topa olmadim. Iltimos, matnni qo'lda yozing.",
         "photo_extracted": "📷 Rasmdan o'qildi: \"{text}\"",
+        "esp32_fetching": "📡 ESP32'dan ma'lumot olinmoqda...",
+        "esp32_unreachable": "⚠️ ESP32 qurilmasiga ulanib bo'lmadi. Wi-Fi yoki qurilma o'chgan bo'lishi mumkin.",
+        "esp32_not_configured": "Bu bo'lim hali sozlanmagan (administrator ESP32_STATUS_URL'ni to'ldirishi kerak).",
+        "esp32_status": (
+            "🏭 *Zavod monitoring holati*\n\n"
+            "⚙️ Tizim: {active}\n"
+            "🔘 Rejim: {mode}\n"
+            "🚨 Signalizatsiya: {alarm}\n\n"
+            "💨 Havo bosimi: *{air} bar* (norma: {air_norm}, chegara: {air_min}–{air_max})\n"
+            "💧 Suv bosimi: *{water} bar* (norma: {water_norm}, chegara: {water_min}–{water_max})\n"
+            "🌡 Suv harorati: *{temp} °C* (norma: {temp_norm}, chegara: {temp_min}–{temp_max})\n\n"
+            "Sensorlar: havo {air_sensor} | suv {water_sensor} | harorat {temp_sensor}\n"
+            "📶 Wi-Fi: {wifi} | Ishlab turgan vaqt: {uptime}"
+        ),
+        "esp32_on": "yoqilgan ✅", "esp32_off": "o'chirilgan ⏸️",
+        "esp32_alarm_yes": "faol 🚨", "esp32_alarm_no": "yo'q ✅",
+        "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
     },
     "en": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -316,6 +338,23 @@ TEXT = {
         "photo_processing": "🖼 Reading the photo...",
         "photo_no_text": "I couldn't find readable error text in the photo. Please type the message instead.",
         "photo_extracted": "📷 Read from photo: \"{text}\"",
+        "esp32_fetching": "📡 Fetching data from ESP32...",
+        "esp32_unreachable": "⚠️ Could not reach the ESP32 device. Wi-Fi or the device may be down.",
+        "esp32_not_configured": "This section isn't set up yet (admin needs to set ESP32_STATUS_URL).",
+        "esp32_status": (
+            "🏭 *Factory monitoring status*\n\n"
+            "⚙️ System: {active}\n"
+            "🔘 Mode: {mode}\n"
+            "🚨 Alarm: {alarm}\n\n"
+            "💨 Air pressure: *{air} bar* (normal: {air_norm}, range: {air_min}–{air_max})\n"
+            "💧 Water pressure: *{water} bar* (normal: {water_norm}, range: {water_min}–{water_max})\n"
+            "🌡 Water temperature: *{temp} °C* (normal: {temp_norm}, range: {temp_min}–{temp_max})\n\n"
+            "Sensors: air {air_sensor} | water {water_sensor} | temp {temp_sensor}\n"
+            "📶 Wi-Fi: {wifi} | Uptime: {uptime}"
+        ),
+        "esp32_on": "ON ✅", "esp32_off": "OFF ⏸️",
+        "esp32_alarm_yes": "active 🚨", "esp32_alarm_no": "none ✅",
+        "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
     },
     "zh": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -379,6 +418,23 @@ TEXT = {
         "photo_processing": "🖼 正在读取图片...",
         "photo_no_text": "未能在图片中找到可读的错误文本。请改为输入文字。",
         "photo_extracted": "📷 从图片中读取：\"{text}\"",
+        "esp32_fetching": "📡 正在从ESP32获取数据...",
+        "esp32_unreachable": "⚠️ 无法连接到ESP32设备。可能是Wi-Fi或设备已关闭。",
+        "esp32_not_configured": "此功能尚未配置（管理员需要设置ESP32_STATUS_URL）。",
+        "esp32_status": (
+            "🏭 *工厂监控状态*\n\n"
+            "⚙️ 系统：{active}\n"
+            "🔘 模式：{mode}\n"
+            "🚨 报警：{alarm}\n\n"
+            "💨 空气压力：*{air} bar*（正常值：{air_norm}，范围：{air_min}–{air_max}）\n"
+            "💧 水压：*{water} bar*（正常值：{water_norm}，范围：{water_min}–{water_max}）\n"
+            "🌡 水温：*{temp} °C*（正常值：{temp_norm}，范围：{temp_min}–{temp_max}）\n\n"
+            "传感器：空气 {air_sensor} | 水 {water_sensor} | 温度 {temp_sensor}\n"
+            "📶 Wi-Fi：{wifi} | 运行时间：{uptime}"
+        ),
+        "esp32_on": "已开启 ✅", "esp32_off": "已关闭 ⏸️",
+        "esp32_alarm_yes": "报警中 🚨", "esp32_alarm_no": "无 ✅",
+        "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
     },
 }
 
@@ -398,6 +454,7 @@ def get_lang(context: ContextTypes.DEFAULT_TYPE) -> str:
 
 MACHINE_MENU_LABEL = "🔀 Uskunani tanlash/almashtirish"
 AI_CHAT_LABEL = "🤖 Sun'iy intellekt (erkin savol) / AI Assistant / 人工智能"
+ESP32_MENU_LABEL = "🏭 Zavod monitoring (kompressor/chiller)"
 
 # ---------------------------------------------------------------------------
 # Uskunalar (liniyalar) konfiguratsiyasini yuklash
@@ -524,6 +581,8 @@ def language_keyboard() -> ReplyKeyboardMarkup:
 
 def machine_keyboard() -> ReplyKeyboardMarkup:
     rows = [[line.label] for line in LINES.values()]
+    if ESP32_STATUS_URL:
+        rows.append([ESP32_MENU_LABEL])
     rows.append([AI_CHAT_LABEL])
     rows.append([LANG_CHANGE_LABEL])
     return ReplyKeyboardMarkup(rows, resize_keyboard=True)
@@ -897,6 +956,67 @@ async def extract_text_from_image(image_bytes: bytes):
 
 
 # ---------------------------------------------------------------------------
+# ESP32 zavod monitoring integratsiyasi (faqat o'qish, boshqaruv yo'q)
+# ---------------------------------------------------------------------------
+
+def _fetch_esp32_status_sync():
+    req = urllib.request.Request(ESP32_STATUS_URL, headers={"User-Agent": "plc-bot"})
+    with urllib.request.urlopen(req, timeout=ESP32_TIMEOUT_SEC) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+async def fetch_esp32_status():
+    try:
+        return await asyncio.to_thread(_fetch_esp32_status_sync)
+    except Exception as e:
+        logger.warning("ESP32 status olishda xatolik: %s", e)
+        return None
+
+
+UPTIME_UNITS = {
+    "uz": ("soat", "daqiqa"), "en": ("h", "m"), "zh": ("小时", "分钟"),
+}
+
+
+def format_esp32_status(data: dict, lang: str) -> str:
+    lim = data.get("limits", {})
+    uptime_sec = int(data.get("uptime_sec", 0))
+    hour_u, min_u = UPTIME_UNITS.get(lang, UPTIME_UNITS["uz"])
+    uptime = f"{uptime_sec // 3600} {hour_u} {(uptime_sec % 3600) // 60} {min_u}"
+    return t(
+        lang, "esp32_status",
+        active=t(lang, "esp32_on") if data.get("system_active") else t(lang, "esp32_off"),
+        mode=data.get("mode", "?"),
+        alarm=t(lang, "esp32_alarm_yes") if data.get("alarm_active") else t(lang, "esp32_alarm_no"),
+        air=data.get("air_pressure_bar", "?"), air_norm=lim.get("air_norm", "?"),
+        air_min=lim.get("air_min", "?"), air_max=lim.get("air_max", "?"),
+        water=data.get("water_pressure_bar", "?"), water_norm=lim.get("water_norm", "?"),
+        water_min=lim.get("water_min", "?"), water_max=lim.get("water_max", "?"),
+        temp=data.get("water_temp_c", "?"), temp_norm=lim.get("temp_norm", "?"),
+        temp_min=lim.get("temp_min", "?"), temp_max=lim.get("temp_max", "?"),
+        air_sensor=t(lang, "esp32_sensor_ok") if data.get("air_sensor_ok") else t(lang, "esp32_sensor_bad"),
+        water_sensor=t(lang, "esp32_sensor_ok") if data.get("water_sensor_ok") else t(lang, "esp32_sensor_bad"),
+        temp_sensor=t(lang, "esp32_sensor_ok") if data.get("temp_sensor_ok") else t(lang, "esp32_sensor_bad"),
+        wifi=data.get("wifi_ssid", "?"), uptime=uptime,
+    )
+
+
+async def handle_esp32_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not ESP32_STATUS_URL:
+        await update.message.reply_text(t(lang, "esp32_not_configured"), reply_markup=machine_keyboard())
+        return
+    await update.message.reply_text(t(lang, "esp32_fetching"))
+    data = await fetch_esp32_status()
+    if data is None:
+        await update.message.reply_text(t(lang, "esp32_unreachable"), reply_markup=machine_keyboard())
+        return
+    await update.message.reply_text(
+        format_esp32_status(data, lang), parse_mode="Markdown", reply_markup=machine_keyboard()
+    )
+
+
+# ---------------------------------------------------------------------------
 # Telegram handlerlar
 # ---------------------------------------------------------------------------
 
@@ -1197,6 +1317,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_text == AI_CHAT_LABEL:
         context.user_data["mode"] = "general"
         await update.message.reply_text(t(lang, "ai_mode_intro"), reply_markup=machine_keyboard())
+        return
+
+    if user_text == ESP32_MENU_LABEL:
+        await handle_esp32_status(update, context)
         return
 
     if user_text == MACHINE_MENU_LABEL:

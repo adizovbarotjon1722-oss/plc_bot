@@ -106,6 +106,39 @@ python bot.py
 | `/listusers` | faqat admin | adminlar/ruxsat berilganlar ro'yxati |
 | `/nomatches` | faqat admin | so'nggi "topilmadi" so'rovlar |
 
+## ESP32 zavod monitoring integratsiyasi (ixtiyoriy)
+
+Agar sizda kompressor/chiller monitoring ESP32 tizimi bo'lsa (o'z Telegram
+boti bilan), uni shu Python botga **qo'shimcha, faqat ko'rish** rejimida
+bog'lash mumkin:
+
+1. `zavod_monitoring_v08_status_api.ino` faylini (yoki o'zingizning ESP32
+   kodingizga xuddi shunday qo'shilgan `/status` endpoint'ni) ESP32'ga
+   yuklang. Bu ESP32'ning mavjud Telegram bot, rele, sirena mantig'iga
+   **hech qanday ta'sir qilmaydi** — faqat mahalliy tarmoqda o'qish uchun
+   kichik JSON sahifa qo'shadi.
+2. ESP32 ishga tushgach, Serial Monitor'da shunday qator chiqadi:
+   `📡 Status-server ishga tushdi: http://192.168.1.XX/status`
+3. Shu manzilni nusxalab, `.env` fayliga qo'ying:
+   ```
+   ESP32_STATUS_URL=http://192.168.1.XX/status
+   ```
+4. Python botni qayta ishga tushiring. Endi menyuda **"🏭 Zavod monitoring"**
+   tugmasi paydo bo'ladi — bosilganda joriy bosim, harorat, rejim va
+   signalizatsiya holatini ko'rsatadi.
+
+**Muhim cheklovlar (ataylab shunday qilingan, xavfsizlik uchun):**
+- Bu integratsiya **faqat o'qish** uchun — Python bot orqali ESP32'ni
+  boshqarish (start/stop/rejim/reset) mumkin emas. Boshqaruv faqat
+  ESP32'ning o'z Telegram boti va jismoniy tugmalari orqali qoladi.
+- Python bot va ESP32 **bitta mahalliy tarmoqda (Wi-Fi)** bo'lishi kerak —
+  ESP32'ning IP-manziliga tashqaridan (masalan boshqa shahardan) kirib
+  bo'lmaydi, faqat shu tarmoq ichida.
+- ESP32'ning IP-manzili DHCP orqali vaqti-vaqti bilan o'zgarishi mumkin.
+  Buni oldini olish uchun routeringizda ESP32'ga **statik IP** yoki
+  "DHCP reservation" belgilashni tavsiya qilamiz — aks holda IP o'zgarsa,
+  `.env`dagi `ESP32_STATUS_URL`ni qo'lda yangilashingiz kerak bo'ladi.
+
 ## Fayllar tuzilishi
 
 ```
