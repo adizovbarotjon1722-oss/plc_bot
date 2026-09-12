@@ -1,46 +1,41 @@
-# PLC Xatolik Diagnostika Boti (ko'p uskunali, ko'p AI provayderli, aqlli qidiruv)
+# PLC Xatolik Diagnostika Boti — to'liq versiya
 
 TIA Portal'dan eksport qilingan PLC Tag jadvallari asosida, Telegram orqali
-xodimlar yozgan muammoni AI yordamida tahlil qilib, aynan qaysi signal/qism
-bilan bog'liqligini va nima qilish kerakligini tushuntirib beruvchi bot.
+xodimlar yozgan (yoki rasm sifatida yuborgan) muammoni AI yordamida tahlil
+qilib, aynan qaysi signal/qism bilan bog'liqligini va nima qilish kerakligini
+tushuntirib beruvchi bot.
 
 ## Asosiy xususiyatlar
 
-- **3 tilni qo'llab-quvvatlaydi:** O'zbek, ingliz, xitoy. Xodim `/start`
-  bosganda avval tilni tanlaydi — butun interfeys shu tilda ko'rsatiladi.
-  AI javobi ham, agar xodim savolni boshqa (qo'llab-quvvatlanadigan) tilda
-  yozsa, o'sha tilda javob berishga harakat qiladi. Tilni istalgan vaqtda
-  "🌐 Til / Language / 语言" tugmasi orqali almashtirish mumkin.
-- **5 ta uskuna/liniya** bitta bot orqali: GEM welding, SA3 welding,
-  Water cooling, Water cooling robot, Deflashing.
-- **Aqlli qidiruv:** Bot AI'ga BUTUN tag ro'yxatini emas, faqat so'rovga mos
-  keladigan bir necha o'nlab tagni yuboradi. Bu tokenlarni keskin
-  kamaytiradi, javobni tezlashtiradi va aniqlikni oshiradi.
+- **3 tilni qo'llab-quvvatlaydi:** O'zbek, ingliz, xitoy.
+- **5 ta uskuna/liniya:** GEM welding, SA3 welding, Water cooling,
+  Water cooling robot, Deflashing.
+- **Aqlli qidiruv + mahalliy lug'at:** AI'ga butun tag ro'yxati emas, faqat
+  mos taglar yuboriladi; o'zbek/rus so'zlar avtomatik inglizcha texnik
+  atamalarga moslashtiriladi (AI so'rovisiz).
+- **Javoblarni keshlash:** bir xil savol qayta so'ralsa, AI'siz darhol
+  javob beriladi.
 - **3 ta bepul AI provayder, avtomatik almashinuv:** Gemini → Groq →
-  OpenRouter. Biror provayder limitga uchrasa, vaqtincha "dam oladi" va
-  bot avtomatik navbatdagisiga o'tadi; muddat tugagach, o'zi qayta sinaydi.
-- **Hech qachon butunlay to'xtamaydi:** Agar barcha AI'lar band bo'lsa ham,
-  bot bazadan topilgan xom (AI'siz) ma'lumotni ko'rsatadi.
-- **Xatoliklarga chidamli:** Kutilmagan xatolik yuz bersa, bot butunlay
-  to'xtab qolmaydi — xatolikni logga yozib, foydalanuvchiga tushunarli
-  xabar beradi va ishlashda davom etadi.
-- **🤖 Sun'iy intellekt bo'limi:** PLC bilan bog'liq bo'lmagan har qanday
-  savolga ham javob beradi.
-- **`/status` buyrug'i:** qaysi AI provayder hozir band, qaysi tayyorligini
-  ko'rsatadi.
-
-## Qanday ishlaydi
-
-1. `prepare_tags.py` — har bir uskunaning TIA Portal Excel faylini o'qib,
-   `tags_kb_*.json` bilim bazasini yaratadi.
-2. `lines.json` — qaysi uskunalar mavjudligi va bilim bazalari ro'yxati.
-3. `bot.py` — Telegram bot. Xodim uskunani tanlaydi, muammoni yozadi:
-   - Agar shunchaki manzil yozsa (masalan `I0.1`) — AI'siz, to'g'ridan-to'g'ri
-     topib, faqat o'sha bitta tag haqida AI'dan tushuntirish so'raydi.
-   - Agar erkin so'z bilan tasvirlasa — avval mahalliy kalit so'z qidiruvi
-     (va kerak bo'lsa AI yordamida kalit so'z ajratish) orqali eng mos
-     ~40 ta tagni topadi, so'ng FAQAT o'shalarni AI'ga yuborib tushuntirish
-     so'raydi.
+  OpenRouter, biri limitga uchrasa vaqtincha "dam oladi", boshqasi ishlaydi.
+- **Hech qachon butunlay to'xtamaydi:** barcha AI'lar band bo'lsa, bazadan
+  topilgan xom ma'lumot ko'rsatiladi.
+- **🤖 Sun'iy intellekt bo'limi:** PLC bilan bog'liq bo'lmagan savollarga
+  ham javob beradi.
+- **📷 Rasm orqali murojaat:** HMI ekrani yoki indikatorning suratini
+  yuborsa, bot undan matnni o'qib, xuddi yozma savoldek javob beradi.
+- **👍/👎 fikr-mulohaza va ✅/❌ "Hal bo'ldimi?" tugmalari:** har bir javobdan
+  keyin chiqadi. "Hal bo'lmadi" bosilsa, muammo avtomatik ravishda
+  eskalatsiya chatiga (smena boshlig'i/muhandis) yuboriladi.
+- **Haftalik statistik hisobot:** har dushanba, so'nggi 7 kunlik eng ko'p
+  uchragan muammolar haqida qisqa hisobot belgilangan chatga yuboriladi.
+- **Ma'lumot sifatini kuzatish:** "topilmadi" holatlari alohida logga
+  yoziladi — bu orqali qaysi taglarga Excel'da izoh qo'shish kerakligini
+  bilib olish mumkin (`/nomatches` buyrug'i orqali ko'rish mumkin).
+- **Kirishni cheklash (ixtiyoriy):** yoqilsa, faqat ro'yxatdagi xodimlar
+  botdan foydalana oladi.
+- **Bot salomatligini kuzatish (ixtiyoriy):** healthchecks.io kabi xizmat
+  orqali, bot to'xtab qolsa sizga xabar keladi.
+- **Xatoliklarga chidamli:** kutilmagan xatolik bot jarayonini to'xtatmaydi.
 
 ## O'rnatish
 
@@ -51,14 +46,40 @@ pip install -r requirements.txt
 
 ## Sozlash
 
-`.env.example` faylini `.env` deb nusxalang va to'ldiring:
+`.env.example` faylini `.env` deb nusxalang va kerakli qismlarni to'ldiring.
+**Majburiy:** `TELEGRAM_BOT_TOKEN`, `GEMINI_API_KEY`. Qolganlari ixtiyoriy,
+lekin tavsiya etiladi.
 
-- `TELEGRAM_BOT_TOKEN` — @BotFather'dan
-- `GEMINI_API_KEY` — https://aistudio.google.com/apikey (bepul, majburiy)
-- `GROQ_API_KEY` — https://console.groq.com/keys (bepul, tavsiya etiladi)
-- `OPENROUTER_API_KEY` — https://openrouter.ai/keys (bepul, tavsiya etiladi)
+### Kirishni cheklash (ixtiyoriy)
 
-Uchtasi ham qo'shilsa, tizim eng barqaror ishlaydi.
+1. @userinfobot'ga yozib, o'zingizning Telegram ID'ingizni bilib oling.
+2. `.env`da `ADMIN_USER_IDS=sizning_id` deb yozing (bir nechtasi bo'lsa
+   vergul bilan ajrating).
+3. Botni ishga tushiring. Endi faqat siz (va siz qo'shgan foydalanuvchilar)
+   foydalana oladi.
+4. Yangi xodimni qo'shish: botga `/adduser <uning_telegram_id>` yozing.
+5. Ro'yxatni ko'rish: `/listusers`. O'chirish: `/removeuser <id>`.
+
+`ADMIN_USER_IDS` bo'sh qoldirilsa, bot hammaga ochiq bo'lib qoladi
+(standart holat, hech narsa o'zgartirish shart emas).
+
+### Eskalatsiya (ixtiyoriy)
+
+`ESCALATION_CHAT_IDS`ga smena boshlig'i/muhandisning Telegram chat ID'sini
+yozing (bir nechtasi bo'lsa vergul bilan). "❌ Hal bo'lmadi" bosilganda
+ularga to'liq ma'lumot (uskuna, savol, bot javobi) yuboriladi.
+
+### Haftalik hisobot (ixtiyoriy)
+
+`STATS_CHAT_ID`ga hisobot yuborilishi kerak bo'lgan chat ID'ni yozing.
+
+### Bot salomatligini kuzatish (ixtiyoriy)
+
+1. https://healthchecks.io saytida (bepul) ro'yxatdan o'ting.
+2. Yangi "check" yarating, ping URL'ni oling.
+3. `.env`da `HEALTHCHECK_PING_URL=<url>` deb yozing.
+4. Agar bot biror sababdan to'xtab qolsa (kompyuter o'chsa, internet
+   uzilsa), healthchecks.io sizga email/xabar yuboradi.
 
 ## YANGI USKUNA QO'SHISH (kod o'zgartirish shart emas!)
 
@@ -72,26 +93,18 @@ Uchtasi ham qo'shilsa, tizim eng barqaror ishlaydi.
 python bot.py
 ```
 
-Telegram'da: uskunani tanlang → muammoni yozing (yoki manzilni yozing) →
-javobni oling. `🤖 Sun'iy intellekt` tugmasi orqali erkin savol berish
-mumkin. `/status` — AI provayderlar holatini ko'rsatadi. `/tag %I0.5` —
-tezkor, AI'siz lug'aviy qidiruv.
+## Buyruqlar ro'yxati
 
-## Muhim eslatmalar
-
-- **Token tejash:** Endi har bir so'rov uchun AI'ga o'rtacha bir necha yuz —
-  bir necha ming token yuboriladi (avval har doim 20,000-180,000 token
-  yuborilardi). Bu Gemini/Groq/OpenRouter'ning bepul limitlariga ancha
-  yaxshi sig'adi.
-- **Avtomatik "dam olish":** Bir provayder xato bersa, xatoning turiga
-  qarab (kunlik limit / daqiqalik limit / boshqa) turlicha muddatga
-  "dam oladi" va shu muddat davomida qayta urinilmaydi — bu vaqtni va
-  keraksiz so'rovlarni tejaydi. Muddat tugagach avtomatik qayta faollashadi.
-- **Doimiy ishlashi uchun:** Kompyuterni 24/7 ishlaydigan qilib sozlash
-  bo'yicha alohida yo'riqnoma berilgan edi (Power sozlamalari, BIOS,
-  Task Scheduler orqali avtomatik ishga tushirish).
-- Ma'lumotlar AI xizmatlariga (Google, Groq, OpenRouter) yuboriladi —
-  jadvalda maxfiy/tijorat sirlari bo'lsa, buni hisobga oling.
+| Buyruq | Kim uchun | Vazifasi |
+|---|---|---|
+| `/start` | hammaga | tilni tanlash, botni boshlash |
+| `/machine` | hammaga | uskuna tanlash menyusi |
+| `/tag %I0.5` | hammaga | tezkor, AI'siz lug'aviy qidiruv |
+| `/status` | hammaga | AI provayderlar holati |
+| `/adduser <id>` | faqat admin | foydalanuvchiga ruxsat berish |
+| `/removeuser <id>` | faqat admin | ruxsatni olib tashlash |
+| `/listusers` | faqat admin | adminlar/ruxsat berilganlar ro'yxati |
+| `/nomatches` | faqat admin | so'nggi "topilmadi" so'rovlar |
 
 ## Fayllar tuzilishi
 
@@ -103,5 +116,10 @@ plc_bot/
 ├── bot.py                       # Telegram bot
 ├── requirements.txt
 ├── .env.example
+├── allowed_users.json           # (avtomatik yaratiladi) ruxsat berilganlar
+├── answer_cache.json            # (avtomatik yaratiladi) javoblar keshi
+├── queries.log                  # (avtomatik yaratiladi) barcha so'rovlar
+├── no_match.log                 # (avtomatik yaratiladi) topilmagan so'rovlar
+├── feedback.log                 # (avtomatik yaratiladi) 👍/👎 va hal bo'lish holati
 └── README.md
 ```

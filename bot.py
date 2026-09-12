@@ -25,18 +25,22 @@ import os
 import re
 import json
 import time
+import uuid
 import asyncio
 import logging
 import traceback
-from datetime import datetime
+import urllib.request
+from datetime import datetime, timedelta
+from collections import Counter
 
 from dotenv import load_dotenv
-from telegram import Update, ReplyKeyboardMarkup
+from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.constants import ChatAction
 from telegram.ext import (
     Application,
     CommandHandler,
     MessageHandler,
+    CallbackQueryHandler,
     ContextTypes,
     filters,
     PicklePersistence,
@@ -75,6 +79,24 @@ CACHE_PATH = os.getenv("CACHE_PATH", "answer_cache.json")
 CACHE_TTL_HOURS = float(os.getenv("CACHE_TTL_HOURS", "72"))
 MIN_LOCAL_CANDIDATES = int(os.getenv("MIN_LOCAL_CANDIDATES", "3"))
 
+# --- Kirishni cheklash (ixtiyoriy) ---
+ADMIN_USER_IDS = {int(x) for x in os.getenv("ADMIN_USER_IDS", "").split(",") if x.strip().isdigit()}
+ALLOWED_USERS_PATH = os.getenv("ALLOWED_USERS_PATH", "allowed_users.json")
+
+# --- Eskalatsiya (hal bo'lmagan muammolar) ---
+ESCALATION_CHAT_IDS = [int(x) for x in os.getenv("ESCALATION_CHAT_IDS", "").split(",") if x.strip().lstrip("-").isdigit()]
+
+# --- Haftalik statistika ---
+STATS_CHAT_ID = os.getenv("STATS_CHAT_ID", "").strip()
+STATS_CHAT_ID = int(STATS_CHAT_ID) if STATS_CHAT_ID.lstrip("-").isdigit() else None
+
+# --- Ma'lumot sifati (mos kelmagan so'rovlar) ---
+NO_MATCH_LOG_PATH = os.getenv("NO_MATCH_LOG_PATH", "no_match.log")
+
+# --- Bot salomatligini kuzatish (ixtiyoriy, masalan healthchecks.io) ---
+HEALTHCHECK_PING_URL = os.getenv("HEALTHCHECK_PING_URL", "").strip()
+HEALTHCHECK_INTERVAL_MIN = int(os.getenv("HEALTHCHECK_INTERVAL_MIN", "5"))
+
 if not TELEGRAM_BOT_TOKEN:
     raise RuntimeError("TELEGRAM_BOT_TOKEN topilmadi. .env faylni tekshiring.")
 if not GEMINI_API_KEY:
@@ -101,6 +123,38 @@ openrouter_client = (
 )
 if OPENROUTER_API_KEY and not OpenAI:
     logger.warning("OPENROUTER_API_KEY berilgan, lekin 'openai' kutubxonasi o'rnatilmagan.")
+
+# ---------------------------------------------------------------------------
+# Kirishni cheklash: agar ADMIN_USER_IDS bo'sh bo'lsa, bot hammaga ochiq
+# (orqaga moslik uchun standart holat). ADMIN_USER_IDS to'ldirilsa, faqat
+# adminlar va ular ruxsat bergan foydalanuvchilar botdan foydalana oladi.
+# ---------------------------------------------------------------------------
+
+ACCESS_CONTROL_ENABLED = bool(ADMIN_USER_IDS)
+
+try:
+    with open(ALLOWED_USERS_PATH, "r", encoding="utf-8") as f:
+        ALLOWED_USERS = set(json.load(f))
+except (FileNotFoundError, json.JSONDecodeError):
+    ALLOWED_USERS = set()
+
+
+def _save_allowed_users():
+    try:
+        with open(ALLOWED_USERS_PATH, "w", encoding="utf-8") as f:
+            json.dump(sorted(ALLOWED_USERS), f)
+    except Exception as e:
+        logger.warning("allowed_users saqlashda xatolik: %s", e)
+
+
+def is_authorized(user_id: int) -> bool:
+    if not ACCESS_CONTROL_ENABLED:
+        return True
+    return user_id in ADMIN_USER_IDS or user_id in ALLOWED_USERS
+
+
+def is_admin(user_id: int) -> bool:
+    return user_id in ADMIN_USER_IDS
 
 # ---------------------------------------------------------------------------
 # Tillar va tarjimalar
@@ -175,6 +229,25 @@ TEXT = {
             "Nomi: {name}\n"
             "Izoh: {comment}"
         ),
+        "access_denied": "Kechirasiz, bu botdan foydalanish uchun ruxsatingiz yo'q. Administratorga murojaat qiling.",
+        "user_added": "✅ Foydalanuvchi {uid} ro'yxatga qo'shildi.",
+        "user_removed": "✅ Foydalanuvchi {uid} ro'yxatdan o'chirildi.",
+        "admin_only": "Bu buyruq faqat administrator uchun.",
+        "adduser_usage": "Foydalanish: /adduser <telegram_id>",
+        "feedback_thanks_up": "Rahmat! ✅",
+        "feedback_thanks_down": "Xabar uchun rahmat, buni yaxshilashga harakat qilamiz. 🙏",
+        "resolved_thanks": "Ajoyib! Yopildi. ✅",
+        "escalated": "Xabar smenaga/muhandisga yuborildi. Tez orada bog'lanishadi. 📨",
+        "escalation_message": (
+            "⚠️ *Hal qilinmagan muammo*\n"
+            "Uskuna: {machine}\n"
+            "Foydalanuvchi: @{username} (ID: {uid})\n"
+            "Savol: {question}\n\n"
+            "Bot javobi:\n{answer}"
+        ),
+        "photo_processing": "🖼 Rasmni o'qiyapman...",
+        "photo_no_text": "Rasmda o'qiladigan xatolik matni topa olmadim. Iltimos, matnni qo'lda yozing.",
+        "photo_extracted": "📷 Rasmdan o'qildi: \"{text}\"",
     },
     "en": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -224,6 +297,25 @@ TEXT = {
             "Name: {name}\n"
             "Comment: {comment}"
         ),
+        "access_denied": "Sorry, you are not authorized to use this bot. Please contact the administrator.",
+        "user_added": "✅ User {uid} added.",
+        "user_removed": "✅ User {uid} removed.",
+        "admin_only": "This command is for administrators only.",
+        "adduser_usage": "Usage: /adduser <telegram_id>",
+        "feedback_thanks_up": "Thanks! ✅",
+        "feedback_thanks_down": "Thanks for the feedback, we'll try to improve. 🙏",
+        "resolved_thanks": "Great, closed. ✅",
+        "escalated": "The issue was sent to the shift lead/engineer. They'll follow up soon. 📨",
+        "escalation_message": (
+            "⚠️ *Unresolved issue*\n"
+            "Machine: {machine}\n"
+            "User: @{username} (ID: {uid})\n"
+            "Question: {question}\n\n"
+            "Bot's answer:\n{answer}"
+        ),
+        "photo_processing": "🖼 Reading the photo...",
+        "photo_no_text": "I couldn't find readable error text in the photo. Please type the message instead.",
+        "photo_extracted": "📷 Read from photo: \"{text}\"",
     },
     "zh": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -268,6 +360,25 @@ TEXT = {
             "名称：{name}\n"
             "注释：{comment}"
         ),
+        "access_denied": "抱歉，您没有使用此机器人的权限。请联系管理员。",
+        "user_added": "✅ 已添加用户 {uid}。",
+        "user_removed": "✅ 已移除用户 {uid}。",
+        "admin_only": "此命令仅限管理员使用。",
+        "adduser_usage": "用法：/adduser <telegram_id>",
+        "feedback_thanks_up": "谢谢！✅",
+        "feedback_thanks_down": "感谢反馈，我们会努力改进。🙏",
+        "resolved_thanks": "太好了，已关闭。✅",
+        "escalated": "问题已发送给班组长/工程师，他们会尽快跟进。📨",
+        "escalation_message": (
+            "⚠️ *未解决的问题*\n"
+            "设备：{machine}\n"
+            "用户：@{username}（ID：{uid}）\n"
+            "问题：{question}\n\n"
+            "机器人的回答：\n{answer}"
+        ),
+        "photo_processing": "🖼 正在读取图片...",
+        "photo_no_text": "未能在图片中找到可读的错误文本。请改为输入文字。",
+        "photo_extracted": "📷 从图片中读取：\"{text}\"",
     },
 }
 
@@ -653,10 +764,147 @@ def cache_set(scope: str, lang: str, text: str, answer: str):
 
 
 # ---------------------------------------------------------------------------
+# Fikr-mulohaza (👍/👎) va "Hal bo'ldimi?" tugmalari
+# ---------------------------------------------------------------------------
+
+# answer_id -> {"line_id", "lang", "question", "answer"} — feedback/eskalatsiya
+# tugmasi bosilganda kerakli ma'lumotni topish uchun vaqtinchalik xotira.
+PENDING_ANSWERS = {}
+
+
+def build_feedback_keyboard(answer_id: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("👍", callback_data=f"fb:up:{answer_id}"),
+         InlineKeyboardButton("👎", callback_data=f"fb:down:{answer_id}")],
+        [InlineKeyboardButton("✅ Hal bo'ldi", callback_data=f"res:yes:{answer_id}"),
+         InlineKeyboardButton("❌ Hal bo'lmadi", callback_data=f"res:no:{answer_id}")],
+    ])
+
+
+def register_answer(line_id: str, lang: str, question: str, answer: str) -> str:
+    answer_id = uuid.uuid4().hex[:12]
+    PENDING_ANSWERS[answer_id] = {
+        "line_id": line_id, "lang": lang, "question": question, "answer": answer,
+    }
+    # Xotira cheksiz o'smasligi uchun eski yozuvlarni tozalab boramiz.
+    if len(PENDING_ANSWERS) > 500:
+        for old_key in list(PENDING_ANSWERS.keys())[:100]:
+            PENDING_ANSWERS.pop(old_key, None)
+    return answer_id
+
+
+def log_feedback(answer_id: str, kind: str, value: str):
+    try:
+        with open("feedback.log", "a", encoding="utf-8") as f:
+            info = PENDING_ANSWERS.get(answer_id, {})
+            f.write(json.dumps({
+                "time": datetime.now().isoformat(),
+                "answer_id": answer_id,
+                "kind": kind,
+                "value": value,
+                "line": info.get("line_id"),
+                "question": info.get("question"),
+            }, ensure_ascii=False) + "\n")
+    except Exception as e:
+        logger.warning("Feedback logga yozishda xatolik: %s", e)
+
+
+async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    data = query.data or ""
+    parts = data.split(":", 2)
+    if len(parts) != 3:
+        return
+    kind, value, answer_id = parts
+    lang = context.user_data.get("lang", "uz")
+    info = PENDING_ANSWERS.get(answer_id, {})
+
+    if kind == "fb":
+        log_feedback(answer_id, "feedback", value)
+        msg = t(lang, "feedback_thanks_up") if value == "up" else t(lang, "feedback_thanks_down")
+        await query.answer(text=msg, show_alert=False)
+        return
+
+    if kind == "res":
+        log_feedback(answer_id, "resolution", value)
+        if value == "yes":
+            await query.answer(text=t(lang, "resolved_thanks"), show_alert=False)
+        else:
+            ln = LINES.get(info.get("line_id"))
+            machine_label = ln.label if ln else info.get("line_id", "?")
+            user = update.effective_user
+            esc_text = t(lang, "escalation_message",
+                         machine=machine_label, username=user.username or user.id,
+                         uid=user.id, question=info.get("question", "?"),
+                         answer=info.get("answer", "?"))
+            for chat_id in ESCALATION_CHAT_IDS:
+                try:
+                    await context.bot.send_message(chat_id=chat_id, text=esc_text, parse_mode="Markdown")
+                except Exception as e:
+                    logger.warning("Eskalatsiya xabarini yuborishda xatolik (%s): %s", chat_id, e)
+            if ESCALATION_CHAT_IDS:
+                await query.answer(text=t(lang, "escalated"), show_alert=True)
+            else:
+                await query.answer(text=t(lang, "resolved_thanks"), show_alert=False)
+
+
+# ---------------------------------------------------------------------------
+# Ma'lumot sifati: mos kelmagan so'rovlarni qayd etish (keyinchalik TIA
+# Portal'dagi tag izohlarini to'ldirish uchun foydali ro'yxat bo'ladi)
+# ---------------------------------------------------------------------------
+
+def log_no_match(line_id: str, lang: str, text: str):
+    try:
+        with open(NO_MATCH_LOG_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "time": datetime.now().isoformat(), "line": line_id, "lang": lang, "text": text,
+            }, ensure_ascii=False) + "\n")
+    except Exception as e:
+        logger.warning("no_match logga yozishda xatolik: %s", e)
+
+
+# ---------------------------------------------------------------------------
+# Rasm orqali murojaat: HMI ekrani/indikator suratidan matnni o'qish
+# ---------------------------------------------------------------------------
+
+IMAGE_OCR_PROMPT = (
+    "This is a photo of an industrial HMI screen, control panel, or status "
+    "indicator. Extract any visible error code, alarm text, or fault message. "
+    "Reply with ONLY the extracted text (short), nothing else. If there is no "
+    "readable error/alarm text, reply with exactly: NONE"
+)
+
+
+def _extract_text_from_image_sync(image_bytes: bytes) -> str:
+    image_part = genai_types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
+    resp = genai_client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=[image_part, IMAGE_OCR_PROMPT],
+    )
+    return (resp.text or "").strip()
+
+
+async def extract_text_from_image(image_bytes: bytes):
+    try:
+        text = await asyncio.to_thread(_extract_text_from_image_sync, image_bytes)
+        if not text or text.upper() == "NONE":
+            return None
+        return text
+    except Exception as e:
+        logger.warning("Rasmni o'qishda xatolik: %s", e)
+        return None
+
+
+# ---------------------------------------------------------------------------
 # Telegram handlerlar
 # ---------------------------------------------------------------------------
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(get_lang(context), "access_denied"))
+        return
+
     if not context.user_data.get("lang"):
         await update.message.reply_text(TEXT["uz"]["choose_lang"], reply_markup=language_keyboard())
         return
@@ -683,6 +931,9 @@ async def choose_machine(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(lang, "access_denied"))
+        return
     lines = [t(lang, "status_header")]
     for name, _ in AI_PROVIDERS:
         if _provider_ready(name):
@@ -693,8 +944,107 @@ async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
 
 
+async def adduser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    if not context.args or not context.args[0].isdigit():
+        await update.message.reply_text(t(lang, "adduser_usage"))
+        return
+    uid = int(context.args[0])
+    ALLOWED_USERS.add(uid)
+    _save_allowed_users()
+    await update.message.reply_text(t(lang, "user_added", uid=uid))
+
+
+async def removeuser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    if not context.args or not context.args[0].isdigit():
+        await update.message.reply_text(t(lang, "adduser_usage"))
+        return
+    uid = int(context.args[0])
+    ALLOWED_USERS.discard(uid)
+    _save_allowed_users()
+    await update.message.reply_text(t(lang, "user_removed", uid=uid))
+
+
+async def listusers_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    admins = ", ".join(str(x) for x in sorted(ADMIN_USER_IDS)) or "—"
+    users = ", ".join(str(x) for x in sorted(ALLOWED_USERS)) or "—"
+    await update.message.reply_text(f"👑 Adminlar: {admins}\n👤 Ruxsat berilganlar: {users}")
+
+
+async def nomatches_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    try:
+        with open(NO_MATCH_LOG_PATH, "r", encoding="utf-8") as f:
+            lines = f.readlines()[-15:]
+    except FileNotFoundError:
+        lines = []
+    if not lines:
+        await update.message.reply_text("Hozircha 'topilmadi' holatlari yo'q.")
+        return
+    out = []
+    for ln_raw in lines:
+        try:
+            d = json.loads(ln_raw)
+            out.append(f"[{d['line']}] {d['text']}")
+        except Exception:
+            continue
+    await update.message.reply_text("*So'nggi mos kelmagan so'rovlar:*\n" + "\n".join(out), parse_mode="Markdown")
+
+
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(get_lang(context), "access_denied"))
+        return
+    if not context.user_data.get("lang"):
+        await update.message.reply_text(TEXT["uz"]["choose_lang"], reply_markup=language_keyboard())
+        return
+
+    lang = get_lang(context)
+    await update.message.reply_text(t(lang, "photo_processing"))
+
+    photo = update.message.photo[-1]
+    file = await photo.get_file()
+    image_bytes = bytes(await file.download_as_bytearray())
+
+    extracted = await extract_text_from_image(image_bytes)
+    if not extracted:
+        await update.message.reply_text(t(lang, "photo_no_text"), reply_markup=machine_keyboard())
+        return
+
+    await update.message.reply_text(t(lang, "photo_extracted", text=extracted))
+
+    mode = context.user_data.get("mode")
+    if mode == "general":
+        await handle_general_ai(update, context, extracted)
+        return
+    ln = get_selected_line(context)
+    if ln is None:
+        await update.message.reply_text(
+            t(lang, "no_machine_selected", ai=AI_CHAT_LABEL), reply_markup=machine_keyboard()
+        )
+        return
+    await handle_machine_query(update, context, ln, extracted)
+
+
 async def tag_lookup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(lang, "access_denied"))
+        return
     ln = get_selected_line(context)
     if ln is None:
         await update.message.reply_text(t(lang, "choose_machine_first_tag"), reply_markup=machine_keyboard())
@@ -732,7 +1082,13 @@ async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, 
     if not answer:
         await update.message.reply_text(t(lang, "ai_busy_general"), reply_markup=machine_keyboard())
         return
-    await update.message.reply_text(answer, parse_mode="Markdown", reply_markup=machine_keyboard())
+    answer_id = register_answer("general", lang, user_text, answer)
+    await update.message.reply_text(answer, parse_mode="Markdown")
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="—",
+        reply_markup=build_feedback_keyboard(answer_id),
+    )
     cache_set("general", lang, user_text, answer)
 
 
@@ -750,6 +1106,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
         if exact:
             candidates, found_all = [exact], False
         else:
+            log_no_match(ln.id, lang, user_text)
             await update.message.reply_text(
                 t(lang, "addr_not_found", addr=user_text, machine=ln.label),
                 reply_markup=machine_keyboard(),
@@ -768,6 +1125,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
                 candidates = local_search(ln.tags, keywords)
         found_all = False
         if not candidates:
+            log_no_match(ln.id, lang, user_text)
             await update.message.reply_text(t(lang, "no_match"), reply_markup=machine_keyboard())
             return
 
@@ -776,12 +1134,19 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
     answer = await ask_ai(system_prompt, user_text)
 
     if not answer:
-        await update.message.reply_text(
-            format_raw_tags(candidates, ln.label, lang), reply_markup=machine_keyboard()
+        answer = format_raw_tags(candidates, ln.label, lang)
+        await update.message.reply_text(answer, reply_markup=machine_keyboard())
+        answer_id = register_answer(ln.id, lang, user_text, answer)
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id, text="—", reply_markup=build_feedback_keyboard(answer_id)
         )
         return
 
-    await update.message.reply_text(answer, parse_mode="Markdown", reply_markup=machine_keyboard())
+    answer_id = register_answer(ln.id, lang, user_text, answer)
+    await update.message.reply_text(answer, parse_mode="Markdown")
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id, text="—", reply_markup=build_feedback_keyboard(answer_id)
+    )
     log_query(update, ln.id, user_text, answer)
     cache_set(ln.id, lang, user_text, answer)
 
@@ -789,6 +1154,10 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text.strip()
     if not user_text:
+        return
+
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(get_lang(context), "access_denied"))
         return
 
     # Til tanlash tugmasi bosilganmi?
@@ -865,6 +1234,65 @@ async def error_handler(update, context):
 
 
 # ---------------------------------------------------------------------------
+# Rejalashtirilgan vazifalar: haftalik statistika, bot salomatligi (healthcheck)
+# ---------------------------------------------------------------------------
+
+async def weekly_stats_job(context: ContextTypes.DEFAULT_TYPE):
+    if not STATS_CHAT_ID:
+        return
+    if datetime.now().weekday() != 0:  # faqat dushanba kuni
+        return
+    cutoff = datetime.now() - timedelta(days=7)
+    counts = Counter()
+    questions = Counter()
+    try:
+        with open(QUERY_LOG_PATH, "r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    d = json.loads(line)
+                    ts = datetime.fromisoformat(d["time"])
+                    if ts >= cutoff:
+                        counts[d.get("line", "?")] += 1
+                        questions[(d.get("line", "?"), d.get("question", "").strip().lower())] += 1
+                except Exception:
+                    continue
+    except FileNotFoundError:
+        return
+
+    if not counts:
+        return
+
+    lines = ["📊 *Haftalik hisobot (so'nggi 7 kun)*\n"]
+    for line_id, cnt in counts.most_common():
+        label = LINES[line_id].label if line_id in LINES else line_id
+        lines.append(f"• {label}: {cnt} ta so'rov")
+    lines.append("\n*Eng ko'p takrorlangan savollar:*")
+    for (line_id, q), cnt in questions.most_common(5):
+        if cnt < 2:
+            continue
+        label = LINES[line_id].label if line_id in LINES else line_id
+        lines.append(f"• [{label}] \"{q}\" — {cnt} marta")
+
+    try:
+        await context.bot.send_message(chat_id=STATS_CHAT_ID, text="\n".join(lines), parse_mode="Markdown")
+    except Exception as e:
+        logger.warning("Haftalik hisobotni yuborishda xatolik: %s", e)
+
+
+def _ping_healthcheck_sync():
+    try:
+        urllib.request.urlopen(HEALTHCHECK_PING_URL, timeout=10)
+    except Exception as e:
+        logger.warning("Healthcheck ping xatosi: %s", e)
+
+
+async def healthcheck_job(context: ContextTypes.DEFAULT_TYPE):
+    if not HEALTHCHECK_PING_URL:
+        return
+    await asyncio.to_thread(_ping_healthcheck_sync)
+
+
+# ---------------------------------------------------------------------------
 # Ishga tushirish
 # ---------------------------------------------------------------------------
 
@@ -886,12 +1314,25 @@ def main():
     app.add_handler(CommandHandler("machine", choose_machine))
     app.add_handler(CommandHandler("tag", tag_lookup))
     app.add_handler(CommandHandler("status", status_cmd))
+    app.add_handler(CommandHandler("adduser", adduser_cmd))
+    app.add_handler(CommandHandler("removeuser", removeuser_cmd))
+    app.add_handler(CommandHandler("listusers", listusers_cmd))
+    app.add_handler(CommandHandler("nomatches", nomatches_cmd))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+    app.add_handler(CallbackQueryHandler(handle_feedback_callback))
     app.add_error_handler(error_handler)
 
+    if app.job_queue is not None:
+        if STATS_CHAT_ID:
+            app.job_queue.run_daily(weekly_stats_job, time=datetime.strptime("08:00", "%H:%M").time())
+        if HEALTHCHECK_PING_URL:
+            app.job_queue.run_repeating(healthcheck_job, interval=HEALTHCHECK_INTERVAL_MIN * 60, first=10)
+
     logger.info(
-        "Bot ishga tushdi... (%d ta uskuna, AI provayderlar: %s)",
+        "Bot ishga tushdi... (%d ta uskuna, AI provayderlar: %s, kirish nazorati: %s)",
         len(LINES), ", ".join(name for name, _ in AI_PROVIDERS),
+        "yoqilgan" if ACCESS_CONTROL_ENABLED else "o'chirilgan",
     )
     app.run_polling()
 
