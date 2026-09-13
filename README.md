@@ -171,41 +171,76 @@ bog'lash mumkin:
 
 ## 👥 Xodimlar va 🔑 Admin bo'limi (kunlik topshiriqlar)
 
-Endi bot orqali kunlik topshiriq/vazifa berish mumkin — siz (muhandis)
-mexaniklarga vazifa yozasiz, ular avtomatik ravishda **shaxsiy Telegram
-chatiga** yuboriladi, shu bilan birga botning "Xodimlar" bo'limida ham
-saqlanadi.
+Bot orqali kunlik topshiriq/vazifa berish mumkin — siz (muhandis)
+mexaniklarga vazifa yozasiz, ish vaqtini belgilaysiz, ular avtomatik
+ravishda **shaxsiy Telegram chatiga** yuboriladi, shu bilan birga botning
+"Xodimlar" bo'limida ham saqlanadi. Kun oxirida esa barcha natijalar
+avtomatik ravishda sizga (adminga) hisobot qilib yuboriladi.
 
 ### Sozlash
 
 1. Avval `ADMIN_USER_IDS`ni to'ldiring (yuqoridagi "Kirishni cheklash"
    bo'limiga qarang) — siz shu orqali admin bo'lasiz.
-2. Har bir mexanikni ism bilan qo'shing:
+2. Har bir mexanikni ism va telefon raqami bilan qo'shing (ikkalasi ham
+   ixtiyoriy, lekin tavsiya etiladi — vazifa albatta to'g'ri odamga
+   borishini ta'minlaydi):
    ```
-   /adduser 123456789 Aziz
+   /adduser 123456789 +998901234567 Aziz Karimov
    /adduser 987654321 Botir
    ```
-   (Ism yozmasangiz ham bo'ladi, lekin ism bilan ro'yxat chiroyliroq ko'rinadi.)
+   (Telefon raqami avtomatik aniqlanadi — uni istalgan joyga yozsangiz ham
+   bo'ladi, faqat "+" yoki raqamdan boshlansa yetarli.)
+3. Ixtiyoriy: `DAILY_REPORT_TIME` orqali kunlik hisobot soatini sozlang
+   (standart: 18:00).
 
 ### Foydalanish (admin/muhandis sifatida)
 
 1. Pastdagi **"🔑 Admin bo'limi"** tugmasini bosing (bu tugma faqat
    adminlarga ko'rinadi).
-2. **"📋 Kunlik topshiriq berish"** ni tanlang.
+2. **"📋 Yangi topshiriq"** ni tanlang.
 3. Kimga berilishini tanlang — muayyan xodim yoki **"🌐 Hammaga"**.
 4. Topshiriq matnini yozing (masalan: "3-stansiyadagi konveyer motorini
    moylang").
-5. Bosilgan zahoti, tanlangan xodim(lar)ning shaxsiy Telegram chatiga
-   xabar boradi, va bot buni saqlab qoladi.
+5. Ish vaqtini kiriting (masalan: "09:00–13:00") yoki vaqt belgilamaslikni
+   tanlang.
+6. Bosilgan zahoti, tanlangan xodim(lar)ning shaxsiy Telegram chatiga
+   to'liq ma'lumot (vazifa + vaqt + kim yuborgani) bilan xabar boradi.
+7. **"📊 Hisobot"** tugmasi orqali istalgan payt shu kunning barcha
+   topshiriqlari va ularning holatini jadval ko'rinishida ko'rishingiz
+   mumkin.
 
 ### Xodim tomonidan
 
 Har bir xodim pastdagi **"👥 Xodimlar"** tugmasini bosib:
-- O'z profilini (ism, ID) ko'radi.
-- So'nggi 5 ta o'ziga tegishli topshiriqni (holati bilan) ko'radi.
-- Har bir bajarilmagan topshiriq ostida **"✅ Bajardim"** tugmasi bor —
-  bosilsa, admin(engineer)ga avtomatik xabar boradi va topshiriq
-  "Bajarildi" deb belgilanadi.
+- O'z profilini (ism, ID, telefon) ko'radi.
+- So'nggi 5 ta o'ziga tegishli topshiriqni (matn, vaqt, holat bilan) ko'radi.
+- Har bir topshiriq ostida **3 ta aniq holat** tugmasi bor:
+  - **▶️ Boshladim** — jarayonda ekanini bildiradi
+  - **✅ Bajardim** — tugallanganini bildiradi
+  - **❌ Bajarolmadim** — bajarilmaganini bildiradi
+- Qaysi tugma bosilishidan qat'iy nazar, **darhol adminga** (vazifani
+  bergan kishiga) xodim ismi, vazifa matni va tanlangan holat bilan xabar
+  boradi.
+
+### Kunlik avtomatik hisobot
+
+Har kuni `DAILY_REPORT_TIME`da (standart 18:00) bot o'zi barcha
+adminlarga o'sha kunning **to'liq jadvalini** (xodim, vazifa, vaqt, holat)
+yuboradi — buni so'rashning hojati yo'q, avtomatik keladi.
+
+## 📷 Rasm orqali murojaat (kuchaytirilgan)
+
+Xodim uskunadagi xatolik/indikatorning suratini yuborsa, bot endi:
+1. Rasmni Gemini (rasmni tushunadigan AI) orqali tahlil qiladi — ekrandagi
+   matnni o'qiydi VA qidiruv uchun kalit so'zlarni ajratadi (hatto ekranda
+   umuman matn bo'lmasa, faqat yonib turgan lampa bo'lsa ham).
+2. Shu kalit so'zlar orqali tegishli PLC taglarni topadi.
+3. **Yakuniy tashxisni rasmning O'ZIDAN** chiqaradi (nafaqat o'qilgan
+   matndan) — bu indikator rangi, ekran tuzilishi kabi oddiy matn
+   o'qishda yo'qolib ketadigan tafsilotlarni ham hisobga oladi, natijada
+   ancha aniqroq javob beradi.
+4. Agar Gemini band bo'lsa, avtomatik ravishda o'qilgan matn asosida
+   oddiy (Groq/OpenRouter orqali ham ishlaydigan) tahlilga o'tadi.
 
 ## Fayllar tuzilishi
 

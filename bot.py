@@ -89,6 +89,7 @@ ESCALATION_CHAT_IDS = [int(x) for x in os.getenv("ESCALATION_CHAT_IDS", "").spli
 # --- Haftalik statistika ---
 STATS_CHAT_ID = os.getenv("STATS_CHAT_ID", "").strip()
 STATS_CHAT_ID = int(STATS_CHAT_ID) if STATS_CHAT_ID.lstrip("-").isdigit() else None
+DAILY_REPORT_TIME = os.getenv("DAILY_REPORT_TIME", "18:00")
 
 # --- Ma'lumot sifati (mos kelmagan so'rovlar) ---
 NO_MATCH_LOG_PATH = os.getenv("NO_MATCH_LOG_PATH", "no_match.log")
@@ -985,20 +986,38 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
     await query.answer()
     data = query.data or ""
 
-    if data.startswith("task_done:"):
-        task_id = data.split(":", 1)[1]
+    if data.startswith("task_status:"):
+        _, status, task_id = data.split(":", 2)
         lang = context.user_data.get("lang", "uz")
         uid = update.effective_user.id
-        tk = mark_task_done(task_id, uid)
-        await query.answer(text=t(lang, "task_marked_done"), show_alert=False)
+        tk = set_task_status(task_id, uid, status)
+        confirm_key = {
+            "in_progress": "task_marked_in_progress",
+            "done": "task_marked_done",
+            "failed": "task_marked_failed",
+        }.get(status, "task_marked_done")
+        await query.answer(text=t(lang, confirm_key), show_alert=False)
         if tk:
             try:
-                admin_lang = "uz"
-                notice = t(admin_lang, "task_employee_done_notice",
-                           name=employee_name(uid), text=tk["text"])
-                await context.bot.send_message(chat_id=tk["from"], text=notice)
+                status_label = t("uz", STATUS_LABEL_KEY.get(status, "task_status_pending"))
+                notice = t("uz", "task_employee_status_notice",
+                           name=employee_name(uid), text=tk["text"], status=status_label)
+                # Vazifa yaratgan adminga, va (agar boshqacha bo'lsa) barcha adminlarga xabar beramiz.
+                notified = set()
+                for admin_uid in list(ADMIN_USER_IDS) + [tk["from"]]:
+                    if admin_uid in notified:
+                        continue
+                    notified.add(admin_uid)
+                    try:
+                        await context.bot.send_message(chat_id=admin_uid, text=notice)
+                    except Exception as e:
+                        logger.warning("Adminga (%s) xabar berishda xatolik: %s", admin_uid, e)
             except Exception as e:
-                logger.warning("Adminga bajarilganlik haqida xabar berishda xatolik: %s", e)
+                logger.warning("Holat haqida xabar berishda xatolik: %s", e)
+        try:
+            await query.edit_message_reply_markup(reply_markup=None)
+        except Exception:
+            pass
         return
 
     parts = data.split(":", 2)
@@ -1073,7 +1092,7 @@ def _save_tasks():
         logger.warning("tasks.json saqlashda xatolik: %s", e)
 
 
-def create_task(admin_uid: int, target, text: str) -> dict:
+def create_task(admin_uid: int, target, text: str, schedule: str = None) -> dict:
     if target == "all":
         status = {str(uid): "pending" for uid in ALLOWED_USERS.keys()}
     else:
@@ -1083,8 +1102,10 @@ def create_task(admin_uid: int, target, text: str) -> dict:
         "from": admin_uid,
         "target": target,
         "text": text,
+        "schedule": schedule,
         "created_at": datetime.now().isoformat(),
         "status": status,
+        "status_updated_at": {},
     }
     TASKS.append(task)
     _save_tasks()
@@ -1098,22 +1119,63 @@ def tasks_for_employee(uid: int, limit: int = TASKS_SHOWN_LIMIT):
     return relevant[:limit]
 
 
-def mark_task_done(task_id: str, uid: int):
+def set_task_status(task_id: str, uid: int, status: str):
     for tk in TASKS:
         if tk["id"] == task_id:
-            tk["status"][str(uid)] = "done"
+            tk["status"][str(uid)] = status
+            tk.setdefault("status_updated_at", {})[str(uid)] = datetime.now().isoformat()
             _save_tasks()
             return tk
     return None
 
 
+def todays_tasks():
+    today = datetime.now().date().isoformat()
+    return [tk for tk in TASKS if tk["created_at"][:10] == today]
+
+
+STATUS_LABEL_KEY = {
+    "pending": "task_status_pending",
+    "in_progress": "task_status_in_progress",
+    "done": "task_status_done",
+    "failed": "task_status_failed",
+}
+
+
+def build_tasks_table(tasks: list, lang: str) -> str:
+    if not tasks:
+        return t(lang, "no_tasks_today")
+    rows = []
+    for tk in tasks:
+        for uid_str, status in tk["status"].items():
+            uid = int(uid_str)
+            name = employee_name(uid)
+            status_label = t(lang, STATUS_LABEL_KEY.get(status, "task_status_pending"))
+            rows.append((name, tk["text"], tk.get("schedule") or "—", status_label))
+
+    name_w = max(6, max(len(r[0]) for r in rows))
+    text_w = max(8, min(28, max(len(r[1]) for r in rows)))
+    sched_w = max(6, max(len(r[2]) for r in rows))
+
+    def clip(s, w):
+        return s if len(s) <= w else s[: w - 1] + "…"
+
+    header = f"{t(lang,'table_col_employee').ljust(name_w)} | {t(lang,'table_col_task').ljust(text_w)} | {t(lang,'table_col_time').ljust(sched_w)} | {t(lang,'table_col_status')}"
+    sep = "-" * len(header)
+    lines = [header, sep]
+    for name, text, sched, status_label in rows:
+        lines.append(f"{clip(name, name_w).ljust(name_w)} | {clip(text, text_w).ljust(text_w)} | {clip(sched, sched_w).ljust(sched_w)} | {status_label}")
+    return "```\n" + "\n".join(lines) + "\n```"
+
+
 # ---------------------------------------------------------------------------
-# Admin bo'limi: kunlik topshiriq berish, xodimlar ro'yxati
+# Admin bo'limi: kunlik topshiriq berish, xodimlar ro'yxati, hisobot (jadval)
 # ---------------------------------------------------------------------------
 
 def admin_submenu_keyboard(lang: str) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup([
         [t(lang, "admin_btn_new_task")],
+        [t(lang, "admin_btn_report")],
         [t(lang, "admin_btn_list_users")],
         [t(lang, "admin_btn_back")],
     ], resize_keyboard=True)
@@ -1132,6 +1194,7 @@ async def show_admin_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["mode"] = "admin_menu"
     context.user_data.pop("task_flow", None)
     context.user_data.pop("task_target", None)
+    context.user_data.pop("task_text", None)
     await update.message.reply_text(
         t(lang, "admin_menu_title"), parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang)
     )
@@ -1151,6 +1214,11 @@ async def handle_admin_menu_input(update: Update, context: ContextTypes.DEFAULT_
             return
         context.user_data["mode"] = "admin_task_target"
         await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
+        return
+
+    if user_text == t(lang, "admin_btn_report"):
+        table = build_tasks_table(todays_tasks(), lang)
+        await update.message.reply_text(table, parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang))
         return
 
     if user_text == t(lang, "admin_btn_list_users"):
@@ -1198,13 +1266,34 @@ async def handle_admin_task_text(update: Update, context: ContextTypes.DEFAULT_T
         await show_admin_menu(update, context)
         return
 
+    context.user_data["task_text"] = user_text
+    context.user_data["mode"] = "admin_task_schedule"
+    await update.message.reply_text(
+        t(lang, "task_ask_schedule"), parse_mode="Markdown",
+        reply_markup=ReplyKeyboardMarkup(
+            [[t(lang, "task_no_schedule")], [t(lang, "admin_btn_back")]], resize_keyboard=True
+        ),
+    )
+
+
+async def handle_admin_task_schedule(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
+    lang = get_lang(context)
+
+    if user_text == t(lang, "admin_btn_back"):
+        await show_admin_menu(update, context)
+        return
+
+    schedule = None if user_text == t(lang, "task_no_schedule") else user_text.strip()
+
     target = context.user_data.get("task_target")
+    task_text = context.user_data.get("task_text", "")
     admin_uid = update.effective_user.id
     admin_name = employee_name(admin_uid) if admin_uid in ALLOWED_USERS else (update.effective_user.first_name or "Admin")
 
-    task = create_task(admin_uid, target, user_text)
+    task = create_task(admin_uid, target, task_text, schedule)
 
-    dm_text = t(lang, "task_sent_dm", text=user_text, admin_name=admin_name)
+    dm_text = t(lang, "task_sent_dm", text=task_text, admin_name=admin_name,
+                schedule=(schedule or t(lang, "task_no_schedule")))
     sent = 0
     for uid_str in task["status"].keys():
         try:
@@ -1224,11 +1313,14 @@ async def handle_admin_task_text(update: Update, context: ContextTypes.DEFAULT_T
 async def show_employees_section(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
     uid = update.effective_user.id
-    name = employee_name(uid) if uid in ALLOWED_USERS else (update.effective_user.first_name or str(uid))
+    info = ALLOWED_USERS.get(uid)
+    name = info["name"] if info else (update.effective_user.first_name or str(uid))
+    phone = info.get("phone") if info else ""
 
-    await update.message.reply_text(
-        t(lang, "employees_profile", name=name, id=uid), parse_mode="Markdown"
-    )
+    profile_text = t(lang, "employees_profile", name=name, id=uid)
+    if phone:
+        profile_text += f"\n📞 {phone}"
+    await update.message.reply_text(profile_text, parse_mode="Markdown")
 
     my_tasks = tasks_for_employee(uid)
     if not my_tasks:
@@ -1238,10 +1330,17 @@ async def show_employees_section(update: Update, context: ContextTypes.DEFAULT_T
     await update.message.reply_text(t(lang, "employees_tasks_title"), parse_mode="Markdown")
     for tk in my_tasks:
         status = tk["status"].get(str(uid), "pending")
-        status_label = t(lang, "task_status_done") if status == "done" else t(lang, "task_status_pending")
-        item_text = t(lang, "task_item", date=tk["created_at"][:16].replace("T", " "), text=tk["text"], status=status_label)
-        if status == "pending":
-            kb = InlineKeyboardMarkup([[InlineKeyboardButton(t(lang, "task_done_button"), callback_data=f"task_done:{tk['id']}")]])
+        status_label = t(lang, STATUS_LABEL_KEY.get(status, "task_status_pending"))
+        date_str = tk["created_at"][:16].replace("T", " ")
+        schedule = tk.get("schedule") or t(lang, "task_no_schedule")
+        item_text = t(lang, "task_item", date=date_str, text=tk["text"], schedule=schedule, status=status_label)
+        if status in ("pending", "in_progress"):
+            buttons = []
+            if status == "pending":
+                buttons.append(InlineKeyboardButton(t(lang, "task_start_button"), callback_data=f"task_status:in_progress:{tk['id']}"))
+            buttons.append(InlineKeyboardButton(t(lang, "task_done_button"), callback_data=f"task_status:done:{tk['id']}"))
+            buttons.append(InlineKeyboardButton(t(lang, "task_fail_button"), callback_data=f"task_status:failed:{tk['id']}"))
+            kb = InlineKeyboardMarkup([buttons])
             await update.message.reply_text(item_text, reply_markup=kb)
         else:
             await update.message.reply_text(item_text)
@@ -1252,31 +1351,72 @@ async def show_employees_section(update: Update, context: ContextTypes.DEFAULT_T
 # Rasm orqali murojaat: HMI ekrani/indikator suratidan matnni o'qish
 # ---------------------------------------------------------------------------
 
-IMAGE_OCR_PROMPT = (
-    "This is a photo of an industrial HMI screen, control panel, or status "
-    "indicator. Extract any visible error code, alarm text, or fault message. "
-    "Reply with ONLY the extracted text (short), nothing else. If there is no "
-    "readable error/alarm text, reply with exactly: NONE"
+IMAGE_ANALYZE_PROMPT = (
+    "This is a photo taken by a factory worker of an industrial HMI screen, "
+    "control panel, indicator lamp, or physical equipment fault. Respond in "
+    "EXACTLY this two-line format, nothing else:\n"
+    "TEXT: <any visible error code/alarm/fault text on screen, or NONE if there is no readable text>\n"
+    "KEYWORDS: <3-6 short English and/or Chinese technical keywords describing "
+    "the visible component and/or fault, comma separated (e.g. conveyor, motor, "
+    "sensor, light curtain, valve, robot arm, cable, red light, error icon)>"
 )
 
 
-def _extract_text_from_image_sync(image_bytes: bytes) -> str:
+def _analyze_image_sync(image_bytes: bytes) -> str:
     image_part = genai_types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
     resp = genai_client.models.generate_content(
         model=GEMINI_MODEL,
-        contents=[image_part, IMAGE_OCR_PROMPT],
+        contents=[image_part, IMAGE_ANALYZE_PROMPT],
     )
     return (resp.text or "").strip()
 
 
-async def extract_text_from_image(image_bytes: bytes):
+async def analyze_image(image_bytes: bytes):
+    """Rasmdan (1) o'qiladigan matn (bo'lsa) va (2) qidiruv uchun kalit
+    so'zlarni ajratib oladi — hatto matn umuman bo'lmasa ham (masalan faqat
+    yonib turgan lampa), kalit so'zlar orqali tegishli taglarni topish
+    imkonini beradi."""
     try:
-        text = await asyncio.to_thread(_extract_text_from_image_sync, image_bytes)
-        if not text or text.upper() == "NONE":
-            return None
-        return text
+        raw = await asyncio.to_thread(_analyze_image_sync, image_bytes)
     except Exception as e:
-        logger.warning("Rasmni o'qishda xatolik: %s", e)
+        logger.warning("Rasmni tahlil qilishda xatolik: %s", e)
+        _set_cooldown("Gemini", _cooldown_seconds_for_error(e))
+        return None, set()
+
+    text_val, keywords = None, set()
+    for line in raw.splitlines():
+        upper = line.strip().upper()
+        if upper.startswith("TEXT:"):
+            v = line.split(":", 1)[1].strip()
+            text_val = None if (not v or v.upper() == "NONE") else v
+        elif upper.startswith("KEYWORDS:"):
+            v = line.split(":", 1)[1].strip()
+            keywords = {w.strip().lower() for w in v.split(",") if w.strip()}
+    return text_val, keywords
+
+
+def _generate_vision_sync(system_prompt: str, image_bytes: bytes, caption: str) -> str:
+    image_part = genai_types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
+    resp = genai_client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=[image_part, caption],
+        config=genai_types.GenerateContentConfig(system_instruction=system_prompt),
+    )
+    return (resp.text or "").strip()
+
+
+async def ask_ai_vision(system_prompt: str, image_bytes: bytes, lang: str):
+    """Yakuniy diagnostikani rasmning O'ZIDAN (matn transkriptidan emas)
+    to'g'ridan-to'g'ri chiqaradi — indikator rangi, ekran tuzilishi kabi
+    OCR orqali yo'qoladigan tafsilotlarni ham hisobga oladi. Faqat Gemini
+    orqali ishlaydi (bizning bepul provayderlar orasida rasmni tushunadigan
+    yagona model); u band bo'lsa, chaqiruvchi matn-asosidagi zaxiraga o'tadi."""
+    caption = "Diagnose the fault visible in this photo." + LANG_REMINDER.get(lang, LANG_REMINDER["uz"])
+    try:
+        return await asyncio.to_thread(_generate_vision_sync, system_prompt, image_bytes, caption)
+    except Exception as e:
+        logger.warning("Vision diagnostika xatosi: %s", e)
+        _set_cooldown("Gemini", _cooldown_seconds_for_error(e))
         return None
 
 
@@ -1389,6 +1529,13 @@ async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
 
 
+def _looks_like_phone(token: str) -> bool:
+    cleaned = token.replace(" ", "").replace("-", "")
+    if cleaned.startswith("+"):
+        cleaned = cleaned[1:]
+    return cleaned.isdigit() and len(cleaned) >= 7
+
+
 async def adduser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
     if not is_admin(update.effective_user.id):
@@ -1398,10 +1545,34 @@ async def adduser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(t(lang, "adduser_usage"))
         return
     uid = int(context.args[0])
-    name = " ".join(context.args[1:]).strip() or str(uid)
-    ALLOWED_USERS[uid] = {"name": name, "added_at": datetime.now().isoformat()}
+    rest = context.args[1:]
+    phone = ""
+    if rest and _looks_like_phone(rest[-1]):
+        phone = rest[-1]
+        rest = rest[:-1]
+    name = " ".join(rest).strip() or str(uid)
+    ALLOWED_USERS[uid] = {"name": name, "phone": phone, "added_at": datetime.now().isoformat()}
     _save_allowed_users()
-    await update.message.reply_text(t(lang, "user_added", uid=f"{name} ({uid})"))
+    label = f"{name} ({uid})" + (f", {phone}" if phone else "")
+    await update.message.reply_text(t(lang, "user_added", uid=label))
+
+
+async def setphone_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    if len(context.args) < 2 or not context.args[0].isdigit():
+        await update.message.reply_text(t(lang, "setphone_usage"))
+        return
+    uid = int(context.args[0])
+    phone = context.args[1]
+    if uid not in ALLOWED_USERS:
+        await update.message.reply_text(t(lang, "user_not_found", uid=uid))
+        return
+    ALLOWED_USERS[uid]["phone"] = phone
+    _save_allowed_users()
+    await update.message.reply_text(t(lang, "phone_updated", uid=uid, phone=phone))
 
 
 async def removeuser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1424,7 +1595,10 @@ async def listusers_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(t(lang, "admin_only"))
         return
     admins = ", ".join(str(x) for x in sorted(ADMIN_USER_IDS)) or "—"
-    users = "\n".join(f"• {info['name']} ({uid})" for uid, info in ALLOWED_USERS.items()) or "—"
+    users = "\n".join(
+        f"• {info['name']} — ID: {uid}" + (f" — 📞 {info.get('phone')}" if info.get("phone") else "")
+        for uid, info in ALLOWED_USERS.items()
+    ) or "—"
     await update.message.reply_text(f"👑 Adminlar: {admins}\n\n👤 Xodimlar:\n{users}")
 
 
@@ -1466,24 +1640,71 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     file = await photo.get_file()
     image_bytes = bytes(await file.download_as_bytearray())
 
-    extracted = await extract_text_from_image(image_bytes)
-    if not extracted:
-        await update.message.reply_text(t(lang, "photo_no_text"), reply_markup=kb_for(update))
-        return
-
-    await update.message.reply_text(t(lang, "photo_extracted", text=extracted))
+    text_val, img_keywords = await analyze_image(image_bytes)
+    if text_val:
+        await update.message.reply_text(t(lang, "photo_extracted", text=text_val))
 
     mode = context.user_data.get("mode")
     if mode == "general":
-        await handle_general_ai(update, context, extracted)
+        query_text = text_val or "Rasmda nima ko'rinyapti, tushuntirib ber."
+        await handle_general_ai(update, context, query_text)
         return
+
     ln = get_selected_line(context)
     if ln is None:
         await update.message.reply_text(
             t(lang, "no_machine_selected", ai=AI_CHAT_LABEL), reply_markup=kb_for(update)
         )
         return
-    await handle_machine_query(update, context, ln, extracted)
+
+    # Tegishli taglarni topish: rasmdan olingan kalit so'zlar + (bo'lsa) matn.
+    keywords = set(img_keywords)
+    if text_val:
+        keywords |= local_keywords(text_val)
+    candidates = local_search(ln.tags, keywords) if keywords else []
+    if len(candidates) < MIN_LOCAL_CANDIDATES and text_val:
+        ai_keywords_raw = await ask_ai(KEYWORD_SYSTEM_PROMPT, text_val)
+        if ai_keywords_raw:
+            keywords |= {w.strip().lower() for w in ai_keywords_raw.replace("\n", ",").split(",") if w.strip()}
+            candidates = local_search(ln.tags, keywords)
+
+    if not candidates:
+        log_no_match(ln.id, lang, text_val or "[rasm/image]")
+        await update.message.reply_text(t(lang, "no_match"), reply_markup=kb_for(update))
+        return
+
+    tag_block = build_tag_block(candidates)
+    system_prompt = build_diagnosis_prompt(ln.label, tag_block, False, lang)
+
+    # Avval rasmning O'ZI asosida (Gemini vision) diagnostika qilishga
+    # harakat qilamiz — bu OCR matn transkriptiga qaraganda ancha aniqroq
+    # (indikator rangi, ekran tuzilishi kabi tafsilotlarni ham ko'radi).
+    answer = await ask_ai_vision(system_prompt, image_bytes, lang)
+    if not answer and text_val:
+        # Gemini vision band bo'lsa, matn asosida (Groq/OpenRouter orqali
+        # ham ishlaydigan) oddiy tahlilga o'tamiz.
+        answer = await ask_ai(system_prompt, text_val, lang=lang)
+
+    query_label = text_val or "[rasm]"
+
+    if not answer:
+        answer = format_raw_tags(candidates, ln.label, lang)
+        await update.message.reply_text(answer, reply_markup=kb_for(update))
+        answer_id = register_answer(ln.id, lang, query_label, answer)
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"),
+            reply_markup=build_feedback_keyboard(answer_id, lang),
+        )
+        return
+
+    answer_id = register_answer(ln.id, lang, query_label, answer)
+    await update.message.reply_text(answer, parse_mode="Markdown")
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"),
+        reply_markup=build_feedback_keyboard(answer_id, lang),
+    )
+    log_query(update, ln.id, query_label, answer)
+    cache_set(ln.id, lang, query_label, answer)
 
 
 async def tag_lookup(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1679,6 +1900,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await handle_admin_task_text(update, context, user_text)
         return
 
+    if mode == "admin_task_schedule":
+        await handle_admin_task_schedule(update, context, user_text)
+        return
+
     if mode == "general":
         await handle_general_ai(update, context, user_text)
         return
@@ -1709,8 +1934,27 @@ async def error_handler(update, context):
 
 
 # ---------------------------------------------------------------------------
-# Rejalashtirilgan vazifalar: haftalik statistika, bot salomatligi (healthcheck)
+# Rejalashtirilgan vazifalar: kunlik hisobot (adminga), haftalik statistika,
+# bot salomatligi (healthcheck)
 # ---------------------------------------------------------------------------
+
+async def daily_report_job(context: ContextTypes.DEFAULT_TYPE):
+    """Har kuni belgilangan vaqtda (standart 18:00) o'sha kunning barcha
+    topshiriqlari va ularning holati (bajarildi/jarayonda/bajarilmadi)
+    haqidagi to'liq jadvalni barcha adminlarga yuboradi."""
+    if not ADMIN_USER_IDS:
+        return
+    tasks = todays_tasks()
+    if not tasks:
+        return
+    table = build_tasks_table(tasks, "uz")
+    header = f"📊 *Kunlik hisobot* — {datetime.now().strftime('%d.%m.%Y')}\n\n"
+    for admin_id in ADMIN_USER_IDS:
+        try:
+            await context.bot.send_message(chat_id=admin_id, text=header + table, parse_mode="Markdown")
+        except Exception as e:
+            logger.warning("Kunlik hisobotni yuborishda xatolik (%s): %s", admin_id, e)
+
 
 async def weekly_stats_job(context: ContextTypes.DEFAULT_TYPE):
     if not STATS_CHAT_ID:
@@ -1799,6 +2043,8 @@ def main():
     app.add_error_handler(error_handler)
 
     if app.job_queue is not None:
+        if ADMIN_USER_IDS:
+            app.job_queue.run_daily(daily_report_job, time=datetime.strptime(DAILY_REPORT_TIME, "%H:%M").time())
         if STATS_CHAT_ID:
             app.job_queue.run_daily(weekly_stats_job, time=datetime.strptime("08:00", "%H:%M").time())
         if HEALTHCHECK_PING_URL:
