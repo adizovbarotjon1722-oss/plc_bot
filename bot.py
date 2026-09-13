@@ -92,6 +92,8 @@ STATS_CHAT_ID = int(STATS_CHAT_ID) if STATS_CHAT_ID.lstrip("-").isdigit() else N
 
 # --- Ma'lumot sifati (mos kelmagan so'rovlar) ---
 NO_MATCH_LOG_PATH = os.getenv("NO_MATCH_LOG_PATH", "no_match.log")
+TASKS_PATH = os.getenv("TASKS_PATH", "tasks.json")
+TASKS_SHOWN_LIMIT = int(os.getenv("TASKS_SHOWN_LIMIT", "5"))
 
 # --- Bot salomatligini kuzatish (ixtiyoriy, masalan healthchecks.io) ---
 HEALTHCHECK_PING_URL = os.getenv("HEALTHCHECK_PING_URL", "").strip()
@@ -137,17 +139,23 @@ if OPENROUTER_API_KEY and not OpenAI:
 
 ACCESS_CONTROL_ENABLED = bool(ADMIN_USER_IDS)
 
+# ALLOWED_USERS: {user_id (int): {"name": str, "added_at": iso-str}}
+# Eski formatdan (ID'lar ro'yxati) ham avtomatik o'tkaziladi.
 try:
     with open(ALLOWED_USERS_PATH, "r", encoding="utf-8") as f:
-        ALLOWED_USERS = set(json.load(f))
+        _raw = json.load(f)
+    if isinstance(_raw, list):
+        ALLOWED_USERS = {int(uid): {"name": str(uid), "added_at": ""} for uid in _raw}
+    else:
+        ALLOWED_USERS = {int(uid): info for uid, info in _raw.items()}
 except (FileNotFoundError, json.JSONDecodeError):
-    ALLOWED_USERS = set()
+    ALLOWED_USERS = {}
 
 
 def _save_allowed_users():
     try:
         with open(ALLOWED_USERS_PATH, "w", encoding="utf-8") as f:
-            json.dump(sorted(ALLOWED_USERS), f)
+            json.dump({str(uid): info for uid, info in ALLOWED_USERS.items()}, f, ensure_ascii=False)
     except Exception as e:
         logger.warning("allowed_users saqlashda xatolik: %s", e)
 
@@ -160,6 +168,11 @@ def is_authorized(user_id: int) -> bool:
 
 def is_admin(user_id: int) -> bool:
     return user_id in ADMIN_USER_IDS
+
+
+def employee_name(user_id: int) -> str:
+    info = ALLOWED_USERS.get(user_id)
+    return info["name"] if info else str(user_id)
 
 # ---------------------------------------------------------------------------
 # Tillar va tarjimalar
@@ -238,7 +251,8 @@ TEXT = {
         "user_added": "✅ Foydalanuvchi {uid} ro'yxatga qo'shildi.",
         "user_removed": "✅ Foydalanuvchi {uid} ro'yxatdan o'chirildi.",
         "admin_only": "Bu buyruq faqat administrator uchun.",
-        "adduser_usage": "Foydalanish: /adduser <telegram_id>",
+        "adduser_usage": "Foydalanish: /adduser <telegram_id> <ism (ixtiyoriy)>",
+        "feedback_prompt": "💬 Bu javob foydali bo'ldimi?",
         "feedback_thanks_up": "Rahmat! ✅",
         "feedback_thanks_down": "Xabar uchun rahmat, buni yaxshilashga harakat qilamiz. 🙏",
         "resolved_thanks": "Ajoyib! Yopildi. ✅",
@@ -270,6 +284,29 @@ TEXT = {
         "esp32_on": "yoqilgan ✅", "esp32_off": "o'chirilgan ⏸️",
         "esp32_alarm_yes": "faol 🚨", "esp32_alarm_no": "yo'q ✅",
         "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
+        "admin_menu_title": "🔑 *Admin bo'limi*\nNima qilmoqchisiz?",
+        "admin_btn_new_task": "📋 Kunlik topshiriq berish",
+        "admin_btn_list_users": "👥 Xodimlar ro'yxati",
+        "admin_btn_back": "⬅️ Orqaga",
+        "task_choose_target": "Topshiriqni kimga berasiz?",
+        "task_target_all": "🌐 Hammaga",
+        "task_ask_text": "✅ Qabul qildim: *{target}*.\nEndi topshiriq/vazifa matnini yozing:",
+        "task_sent_dm": (
+            "📋 *Sizga yangi kunlik topshiriq bor!*\n\n"
+            "{text}\n\n"
+            "— {admin_name}"
+        ),
+        "task_sent_confirm": "✅ Topshiriq yuborildi: {count} kishiga.",
+        "no_employees_yet": "Hozircha ro'yxatda xodim yo'q. Avval /adduser orqali qo'shing.",
+        "employees_profile": "👤 *Sizning profilingiz*\nIsm: {name}\nID: {id}",
+        "employees_no_tasks": "Hozircha sizga berilgan topshiriq yo'q.",
+        "employees_tasks_title": "📋 *So'nggi topshiriqlar:*",
+        "task_item": "{date} — {text}\nHolat: {status}",
+        "task_status_pending": "⏳ Bajarilmoqda",
+        "task_status_done": "✅ Bajarildi",
+        "task_done_button": "✅ Bajardim",
+        "task_marked_done": "Rahmat! Topshiriq bajarilgan deb belgilandi. ✅",
+        "task_employee_done_notice": "✅ {name} \"{text}\" topshirig'ini bajardi deb belgiladi.",
     },
     "en": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -323,7 +360,8 @@ TEXT = {
         "user_added": "✅ User {uid} added.",
         "user_removed": "✅ User {uid} removed.",
         "admin_only": "This command is for administrators only.",
-        "adduser_usage": "Usage: /adduser <telegram_id>",
+        "adduser_usage": "Usage: /adduser <telegram_id> <name (optional)>",
+        "feedback_prompt": "💬 Was this answer helpful?",
         "feedback_thanks_up": "Thanks! ✅",
         "feedback_thanks_down": "Thanks for the feedback, we'll try to improve. 🙏",
         "resolved_thanks": "Great, closed. ✅",
@@ -355,6 +393,29 @@ TEXT = {
         "esp32_on": "ON ✅", "esp32_off": "OFF ⏸️",
         "esp32_alarm_yes": "active 🚨", "esp32_alarm_no": "none ✅",
         "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
+        "admin_menu_title": "🔑 *Admin panel*\nWhat would you like to do?",
+        "admin_btn_new_task": "📋 Assign daily task",
+        "admin_btn_list_users": "👥 Employee list",
+        "admin_btn_back": "⬅️ Back",
+        "task_choose_target": "Who is this task for?",
+        "task_target_all": "🌐 Everyone",
+        "task_ask_text": "✅ Got it: *{target}*.\nNow type the task/assignment text:",
+        "task_sent_dm": (
+            "📋 *You have a new daily task!*\n\n"
+            "{text}\n\n"
+            "— {admin_name}"
+        ),
+        "task_sent_confirm": "✅ Task sent to {count} people.",
+        "no_employees_yet": "No employees registered yet. Add them with /adduser first.",
+        "employees_profile": "👤 *Your profile*\nName: {name}\nID: {id}",
+        "employees_no_tasks": "You have no assigned tasks yet.",
+        "employees_tasks_title": "📋 *Recent tasks:*",
+        "task_item": "{date} — {text}\nStatus: {status}",
+        "task_status_pending": "⏳ In progress",
+        "task_status_done": "✅ Done",
+        "task_done_button": "✅ Mark done",
+        "task_marked_done": "Thanks! The task was marked as done. ✅",
+        "task_employee_done_notice": "✅ {name} marked \"{text}\" as done.",
     },
     "zh": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -403,7 +464,8 @@ TEXT = {
         "user_added": "✅ 已添加用户 {uid}。",
         "user_removed": "✅ 已移除用户 {uid}。",
         "admin_only": "此命令仅限管理员使用。",
-        "adduser_usage": "用法：/adduser <telegram_id>",
+        "adduser_usage": "用法：/adduser <telegram_id> <姓名（可选）>",
+        "feedback_prompt": "💬 这个回答有帮助吗？",
         "feedback_thanks_up": "谢谢！✅",
         "feedback_thanks_down": "感谢反馈，我们会努力改进。🙏",
         "resolved_thanks": "太好了，已关闭。✅",
@@ -435,6 +497,29 @@ TEXT = {
         "esp32_on": "已开启 ✅", "esp32_off": "已关闭 ⏸️",
         "esp32_alarm_yes": "报警中 🚨", "esp32_alarm_no": "无 ✅",
         "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
+        "admin_menu_title": "🔑 *管理员面板*\n您想做什么？",
+        "admin_btn_new_task": "📋 分配每日任务",
+        "admin_btn_list_users": "👥 员工列表",
+        "admin_btn_back": "⬅️ 返回",
+        "task_choose_target": "这个任务分配给谁？",
+        "task_target_all": "🌐 所有人",
+        "task_ask_text": "✅ 已选择：*{target}*。\n现在请输入任务内容：",
+        "task_sent_dm": (
+            "📋 *您有新的每日任务！*\n\n"
+            "{text}\n\n"
+            "— {admin_name}"
+        ),
+        "task_sent_confirm": "✅ 任务已发送给 {count} 人。",
+        "no_employees_yet": "暂无注册员工。请先使用 /adduser 添加。",
+        "employees_profile": "👤 *您的资料*\n姓名：{name}\nID：{id}",
+        "employees_no_tasks": "您目前没有分配的任务。",
+        "employees_tasks_title": "📋 *最近的任务：*",
+        "task_item": "{date} — {text}\n状态：{status}",
+        "task_status_pending": "⏳ 进行中",
+        "task_status_done": "✅ 已完成",
+        "task_done_button": "✅ 标记完成",
+        "task_marked_done": "谢谢！任务已标记为完成。✅",
+        "task_employee_done_notice": "✅ {name} 已将\"{text}\"标记为完成。",
     },
 }
 
@@ -455,6 +540,8 @@ def get_lang(context: ContextTypes.DEFAULT_TYPE) -> str:
 MACHINE_MENU_LABEL = "🔀 Uskunani tanlash/almashtirish"
 AI_CHAT_LABEL = "🤖 Sun'iy intellekt (erkin savol) / AI Assistant / 人工智能"
 ESP32_MENU_LABEL = "🏭 Zavod monitoring (kompressor/chiller)"
+EMPLOYEES_MENU_LABEL = "👥 Xodimlar / Employees / 员工"
+ADMIN_MENU_LABEL = "🔑 Admin bo'limi / Admin panel / 管理员"
 
 # ---------------------------------------------------------------------------
 # Uskunalar (liniyalar) konfiguratsiyasini yuklash
@@ -579,13 +666,21 @@ def language_keyboard() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup([[LANG_BUTTON["uz"]], [LANG_BUTTON["en"]], [LANG_BUTTON["zh"]]], resize_keyboard=True)
 
 
-def machine_keyboard() -> ReplyKeyboardMarkup:
+def machine_keyboard(user_id: int = None) -> ReplyKeyboardMarkup:
     rows = [[line.label] for line in LINES.values()]
     if ESP32_STATUS_URL:
         rows.append([ESP32_MENU_LABEL])
+    rows.append([EMPLOYEES_MENU_LABEL])
+    if user_id is not None and is_admin(user_id):
+        rows.append([ADMIN_MENU_LABEL])
     rows.append([AI_CHAT_LABEL])
     rows.append([LANG_CHANGE_LABEL])
     return ReplyKeyboardMarkup(rows, resize_keyboard=True)
+
+
+def kb_for(update: Update) -> ReplyKeyboardMarkup:
+    uid = update.effective_user.id if update and update.effective_user else None
+    return machine_keyboard(uid)
 
 
 def get_selected_line(context: ContextTypes.DEFAULT_TYPE):
@@ -761,7 +856,16 @@ def _generate_sync(system_prompt: str, user_text: str):
     return None
 
 
-async def ask_ai(system_prompt: str, user_text: str):
+LANG_REMINDER = {
+    "uz": "\n\n[TIZIM: Javobni albatta O'ZBEK tilida yoz — faqat agar yuqoridagi savol aniq ingliz yoki xitoy tilida yozilgan bo'lsa, o'sha tilda javob ber. Boshqa hech qanday tilda yozma.]",
+    "en": "\n\n[SYSTEM: Reply in ENGLISH — unless the message above is clearly written in Uzbek or Chinese, in which case reply in that language instead. Do not use any other language.]",
+    "zh": "\n\n[系统：请务必用中文回答——除非上面的消息明显是用乌兹别克语或英语写的，此时请改用该语言回答。不要使用任何其他语言。]",
+}
+
+
+async def ask_ai(system_prompt: str, user_text: str, lang: str = None):
+    if lang:
+        user_text = user_text + LANG_REMINDER.get(lang, LANG_REMINDER["uz"])
     return await asyncio.to_thread(_generate_sync, system_prompt, user_text)
 
 
@@ -831,12 +935,20 @@ def cache_set(scope: str, lang: str, text: str, answer: str):
 PENDING_ANSWERS = {}
 
 
-def build_feedback_keyboard(answer_id: str) -> InlineKeyboardMarkup:
+RESOLVE_BUTTON = {
+    "uz": ("✅ Hal bo'ldi", "❌ Hal bo'lmadi"),
+    "en": ("✅ Resolved", "❌ Not resolved"),
+    "zh": ("✅ 已解决", "❌ 未解决"),
+}
+
+
+def build_feedback_keyboard(answer_id: str, lang: str = "uz") -> InlineKeyboardMarkup:
+    yes_label, no_label = RESOLVE_BUTTON.get(lang, RESOLVE_BUTTON["uz"])
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("👍", callback_data=f"fb:up:{answer_id}"),
          InlineKeyboardButton("👎", callback_data=f"fb:down:{answer_id}")],
-        [InlineKeyboardButton("✅ Hal bo'ldi", callback_data=f"res:yes:{answer_id}"),
-         InlineKeyboardButton("❌ Hal bo'lmadi", callback_data=f"res:no:{answer_id}")],
+        [InlineKeyboardButton(yes_label, callback_data=f"res:yes:{answer_id}"),
+         InlineKeyboardButton(no_label, callback_data=f"res:no:{answer_id}")],
     ])
 
 
@@ -872,6 +984,23 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
     query = update.callback_query
     await query.answer()
     data = query.data or ""
+
+    if data.startswith("task_done:"):
+        task_id = data.split(":", 1)[1]
+        lang = context.user_data.get("lang", "uz")
+        uid = update.effective_user.id
+        tk = mark_task_done(task_id, uid)
+        await query.answer(text=t(lang, "task_marked_done"), show_alert=False)
+        if tk:
+            try:
+                admin_lang = "uz"
+                notice = t(admin_lang, "task_employee_done_notice",
+                           name=employee_name(uid), text=tk["text"])
+                await context.bot.send_message(chat_id=tk["from"], text=notice)
+            except Exception as e:
+                logger.warning("Adminga bajarilganlik haqida xabar berishda xatolik: %s", e)
+        return
+
     parts = data.split(":", 2)
     if len(parts) != 3:
         return
@@ -921,6 +1050,202 @@ def log_no_match(line_id: str, lang: str, text: str):
             }, ensure_ascii=False) + "\n")
     except Exception as e:
         logger.warning("no_match logga yozishda xatolik: %s", e)
+
+
+# ---------------------------------------------------------------------------
+# Kunlik topshiriqlar: admin/muhandis mexaniklarga vazifa beradi, bu vazifa
+# botda saqlanadi VA har bir tegishli xodimning shaxsiy Telegram chatiga
+# darhol yuboriladi.
+# ---------------------------------------------------------------------------
+
+try:
+    with open(TASKS_PATH, "r", encoding="utf-8") as f:
+        TASKS = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    TASKS = []
+
+
+def _save_tasks():
+    try:
+        with open(TASKS_PATH, "w", encoding="utf-8") as f:
+            json.dump(TASKS, f, ensure_ascii=False, indent=1)
+    except Exception as e:
+        logger.warning("tasks.json saqlashda xatolik: %s", e)
+
+
+def create_task(admin_uid: int, target, text: str) -> dict:
+    if target == "all":
+        status = {str(uid): "pending" for uid in ALLOWED_USERS.keys()}
+    else:
+        status = {str(target): "pending"}
+    task = {
+        "id": uuid.uuid4().hex[:10],
+        "from": admin_uid,
+        "target": target,
+        "text": text,
+        "created_at": datetime.now().isoformat(),
+        "status": status,
+    }
+    TASKS.append(task)
+    _save_tasks()
+    return task
+
+
+def tasks_for_employee(uid: int, limit: int = TASKS_SHOWN_LIMIT):
+    uid_str = str(uid)
+    relevant = [tk for tk in TASKS if tk["target"] == "all" or str(tk["target"]) == uid_str]
+    relevant.sort(key=lambda tk: tk["created_at"], reverse=True)
+    return relevant[:limit]
+
+
+def mark_task_done(task_id: str, uid: int):
+    for tk in TASKS:
+        if tk["id"] == task_id:
+            tk["status"][str(uid)] = "done"
+            _save_tasks()
+            return tk
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Admin bo'limi: kunlik topshiriq berish, xodimlar ro'yxati
+# ---------------------------------------------------------------------------
+
+def admin_submenu_keyboard(lang: str) -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup([
+        [t(lang, "admin_btn_new_task")],
+        [t(lang, "admin_btn_list_users")],
+        [t(lang, "admin_btn_back")],
+    ], resize_keyboard=True)
+
+
+def task_target_keyboard(lang: str) -> ReplyKeyboardMarkup:
+    rows = [[t(lang, "task_target_all")]]
+    for uid, info in ALLOWED_USERS.items():
+        rows.append([f"{info['name']} ({uid})"])
+    rows.append([t(lang, "admin_btn_back")])
+    return ReplyKeyboardMarkup(rows, resize_keyboard=True)
+
+
+async def show_admin_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    context.user_data["mode"] = "admin_menu"
+    context.user_data.pop("task_flow", None)
+    context.user_data.pop("task_target", None)
+    await update.message.reply_text(
+        t(lang, "admin_menu_title"), parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang)
+    )
+
+
+async def handle_admin_menu_input(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
+    lang = get_lang(context)
+
+    if user_text == t(lang, "admin_btn_back"):
+        context.user_data["mode"] = None
+        await update.message.reply_text(t(lang, "greeting_after_lang", ai=AI_CHAT_LABEL), reply_markup=kb_for(update))
+        return
+
+    if user_text == t(lang, "admin_btn_new_task"):
+        if not ALLOWED_USERS:
+            await update.message.reply_text(t(lang, "no_employees_yet"), reply_markup=admin_submenu_keyboard(lang))
+            return
+        context.user_data["mode"] = "admin_task_target"
+        await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
+        return
+
+    if user_text == t(lang, "admin_btn_list_users"):
+        await listusers_cmd(update, context)
+        await update.message.reply_text(t(lang, "admin_menu_title"), parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang))
+        return
+
+    # Noma'lum matn — menyuni qayta ko'rsatamiz
+    await update.message.reply_text(t(lang, "admin_menu_title"), parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang))
+
+
+async def handle_admin_task_target(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
+    lang = get_lang(context)
+
+    if user_text == t(lang, "admin_btn_back"):
+        await show_admin_menu(update, context)
+        return
+
+    if user_text == t(lang, "task_target_all"):
+        context.user_data["task_target"] = "all"
+        target_label = t(lang, "task_target_all")
+    else:
+        matched_uid = None
+        for uid, info in ALLOWED_USERS.items():
+            if user_text == f"{info['name']} ({uid})":
+                matched_uid = uid
+                break
+        if matched_uid is None:
+            await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
+            return
+        context.user_data["task_target"] = matched_uid
+        target_label = employee_name(matched_uid)
+
+    context.user_data["mode"] = "admin_task_text"
+    await update.message.reply_text(
+        t(lang, "task_ask_text", target=target_label), parse_mode="Markdown",
+        reply_markup=ReplyKeyboardMarkup([[t(lang, "admin_btn_back")]], resize_keyboard=True),
+    )
+
+
+async def handle_admin_task_text(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
+    lang = get_lang(context)
+
+    if user_text == t(lang, "admin_btn_back"):
+        await show_admin_menu(update, context)
+        return
+
+    target = context.user_data.get("task_target")
+    admin_uid = update.effective_user.id
+    admin_name = employee_name(admin_uid) if admin_uid in ALLOWED_USERS else (update.effective_user.first_name or "Admin")
+
+    task = create_task(admin_uid, target, user_text)
+
+    dm_text = t(lang, "task_sent_dm", text=user_text, admin_name=admin_name)
+    sent = 0
+    for uid_str in task["status"].keys():
+        try:
+            await context.bot.send_message(chat_id=int(uid_str), text=dm_text, parse_mode="Markdown")
+            sent += 1
+        except Exception as e:
+            logger.warning("Xodimga (%s) topshiriq yuborishda xatolik: %s", uid_str, e)
+
+    await update.message.reply_text(t(lang, "task_sent_confirm", count=sent))
+    await show_admin_menu(update, context)
+
+
+# ---------------------------------------------------------------------------
+# Xodimlar bo'limi: profil va shaxsiy topshiriqlar
+# ---------------------------------------------------------------------------
+
+async def show_employees_section(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    uid = update.effective_user.id
+    name = employee_name(uid) if uid in ALLOWED_USERS else (update.effective_user.first_name or str(uid))
+
+    await update.message.reply_text(
+        t(lang, "employees_profile", name=name, id=uid), parse_mode="Markdown"
+    )
+
+    my_tasks = tasks_for_employee(uid)
+    if not my_tasks:
+        await update.message.reply_text(t(lang, "employees_no_tasks"), reply_markup=kb_for(update))
+        return
+
+    await update.message.reply_text(t(lang, "employees_tasks_title"), parse_mode="Markdown")
+    for tk in my_tasks:
+        status = tk["status"].get(str(uid), "pending")
+        status_label = t(lang, "task_status_done") if status == "done" else t(lang, "task_status_pending")
+        item_text = t(lang, "task_item", date=tk["created_at"][:16].replace("T", " "), text=tk["text"], status=status_label)
+        if status == "pending":
+            kb = InlineKeyboardMarkup([[InlineKeyboardButton(t(lang, "task_done_button"), callback_data=f"task_done:{tk['id']}")]])
+            await update.message.reply_text(item_text, reply_markup=kb)
+        else:
+            await update.message.reply_text(item_text)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=t(lang, "greeting_after_lang", ai=AI_CHAT_LABEL), reply_markup=kb_for(update))
 
 
 # ---------------------------------------------------------------------------
@@ -1004,15 +1329,15 @@ def format_esp32_status(data: dict, lang: str) -> str:
 async def handle_esp32_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
     if not ESP32_STATUS_URL:
-        await update.message.reply_text(t(lang, "esp32_not_configured"), reply_markup=machine_keyboard())
+        await update.message.reply_text(t(lang, "esp32_not_configured"), reply_markup=kb_for(update))
         return
     await update.message.reply_text(t(lang, "esp32_fetching"))
     data = await fetch_esp32_status()
     if data is None:
-        await update.message.reply_text(t(lang, "esp32_unreachable"), reply_markup=machine_keyboard())
+        await update.message.reply_text(t(lang, "esp32_unreachable"), reply_markup=kb_for(update))
         return
     await update.message.reply_text(
-        format_esp32_status(data, lang), parse_mode="Markdown", reply_markup=machine_keyboard()
+        format_esp32_status(data, lang), parse_mode="Markdown", reply_markup=kb_for(update)
     )
 
 
@@ -1035,18 +1360,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             t(lang, "returning_greeting", machine=ln.label),
             parse_mode="Markdown",
-            reply_markup=machine_keyboard(),
+            reply_markup=kb_for(update),
         )
         return
     await update.message.reply_text(
         t(lang, "greeting_after_lang", ai=AI_CHAT_LABEL),
-        reply_markup=machine_keyboard(),
+        reply_markup=kb_for(update),
     )
 
 
 async def choose_machine(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
-    await update.message.reply_text(t(lang, "choose_machine_prompt"), reply_markup=machine_keyboard())
+    await update.message.reply_text(t(lang, "choose_machine_prompt"), reply_markup=kb_for(update))
 
 
 async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1073,9 +1398,10 @@ async def adduser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(t(lang, "adduser_usage"))
         return
     uid = int(context.args[0])
-    ALLOWED_USERS.add(uid)
+    name = " ".join(context.args[1:]).strip() or str(uid)
+    ALLOWED_USERS[uid] = {"name": name, "added_at": datetime.now().isoformat()}
     _save_allowed_users()
-    await update.message.reply_text(t(lang, "user_added", uid=uid))
+    await update.message.reply_text(t(lang, "user_added", uid=f"{name} ({uid})"))
 
 
 async def removeuser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1087,7 +1413,7 @@ async def removeuser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(t(lang, "adduser_usage"))
         return
     uid = int(context.args[0])
-    ALLOWED_USERS.discard(uid)
+    ALLOWED_USERS.pop(uid, None)
     _save_allowed_users()
     await update.message.reply_text(t(lang, "user_removed", uid=uid))
 
@@ -1098,8 +1424,8 @@ async def listusers_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(t(lang, "admin_only"))
         return
     admins = ", ".join(str(x) for x in sorted(ADMIN_USER_IDS)) or "—"
-    users = ", ".join(str(x) for x in sorted(ALLOWED_USERS)) or "—"
-    await update.message.reply_text(f"👑 Adminlar: {admins}\n👤 Ruxsat berilganlar: {users}")
+    users = "\n".join(f"• {info['name']} ({uid})" for uid, info in ALLOWED_USERS.items()) or "—"
+    await update.message.reply_text(f"👑 Adminlar: {admins}\n\n👤 Xodimlar:\n{users}")
 
 
 async def nomatches_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1142,7 +1468,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     extracted = await extract_text_from_image(image_bytes)
     if not extracted:
-        await update.message.reply_text(t(lang, "photo_no_text"), reply_markup=machine_keyboard())
+        await update.message.reply_text(t(lang, "photo_no_text"), reply_markup=kb_for(update))
         return
 
     await update.message.reply_text(t(lang, "photo_extracted", text=extracted))
@@ -1154,7 +1480,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ln = get_selected_line(context)
     if ln is None:
         await update.message.reply_text(
-            t(lang, "no_machine_selected", ai=AI_CHAT_LABEL), reply_markup=machine_keyboard()
+            t(lang, "no_machine_selected", ai=AI_CHAT_LABEL), reply_markup=kb_for(update)
         )
         return
     await handle_machine_query(update, context, ln, extracted)
@@ -1167,7 +1493,7 @@ async def tag_lookup(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     ln = get_selected_line(context)
     if ln is None:
-        await update.message.reply_text(t(lang, "choose_machine_first_tag"), reply_markup=machine_keyboard())
+        await update.message.reply_text(t(lang, "choose_machine_first_tag"), reply_markup=kb_for(update))
         return
     if not context.args:
         await update.message.reply_text(t(lang, "tag_usage"))
@@ -1194,20 +1520,20 @@ async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, 
 
     cached = cache_get("general", lang, user_text)
     if cached:
-        await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=machine_keyboard())
+        await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=kb_for(update))
         return
 
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
-    answer = await ask_ai(general_ai_prompt(lang), user_text)
+    answer = await ask_ai(general_ai_prompt(lang), user_text, lang=lang)
     if not answer:
-        await update.message.reply_text(t(lang, "ai_busy_general"), reply_markup=machine_keyboard())
+        await update.message.reply_text(t(lang, "ai_busy_general"), reply_markup=kb_for(update))
         return
     answer_id = register_answer("general", lang, user_text, answer)
     await update.message.reply_text(answer, parse_mode="Markdown")
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="—",
-        reply_markup=build_feedback_keyboard(answer_id),
+        text=t(lang, "feedback_prompt"),
+        reply_markup=build_feedback_keyboard(answer_id, lang),
     )
     cache_set("general", lang, user_text, answer)
 
@@ -1218,7 +1544,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
 
     cached = cache_get(ln.id, lang, user_text)
     if cached:
-        await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=machine_keyboard())
+        await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=kb_for(update))
         return
 
     if looks_like_address(user_text):
@@ -1229,7 +1555,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
             log_no_match(ln.id, lang, user_text)
             await update.message.reply_text(
                 t(lang, "addr_not_found", addr=user_text, machine=ln.label),
-                reply_markup=machine_keyboard(),
+                reply_markup=kb_for(update),
             )
             return
     else:
@@ -1246,26 +1572,26 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
         found_all = False
         if not candidates:
             log_no_match(ln.id, lang, user_text)
-            await update.message.reply_text(t(lang, "no_match"), reply_markup=machine_keyboard())
+            await update.message.reply_text(t(lang, "no_match"), reply_markup=kb_for(update))
             return
 
     tag_block = build_tag_block(candidates)
     system_prompt = build_diagnosis_prompt(ln.label, tag_block, found_all, lang)
-    answer = await ask_ai(system_prompt, user_text)
+    answer = await ask_ai(system_prompt, user_text, lang=lang)
 
     if not answer:
         answer = format_raw_tags(candidates, ln.label, lang)
-        await update.message.reply_text(answer, reply_markup=machine_keyboard())
+        await update.message.reply_text(answer, reply_markup=kb_for(update))
         answer_id = register_answer(ln.id, lang, user_text, answer)
         await context.bot.send_message(
-            chat_id=update.effective_chat.id, text="—", reply_markup=build_feedback_keyboard(answer_id)
+            chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"), reply_markup=build_feedback_keyboard(answer_id, lang)
         )
         return
 
     answer_id = register_answer(ln.id, lang, user_text, answer)
     await update.message.reply_text(answer, parse_mode="Markdown")
     await context.bot.send_message(
-        chat_id=update.effective_chat.id, text="—", reply_markup=build_feedback_keyboard(answer_id)
+        chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"), reply_markup=build_feedback_keyboard(answer_id, lang)
     )
     log_query(update, ln.id, user_text, answer)
     cache_set(ln.id, lang, user_text, answer)
@@ -1289,7 +1615,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         await update.message.reply_text(
             t(lang, "greeting_after_lang", ai=AI_CHAT_LABEL),
-            reply_markup=machine_keyboard(),
+            reply_markup=kb_for(update),
         )
         return
 
@@ -1310,17 +1636,29 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             t(lang, "machine_selected", machine=ln.label),
             parse_mode="Markdown",
-            reply_markup=machine_keyboard(),
+            reply_markup=kb_for(update),
         )
         return
 
     if user_text == AI_CHAT_LABEL:
         context.user_data["mode"] = "general"
-        await update.message.reply_text(t(lang, "ai_mode_intro"), reply_markup=machine_keyboard())
+        await update.message.reply_text(t(lang, "ai_mode_intro"), reply_markup=kb_for(update))
         return
 
     if user_text == ESP32_MENU_LABEL:
         await handle_esp32_status(update, context)
+        return
+
+    if user_text == EMPLOYEES_MENU_LABEL:
+        context.user_data["mode"] = None
+        await show_employees_section(update, context)
+        return
+
+    if user_text == ADMIN_MENU_LABEL:
+        if not is_admin(update.effective_user.id):
+            await update.message.reply_text(t(lang, "admin_only"))
+            return
+        await show_admin_menu(update, context)
         return
 
     if user_text == MACHINE_MENU_LABEL:
@@ -1328,6 +1666,19 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     mode = context.user_data.get("mode")
+
+    if mode == "admin_menu":
+        await handle_admin_menu_input(update, context, user_text)
+        return
+
+    if mode == "admin_task_target":
+        await handle_admin_task_target(update, context, user_text)
+        return
+
+    if mode == "admin_task_text":
+        await handle_admin_task_text(update, context, user_text)
+        return
+
     if mode == "general":
         await handle_general_ai(update, context, user_text)
         return
@@ -1336,7 +1687,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if ln is None:
         await update.message.reply_text(
             t(lang, "no_machine_selected", ai=AI_CHAT_LABEL),
-            reply_markup=machine_keyboard(),
+            reply_markup=kb_for(update),
         )
         return
 

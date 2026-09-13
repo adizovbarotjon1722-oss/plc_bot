@@ -7,7 +7,12 @@ tushuntirib beruvchi bot.
 
 ## Asosiy xususiyatlar
 
-- **3 tilni qo'llab-quvvatlaydi:** O'zbek, ingliz, xitoy.
+- **3 tilni qo'llab-quvvatlaydi (kuchaytirilgan):** O'zbek, ingliz, xitoy —
+  har bir AI so'roviga qo'shimcha til-eslatmasi biriktirilib, bepul/zaifroq
+  AI modellari ham tanlangan tilga barqaror rioya qilishi ta'minlangan.
+- **👥 Xodimlar va 🔑 Admin bo'limi:** muhandis/admin mexaniklarga kunlik
+  topshiriq beradi — xabar avtomatik ravishda har bir xodimning shaxsiy
+  Telegram chatiga boradi va botda saqlanadi (pastga qarang).
 - **5 ta uskuna/liniya:** GEM welding, SA3 welding, Water cooling,
   Water cooling robot, Deflashing.
 - **Aqlli qidiruv + mahalliy lug'at:** AI'ga butun tag ro'yxati emas, faqat
@@ -93,6 +98,31 @@ ularga to'liq ma'lumot (uskuna, savol, bot javobi) yuboriladi.
 python bot.py
 ```
 
+## Xodimlar va Admin bo'limlari
+
+Endi botda ikkita qo'shimcha bo'lim bor:
+
+- **👥 Xodimlar** — hamma ko'radi. O'z profilini (ism, ID) va o'ziga
+  berilgan so'nggi topshiriqlarni (holati bilan) ko'rsatadi. Har bir
+  bajarilmagan topshiriq oldida "✅ Bajardim" tugmasi bo'ladi.
+- **🔑 Admin bo'limi** — faqat `ADMIN_USER_IDS`da ko'rsatilgan
+  foydalanuvchilarga ko'rinadi. Shu yerdan:
+  - **📋 Kunlik topshiriq berish** — avval kimga (bitta xodim yoki
+    "🌐 Hammaga") ekanini tanlaysiz, keyin matnni yozasiz. Xabar
+    darhol har bir tegishli xodimning shaxsiy Telegram chatiga
+    yuboriladi VA botda saqlanadi (xodim "Xodimlar" bo'limidan istalgan
+    vaqt qayta ko'rishi mumkin).
+  - **👥 Xodimlar ro'yxati** — barcha ro'yxatdagi xodimlar va adminlar.
+
+**Xodimni ism bilan qo'shish:**
+```
+/adduser <telegram_id> <ism>
+```
+Masalan: `/adduser 123456789 Sardor mexanik`
+
+Xodim topshiriqni "✅ Bajardim" tugmasi orqali belgilaganda, sizga (uni
+bergan adminga) avtomatik xabar keladi.
+
 ## Buyruqlar ro'yxati
 
 | Buyruq | Kim uchun | Vazifasi |
@@ -138,6 +168,44 @@ bog'lash mumkin:
   Buni oldini olish uchun routeringizda ESP32'ga **statik IP** yoki
   "DHCP reservation" belgilashni tavsiya qilamiz — aks holda IP o'zgarsa,
   `.env`dagi `ESP32_STATUS_URL`ni qo'lda yangilashingiz kerak bo'ladi.
+
+## 👥 Xodimlar va 🔑 Admin bo'limi (kunlik topshiriqlar)
+
+Endi bot orqali kunlik topshiriq/vazifa berish mumkin — siz (muhandis)
+mexaniklarga vazifa yozasiz, ular avtomatik ravishda **shaxsiy Telegram
+chatiga** yuboriladi, shu bilan birga botning "Xodimlar" bo'limida ham
+saqlanadi.
+
+### Sozlash
+
+1. Avval `ADMIN_USER_IDS`ni to'ldiring (yuqoridagi "Kirishni cheklash"
+   bo'limiga qarang) — siz shu orqali admin bo'lasiz.
+2. Har bir mexanikni ism bilan qo'shing:
+   ```
+   /adduser 123456789 Aziz
+   /adduser 987654321 Botir
+   ```
+   (Ism yozmasangiz ham bo'ladi, lekin ism bilan ro'yxat chiroyliroq ko'rinadi.)
+
+### Foydalanish (admin/muhandis sifatida)
+
+1. Pastdagi **"🔑 Admin bo'limi"** tugmasini bosing (bu tugma faqat
+   adminlarga ko'rinadi).
+2. **"📋 Kunlik topshiriq berish"** ni tanlang.
+3. Kimga berilishini tanlang — muayyan xodim yoki **"🌐 Hammaga"**.
+4. Topshiriq matnini yozing (masalan: "3-stansiyadagi konveyer motorini
+   moylang").
+5. Bosilgan zahoti, tanlangan xodim(lar)ning shaxsiy Telegram chatiga
+   xabar boradi, va bot buni saqlab qoladi.
+
+### Xodim tomonidan
+
+Har bir xodim pastdagi **"👥 Xodimlar"** tugmasini bosib:
+- O'z profilini (ism, ID) ko'radi.
+- So'nggi 5 ta o'ziga tegishli topshiriqni (holati bilan) ko'radi.
+- Har bir bajarilmagan topshiriq ostida **"✅ Bajardim"** tugmasi bor —
+  bosilsa, admin(engineer)ga avtomatik xabar boradi va topshiriq
+  "Bajarildi" deb belgilanadi.
 
 ## Fayllar tuzilishi
 
