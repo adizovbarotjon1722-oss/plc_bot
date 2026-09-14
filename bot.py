@@ -295,6 +295,7 @@ TEXT = {
         "task_sent_dm": (
             "📋 *Sizga yangi kunlik topshiriq bor!*\n\n"
             "{text}\n\n"
+            "🕒 Vaqt: {schedule}\n\n"
             "— {admin_name}"
         ),
         "task_sent_confirm": "✅ Topshiriq yuborildi: {count} kishiga.",
@@ -302,12 +303,30 @@ TEXT = {
         "employees_profile": "👤 *Sizning profilingiz*\nIsm: {name}\nID: {id}",
         "employees_no_tasks": "Hozircha sizga berilgan topshiriq yo'q.",
         "employees_tasks_title": "📋 *So'nggi topshiriqlar:*",
-        "task_item": "{date} — {text}\nHolat: {status}",
+        "task_item": "{date} — {text}\n🕒 Vaqt: {schedule}\nHolat: {status}",
         "task_status_pending": "⏳ Bajarilmoqda",
         "task_status_done": "✅ Bajarildi",
         "task_done_button": "✅ Bajardim",
         "task_marked_done": "Rahmat! Topshiriq bajarilgan deb belgilandi. ✅",
         "task_employee_done_notice": "✅ {name} \"{text}\" topshirig'ini bajardi deb belgiladi.",
+        "admin_btn_report": "📊 Hisobot jadvali",
+        "task_ask_schedule": "🕒 Ish boshlanish va tugash vaqtini yozing (masalan: \"14:00 dan 18:00 gacha\" yoki \"bugun kechgacha\"):",
+        "task_no_schedule": "Belgilanmagan",
+        "task_start_button": "🔄 Boshladim",
+        "task_fail_button": "❌ Bajarilmadi",
+        "task_marked_in_progress": "Qabul qilindi, omad! 🔄",
+        "task_marked_failed": "Xabar uchun rahmat, adminga yetkazdik. 🙏",
+        "task_status_in_progress": "🔄 Jarayonda",
+        "task_status_failed": "❌ Bajarilmadi",
+        "task_employee_status_notice": "🔔 {name}: \"{text}\" — holat: {status}",
+        "table_col_employee": "Xodim",
+        "table_col_task": "Topshiriq",
+        "table_col_time": "Vaqt",
+        "table_col_status": "Holat",
+        "no_tasks_today": "Bugun hali topshiriq berilmagan.",
+        "setphone_usage": "Foydalanish: /setphone <telegram_id> <telefon_raqam>",
+        "phone_updated": "✅ {uid} uchun telefon raqami yangilandi: {phone}",
+        "user_not_found": "Bunday ID ro'yxatda topilmadi.",
     },
     "en": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -404,6 +423,7 @@ TEXT = {
         "task_sent_dm": (
             "📋 *You have a new daily task!*\n\n"
             "{text}\n\n"
+            "🕒 Time: {schedule}\n\n"
             "— {admin_name}"
         ),
         "task_sent_confirm": "✅ Task sent to {count} people.",
@@ -411,12 +431,30 @@ TEXT = {
         "employees_profile": "👤 *Your profile*\nName: {name}\nID: {id}",
         "employees_no_tasks": "You have no assigned tasks yet.",
         "employees_tasks_title": "📋 *Recent tasks:*",
-        "task_item": "{date} — {text}\nStatus: {status}",
+        "task_item": "{date} — {text}\n🕒 Time: {schedule}\nStatus: {status}",
         "task_status_pending": "⏳ In progress",
         "task_status_done": "✅ Done",
         "task_done_button": "✅ Mark done",
         "task_marked_done": "Thanks! The task was marked as done. ✅",
         "task_employee_done_notice": "✅ {name} marked \"{text}\" as done.",
+        "admin_btn_report": "📊 Report table",
+        "task_ask_schedule": "🕒 Enter the start and end time (e.g. \"14:00 to 18:00\" or \"by end of day\"):",
+        "task_no_schedule": "Not set",
+        "task_start_button": "🔄 Started",
+        "task_fail_button": "❌ Not done",
+        "task_marked_in_progress": "Got it, good luck! 🔄",
+        "task_marked_failed": "Thanks for letting us know, the admin was notified. 🙏",
+        "task_status_in_progress": "🔄 In progress",
+        "task_status_failed": "❌ Not done",
+        "task_employee_status_notice": "🔔 {name}: \"{text}\" — status: {status}",
+        "table_col_employee": "Employee",
+        "table_col_task": "Task",
+        "table_col_time": "Time",
+        "table_col_status": "Status",
+        "no_tasks_today": "No tasks assigned today yet.",
+        "setphone_usage": "Usage: /setphone <telegram_id> <phone_number>",
+        "phone_updated": "✅ Phone number updated for {uid}: {phone}",
+        "user_not_found": "No such ID found in the list.",
     },
     "zh": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -508,6 +546,7 @@ TEXT = {
         "task_sent_dm": (
             "📋 *您有新的每日任务！*\n\n"
             "{text}\n\n"
+            "🕒 时间：{schedule}\n\n"
             "— {admin_name}"
         ),
         "task_sent_confirm": "✅ 任务已发送给 {count} 人。",
@@ -515,12 +554,30 @@ TEXT = {
         "employees_profile": "👤 *您的资料*\n姓名：{name}\nID：{id}",
         "employees_no_tasks": "您目前没有分配的任务。",
         "employees_tasks_title": "📋 *最近的任务：*",
-        "task_item": "{date} — {text}\n状态：{status}",
+        "task_item": "{date} — {text}\n🕒 时间：{schedule}\n状态：{status}",
         "task_status_pending": "⏳ 进行中",
         "task_status_done": "✅ 已完成",
         "task_done_button": "✅ 标记完成",
         "task_marked_done": "谢谢！任务已标记为完成。✅",
         "task_employee_done_notice": "✅ {name} 已将\"{text}\"标记为完成。",
+        "admin_btn_report": "📊 报表",
+        "task_ask_schedule": "🕒 请输入开始和结束时间（例如：\"14:00到18:00\"或\"今天下班前\"）：",
+        "task_no_schedule": "未设定",
+        "task_start_button": "🔄 已开始",
+        "task_fail_button": "❌ 未完成",
+        "task_marked_in_progress": "收到，加油！🔄",
+        "task_marked_failed": "感谢反馈，已通知管理员。🙏",
+        "task_status_in_progress": "🔄 进行中",
+        "task_status_failed": "❌ 未完成",
+        "task_employee_status_notice": "🔔 {name}：\"{text}\" — 状态：{status}",
+        "table_col_employee": "员工",
+        "table_col_task": "任务",
+        "table_col_time": "时间",
+        "table_col_status": "状态",
+        "no_tasks_today": "今天还没有分配任务。",
+        "setphone_usage": "用法：/setphone <telegram_id> <电话号码>",
+        "phone_updated": "✅ 已更新{uid}的电话号码：{phone}",
+        "user_not_found": "未在列表中找到该ID。",
     },
 }
 
@@ -999,15 +1056,17 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
         await query.answer(text=t(lang, confirm_key), show_alert=False)
         if tk:
             try:
-                status_label = t("uz", STATUS_LABEL_KEY.get(status, "task_status_pending"))
-                notice = t("uz", "task_employee_status_notice",
-                           name=employee_name(uid), text=tk["text"], status=status_label)
-                # Vazifa yaratgan adminga, va (agar boshqacha bo'lsa) barcha adminlarga xabar beramiz.
+                # Vazifa yaratgan adminga, va (agar boshqacha bo'lsa) barcha adminlarga xabar beramiz —
+                # har birining o'z tilida.
                 notified = set()
                 for admin_uid in list(ADMIN_USER_IDS) + [tk["from"]]:
                     if admin_uid in notified:
                         continue
                     notified.add(admin_uid)
+                    admin_lang = employee_lang(context, admin_uid)
+                    status_label = t(admin_lang, STATUS_LABEL_KEY.get(status, "task_status_pending"))
+                    notice = t(admin_lang, "task_employee_status_notice",
+                               name=employee_name(uid), text=tk["text"], status=status_label)
                     try:
                         await context.bot.send_message(chat_id=admin_uid, text=notice)
                     except Exception as e:
@@ -1015,7 +1074,10 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
             except Exception as e:
                 logger.warning("Holat haqida xabar berishda xatolik: %s", e)
         try:
-            await query.edit_message_reply_markup(reply_markup=None)
+            if status == "in_progress":
+                await query.edit_message_reply_markup(reply_markup=build_task_buttons(lang, task_id, "in_progress"))
+            else:
+                await query.edit_message_reply_markup(reply_markup=None)
         except Exception:
             pass
         return
@@ -1292,12 +1354,17 @@ async def handle_admin_task_schedule(update: Update, context: ContextTypes.DEFAU
 
     task = create_task(admin_uid, target, task_text, schedule)
 
-    dm_text = t(lang, "task_sent_dm", text=task_text, admin_name=admin_name,
-                schedule=(schedule or t(lang, "task_no_schedule")))
     sent = 0
     for uid_str in task["status"].keys():
+        emp_uid = int(uid_str)
+        emp_lang = employee_lang(context, emp_uid)
+        dm_text = t(emp_lang, "task_sent_dm", text=task_text, admin_name=admin_name,
+                    schedule=(schedule or t(emp_lang, "task_no_schedule")))
         try:
-            await context.bot.send_message(chat_id=int(uid_str), text=dm_text, parse_mode="Markdown")
+            await context.bot.send_message(
+                chat_id=emp_uid, text=dm_text, parse_mode="Markdown",
+                reply_markup=build_task_buttons(emp_lang, task["id"], "pending"),
+            )
             sent += 1
         except Exception as e:
             logger.warning("Xodimga (%s) topshiriq yuborishda xatolik: %s", uid_str, e)
@@ -1309,6 +1376,22 @@ async def handle_admin_task_schedule(update: Update, context: ContextTypes.DEFAU
 # ---------------------------------------------------------------------------
 # Xodimlar bo'limi: profil va shaxsiy topshiriqlar
 # ---------------------------------------------------------------------------
+
+def build_task_buttons(lang: str, task_id: str, status: str = "pending") -> InlineKeyboardMarkup:
+    buttons = []
+    if status == "pending":
+        buttons.append(InlineKeyboardButton(t(lang, "task_start_button"), callback_data=f"task_status:in_progress:{task_id}"))
+    buttons.append(InlineKeyboardButton(t(lang, "task_done_button"), callback_data=f"task_status:done:{task_id}"))
+    buttons.append(InlineKeyboardButton(t(lang, "task_fail_button"), callback_data=f"task_status:failed:{task_id}"))
+    return InlineKeyboardMarkup([buttons])
+
+
+def employee_lang(context: ContextTypes.DEFAULT_TYPE, uid: int) -> str:
+    try:
+        return context.application.user_data.get(uid, {}).get("lang", "uz")
+    except Exception:
+        return "uz"
+
 
 async def show_employees_section(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
@@ -1335,12 +1418,7 @@ async def show_employees_section(update: Update, context: ContextTypes.DEFAULT_T
         schedule = tk.get("schedule") or t(lang, "task_no_schedule")
         item_text = t(lang, "task_item", date=date_str, text=tk["text"], schedule=schedule, status=status_label)
         if status in ("pending", "in_progress"):
-            buttons = []
-            if status == "pending":
-                buttons.append(InlineKeyboardButton(t(lang, "task_start_button"), callback_data=f"task_status:in_progress:{tk['id']}"))
-            buttons.append(InlineKeyboardButton(t(lang, "task_done_button"), callback_data=f"task_status:done:{tk['id']}"))
-            buttons.append(InlineKeyboardButton(t(lang, "task_fail_button"), callback_data=f"task_status:failed:{tk['id']}"))
-            kb = InlineKeyboardMarkup([buttons])
+            kb = build_task_buttons(lang, tk["id"], status)
             await update.message.reply_text(item_text, reply_markup=kb)
         else:
             await update.message.reply_text(item_text)
@@ -2034,6 +2112,7 @@ def main():
     app.add_handler(CommandHandler("tag", tag_lookup))
     app.add_handler(CommandHandler("status", status_cmd))
     app.add_handler(CommandHandler("adduser", adduser_cmd))
+    app.add_handler(CommandHandler("setphone", setphone_cmd))
     app.add_handler(CommandHandler("removeuser", removeuser_cmd))
     app.add_handler(CommandHandler("listusers", listusers_cmd))
     app.add_handler(CommandHandler("nomatches", nomatches_cmd))
