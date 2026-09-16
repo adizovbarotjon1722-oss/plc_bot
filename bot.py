@@ -47,6 +47,11 @@ from telegram.ext import (
 )
 
 import google.genai as genai
+
+try:
+    import pymupdf
+except ImportError:
+    pymupdf = None
 from google.genai import types as genai_types
 
 try:
@@ -349,6 +354,7 @@ TEXT = {
         "voice_processing": "🎤 Ovozli xabar tinglanmoqda...",
         "voice_failed": "Ovozli xabarni tushuna olmadim. Iltimos, matn bilan yozing.",
         "voice_transcribed": "🎤 Eshitdim: \"{text}\"",
+        "schematic_page_caption": "🔌 Elektr sxemasi — {machine}, {page}-sahifa",
         "task_ask_schedule": "🕒 Ish boshlanish va tugash vaqtini yozing (masalan: \"14:00 dan 18:00 gacha\" yoki \"bugun kechgacha\"):",
         "task_no_schedule": "Belgilanmagan",
         "task_start_button": "🔄 Boshladim",
@@ -512,6 +518,7 @@ TEXT = {
         "voice_processing": "🎤 Listening to the voice message...",
         "voice_failed": "I couldn't understand the voice message. Please type it instead.",
         "voice_transcribed": "🎤 Heard: \"{text}\"",
+        "schematic_page_caption": "🔌 Electrical schematic — {machine}, page {page}",
         "task_ask_schedule": "🕒 Enter the start and end time (e.g. \"14:00 to 18:00\" or \"by end of day\"):",
         "task_no_schedule": "Not set",
         "task_start_button": "🔄 Started",
@@ -669,6 +676,7 @@ TEXT = {
         "voice_processing": "🎤 正在听取语音消息...",
         "voice_failed": "无法理解该语音消息。请改为输入文字。",
         "voice_transcribed": "🎤 听到：\"{text}\"",
+        "schematic_page_caption": "🔌 电气原理图 — {machine}，第{page}页",
         "task_ask_schedule": "🕒 请输入开始和结束时间（例如：\"14:00到18:00\"或\"今天下班前\"）：",
         "task_no_schedule": "未设定",
         "task_start_button": "🔄 已开始",
@@ -812,6 +820,26 @@ class MachineLine:
             self.tags = json.load(f)
         logger.info("Yuklandi: '%s' -> %d ta tag", self.label, len(self.tags))
 
+        # Elektr sxemasi (ixtiyoriy): agar lines.json'da "schematic_index"
+        # ko'rsatilgan bo'lsa, shu PDF'dagi manzil->sahifa indeksini yuklaymiz.
+        self.schematic_pdf = None
+        self.schematic_addr_pages = {}
+        idx_path = cfg.get("schematic_index")
+        if idx_path and os.path.exists(idx_path):
+            try:
+                with open(idx_path, "r", encoding="utf-8") as f:
+                    sch = json.load(f)
+                self.schematic_pdf = sch.get("pdf_path")
+                self.schematic_addr_pages = sch.get("addresses", {})
+                if self.schematic_pdf and not os.path.exists(self.schematic_pdf):
+                    logger.warning("'%s' uchun sxema PDF topilmadi: %s", self.label, self.schematic_pdf)
+                    self.schematic_pdf = None
+                else:
+                    logger.info("'%s' uchun elektr sxemasi yuklandi (%d ta manzil)",
+                                self.label, len(self.schematic_addr_pages))
+            except Exception as e:
+                logger.warning("Sxema indeksini yuklashda xatolik (%s): %s", self.label, e)
+
     def find_tag(self, address: str):
         address = address.strip()
         if not address.startswith("%"):
@@ -820,6 +848,18 @@ class MachineLine:
             if tg["address"].lower() == address.lower():
                 return tg
         return None
+
+    def schematic_pages_for(self, addresses: list) -> list:
+        """Berilgan manzillar ro'yxati uchun sxemadagi tegishli sahifa
+        raqamlarini (takrorlanmas, tartiblangan) qaytaradi."""
+        if not self.schematic_pdf:
+            return []
+        pages = set()
+        for addr in addresses:
+            key = addr.upper().lstrip("%")
+            for p in self.schematic_addr_pages.get(key, []):
+                pages.add(p)
+        return sorted(pages)
 
 
 LINES = {}
@@ -921,6 +961,52 @@ def local_search(tags, keywords, limit=MAX_CANDIDATE_TAGS):
     scored = [x for x in scored if x[0] > 0]
     scored.sort(key=lambda x: -x[0])
     return [tg for _, tg in scored[:limit]]
+
+
+# ---------------------------------------------------------------------------
+# Elektr sxemasi: PDF'ning tegishli sahifasini rasmga aylantirib yuborish
+# ---------------------------------------------------------------------------
+
+MAX_SCHEMATIC_PAGES = int(os.getenv("MAX_SCHEMATIC_PAGES", "3"))
+
+
+def _render_pdf_page_sync(pdf_path: str, page_num: int) -> bytes:
+    """page_num — 1-based sahifa raqami. PNG bytes qaytaradi."""
+    doc = pymupdf.open(pdf_path)
+    try:
+        page = doc[page_num - 1]
+        pix = page.get_pixmap(dpi=200)
+        return pix.tobytes("png")
+    finally:
+        doc.close()
+
+
+async def render_pdf_page(pdf_path: str, page_num: int):
+    if not pymupdf:
+        return None
+    try:
+        return await asyncio.to_thread(_render_pdf_page_sync, pdf_path, page_num)
+    except Exception as e:
+        logger.warning("PDF sahifasini render qilishda xatolik (%s, %d): %s", pdf_path, page_num, e)
+        return None
+
+
+async def send_schematic_pages(update: Update, context: ContextTypes.DEFAULT_TYPE, ln, addresses: list, lang: str):
+    """Berilgan manzillarga mos sxema sahifalarini (topilsa) rasm sifatida yuboradi."""
+    pages = ln.schematic_pages_for(addresses)
+    if not pages:
+        return
+    pages = pages[:MAX_SCHEMATIC_PAGES]
+    for page_num in pages:
+        img_bytes = await render_pdf_page(ln.schematic_pdf, page_num)
+        if img_bytes:
+            try:
+                await context.bot.send_photo(
+                    chat_id=update.effective_chat.id, photo=img_bytes,
+                    caption=t(lang, "schematic_page_caption", page=page_num, machine=ln.label),
+                )
+            except Exception as e:
+                logger.warning("Sxema sahifasini yuborishda xatolik: %s", e)
 
 
 def format_raw_tags(tags, machine_label: str, lang: str) -> str:
@@ -2278,6 +2364,7 @@ async def tag_lookup(update: Update, context: ContextTypes.DEFAULT_TYPE):
           comment=tg.get("comment") or "—"),
         parse_mode="Markdown",
     )
+    await send_schematic_pages(update, context, ln, [tg["address"]], lang)
 
 
 async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
@@ -2351,6 +2438,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
         await context.bot.send_message(
             chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"), reply_markup=build_feedback_keyboard(answer_id, lang)
         )
+        await send_schematic_pages(update, context, ln, [c["address"] for c in candidates], lang)
         return
 
     answer_id = register_answer(ln.id, lang, user_text, answer)
@@ -2358,6 +2446,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
     await context.bot.send_message(
         chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"), reply_markup=build_feedback_keyboard(answer_id, lang)
     )
+    await send_schematic_pages(update, context, ln, [c["address"] for c in candidates], lang)
     log_query(update, ln.id, user_text, answer)
     cache_set(ln.id, lang, user_text, answer)
 

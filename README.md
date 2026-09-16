@@ -287,13 +287,49 @@ uchun juda foydali.
   har kuni `backups/` papkasiga zaxira nusxa olinadi (oxirgi `BACKUP_KEEP`
   tasi — standart 14 kunlik — saqlanadi).
 
+## Elektr sxemasi bilan integratsiya (ixtiyoriy)
+
+Agar uskunangiz uchun elektr sxemasi PDF fayl sifatida mavjud bo'lsa (masalan
+EPLAN yoki TIA Portal'dan eksport qilingan), bot mos signal so'ralganda
+**aynan o'sha PDF'ning tegishli sahifasini** rasm qilib yuborishi mumkin.
+
+**Muhim:** Bot hech qachon sxemani o'zi "chizmaydi" yoki taxmin qilmaydi —
+faqat sizning haqiqiy PDF faylingizning haqiqiy sahifasini topib ko'rsatadi.
+Bu PDF'dagi matnni skanerlab, qaysi manzil (%I0.1 kabi) qaysi sahifada
+yozilganini indekslash orqali ishlaydi.
+
+### Sozlash
+
+1. Har bir uskuna uchun sxema PDF faylini indekslang:
+   ```bash
+   python prepare_schematic.py GEM_Sxema.pdf schematic_index_gem.json
+   ```
+   Bu buyruq PDF'dagi barcha sahifalarni skanerlab, qaysi PLC manzili qaysi
+   sahifada yozilganini topadi va shuni JSON faylga yozadi.
+
+2. `lines.json` faylida tegishli uskunaga `schematic_index` maydonini qo'shing:
+   ```json
+   {"id": "gem", "label": "1. GEM welding", "kb_file": "tags_kb_gem.json",
+    "schematic_index": "schematic_index_gem.json"}
+   ```
+
+3. Botni qayta ishga tushiring. Endi `I0.1` kabi manzil so'ralganda yoki
+   `/tag %I0.1` yozilganda, agar sxemada shu manzil topilsa, bot javobdan
+   keyin tegishli sahifa(lar)ni rasm qilib yuboradi.
+
+Sxema hozircha faqat aniq manzil (masalan I0.1) so'ralganda yoki AI aynan
+shu manzilni tanlab, javob bergan taglar orasida bo'lsa ko'rsatiladi — erkin
+tavsif orqali topilgan barcha nomzod-taglar uchun ham tekshiriladi.
+
 ## Fayllar tuzilishi
 
 ```
 plc_bot/
 ├── prepare_tags.py            # Excel -> JSON konvertor
+├── prepare_schematic.py         # Sxema PDF -> manzil/sahifa indeksi konvertor
 ├── lines.json                  # Uskunalar ro'yxati
 ├── tags_kb_*.json               # Har bir uskuna bilim bazasi
+├── schematic_index_*.json       # (ixtiyoriy) sxema manzil/sahifa indekslari
 ├── bot.py                       # Telegram bot
 ├── requirements.txt
 ├── .env.example
