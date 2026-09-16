@@ -242,6 +242,51 @@ Xodim uskunadagi xatolik/indikatorning suratini yuborsa, bot endi:
 4. Agar Gemini band bo'lsa, avtomatik ravishda o'qilgan matn asosida
    oddiy (Groq/OpenRouter orqali ham ishlaydigan) tahlilga o'tadi.
 
+## Yangi qo'shilgan 7 ta imkoniyat
+
+### 1. Muddati o'tgan topshiriqlar uchun eslatma
+Vazifa berayotganda vaqtni "14:00 dan 18:00 gacha" kabi yozsangiz, bot oxirgi
+vaqtni (18:00) muddat sifatida tushunadi. Shu vaqt o'tib ketsa-yu xodim hali
+"Bajardim/Bajarilmadi" bosmagan bo'lsa — har 15 daqiqada (`TASK_REMINDER_CHECK_MIN`)
+tekshirilib, xodimga eslatma, sizga (adminga) ogohlantirish yuboriladi. Har bir
+xodimga bitta topshiriq uchun faqat bir marta eslatiladi.
+
+### 2. Doimiy/takrorlanuvchi kunlik topshiriqlar
+Admin bo'limida **"🔁 Doimiy topshiriq"** tugmasi orqali: kimga → matn → soat
+nechada (masalan `08:00`) — shu uch qadamdan so'ng, bot **har kuni** shu vaqtda
+avtomatik ravishda o'sha topshiriqni yaratib, tegishli xodim(lar)ga yuboraveradi.
+Botni qayta ishga tushirsangiz ham, barcha doimiy topshiriqlar avtomatik qayta
+faollashadi.
+
+### 3. Xodimlarni osonroq ro'yxatdan o'tkazish
+Endi xodim o'zi botga yozadi:
+```
+/register Aziz Karimov +998901234567
+```
+Sizga (barcha adminlarga) ✅/❌ tugmali so'rov keladi — bitta bosish bilan
+qabul qilasiz yoki rad etasiz. Qabul qilinsa, xodim avtomatik ravishda
+`/adduser` bilan qo'lda qo'shgandek ro'yxatga kiradi (ism va telefon bilan).
+
+### 4. Ovozli xabar orqali murojaat
+Xodim yozish o'rniga ovozli xabar yuborsa, bot uni (Groq Whisper orqali,
+tanlangan tilda) matnga aylantirib, xuddi yozma savoldek javob beradi.
+
+### 5. Ish bajarilgach rasm-dalil
+"✅ Bajardim" yoki "❌ Bajarilmadi" bosilgandan keyin, bot ixtiyoriy ravishda
+rasm so'raydi (10 daqiqa ichida). Xodim rasm yuborsa, u sizga (barcha
+adminlarga) tegishli topshiriq matni bilan birga forward qilinadi.
+
+### 6. `/help` buyrug'i
+Botning barcha imkoniyatlarini joriy tilda tushuntirib beradi — yangi xodim
+uchun juda foydali.
+
+### 7. Log arxivlash va zaxira nusxa
+- `queries.log`, `no_match.log`, `feedback.log` har oy avtomatik arxivlanadi
+  (masalan `queries-2026-09.log` deb saqlanib, yangisi boshlanadi).
+- `tasks.json`, `allowed_users.json`, `recurring_tasks.json` fayllaridan
+  har kuni `backups/` papkasiga zaxira nusxa olinadi (oxirgi `BACKUP_KEEP`
+  tasi — standart 14 kunlik — saqlanadi).
+
 ## Fayllar tuzilishi
 
 ```
@@ -253,9 +298,13 @@ plc_bot/
 ├── requirements.txt
 ├── .env.example
 ├── allowed_users.json           # (avtomatik yaratiladi) ruxsat berilganlar
+├── tasks.json                    # (avtomatik yaratiladi) barcha topshiriqlar
+├── recurring_tasks.json          # (avtomatik yaratiladi) doimiy topshiriq shablonlari
+├── pending_registrations.json    # (avtomatik yaratiladi) /register so'rovlari
 ├── answer_cache.json            # (avtomatik yaratiladi) javoblar keshi
 ├── queries.log                  # (avtomatik yaratiladi) barcha so'rovlar
 ├── no_match.log                 # (avtomatik yaratiladi) topilmagan so'rovlar
 ├── feedback.log                 # (avtomatik yaratiladi) 👍/👎 va hal bo'lish holati
+├── backups/                      # (avtomatik yaratiladi) kunlik zaxira nusxalar
 └── README.md
 ```

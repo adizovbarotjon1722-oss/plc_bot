@@ -70,6 +70,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+GROQ_WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "openrouter/free")
 LINES_CONFIG_PATH = os.getenv("LINES_CONFIG_PATH", "lines.json")
@@ -95,6 +96,11 @@ DAILY_REPORT_TIME = os.getenv("DAILY_REPORT_TIME", "18:00")
 NO_MATCH_LOG_PATH = os.getenv("NO_MATCH_LOG_PATH", "no_match.log")
 TASKS_PATH = os.getenv("TASKS_PATH", "tasks.json")
 TASKS_SHOWN_LIMIT = int(os.getenv("TASKS_SHOWN_LIMIT", "5"))
+RECURRING_TASKS_PATH = os.getenv("RECURRING_TASKS_PATH", "recurring_tasks.json")
+PENDING_REG_PATH = os.getenv("PENDING_REG_PATH", "pending_registrations.json")
+TASK_REMINDER_CHECK_MIN = int(os.getenv("TASK_REMINDER_CHECK_MIN", "15"))
+BACKUP_DIR = os.getenv("BACKUP_DIR", "backups")
+BACKUP_KEEP = int(os.getenv("BACKUP_KEEP", "14"))
 
 # --- Bot salomatligini kuzatish (ixtiyoriy, masalan healthchecks.io) ---
 HEALTHCHECK_PING_URL = os.getenv("HEALTHCHECK_PING_URL", "").strip()
@@ -310,6 +316,39 @@ TEXT = {
         "task_marked_done": "Rahmat! Topshiriq bajarilgan deb belgilandi. ✅",
         "task_employee_done_notice": "✅ {name} \"{text}\" topshirig'ini bajardi deb belgiladi.",
         "admin_btn_report": "📊 Hisobot jadvali",
+        "admin_btn_recurring": "🔁 Doimiy topshiriq",
+        "recurring_ask_time": "🕒 Har kuni soat nechada yuborilsin? (masalan 08:00)",
+        "recurring_bad_time": "Noto'g'ri format. Vaqtni SS:DD ko'rinishida yozing, masalan 08:00",
+        "recurring_created": "✅ Doimiy topshiriq sozlandi — har kuni soat {time} da avtomatik yuboriladi.",
+        "help_text": (
+            "ℹ️ *Botdan qanday foydalanish:*\n\n"
+            "1️⃣ Pastdagi tugmalardan uskuna/liniyani tanlang.\n"
+            "2️⃣ Muammoni yozing (masalan \"konveyer ishlamayapti\") yoki shunchaki "
+            "manzilni yozing (masalan I0.1).\n"
+            "📷 Rasm ham yuborishingiz mumkin — HMI ekrani yoki indikator surati.\n"
+            "🎤 Ovozli xabar ham qabul qilinadi.\n\n"
+            "🤖 *Sun'iy intellekt* — PLC bilan bog'liq bo'lmagan savollar uchun.\n"
+            "🏭 *Zavod monitoring* — kompressor/chiller holatini ko'rish (agar sozlangan bo'lsa).\n"
+            "👥 *Xodimlar* — profilingiz va sizga berilgan topshiriqlar.\n"
+            "🔑 *Admin* — (faqat adminlar) topshiriq berish, hisobotlar.\n"
+            "🌐 *Til* — istalgan vaqtda tilni almashtirish.\n\n"
+            "Ro'yxatdan o'tmagan bo'lsangiz: /register <ism> <telefon>"
+        ),
+        "already_registered": "Siz allaqachon ro'yxatdasiz.",
+        "register_usage": "Foydalanish: /register <ismingiz> <telefon_raqamingiz>\nMasalan: /register Aziz Karimov +998901234567",
+        "register_admin_notice": "🆕 *Yangi ro'yxatdan o'tish so'rovi*\nIsm: {name}\nTelefon: {phone}\nID: {uid}",
+        "register_sent": "✅ So'rovingiz adminga yuborildi. Tasdiqlangach xabar beriladi.",
+        "register_already_handled": "Bu so'rov allaqachon ko'rib chiqilgan.",
+        "register_approved_admin": "✅ {name} qabul qilindi.",
+        "register_approved_user": "🎉 Tabriklaymiz! So'rovingiz qabul qilindi, endi botdan foydalanishingiz mumkin. /start yozing.",
+        "register_rejected_admin": "❌ {name} rad etildi.",
+        "register_rejected_user": "Kechirasiz, so'rovingiz rad etildi. Administratorga murojaat qiling.",
+        "ask_proof_photo": "📷 Ixtiyoriy: bajarilgan ishni tasdiqlovchi rasm yuborishingiz mumkin (yubormasangiz ham bo'ladi).",
+        "proof_photo_thanks": "✅ Rasm qabul qilindi, adminga yuborildi. Rahmat!",
+        "proof_photo_caption": "📷 {name} — \"{text}\" bo'yicha dalil rasmi",
+        "voice_processing": "🎤 Ovozli xabar tinglanmoqda...",
+        "voice_failed": "Ovozli xabarni tushuna olmadim. Iltimos, matn bilan yozing.",
+        "voice_transcribed": "🎤 Eshitdim: \"{text}\"",
         "task_ask_schedule": "🕒 Ish boshlanish va tugash vaqtini yozing (masalan: \"14:00 dan 18:00 gacha\" yoki \"bugun kechgacha\"):",
         "task_no_schedule": "Belgilanmagan",
         "task_start_button": "🔄 Boshladim",
@@ -319,6 +358,8 @@ TEXT = {
         "task_status_in_progress": "🔄 Jarayonda",
         "task_status_failed": "❌ Bajarilmadi",
         "task_employee_status_notice": "🔔 {name}: \"{text}\" — holat: {status}",
+        "task_reminder_dm": "⏰ *Eslatma:* \"{text}\" topshirig'ining muddati o'tdi. Iltimos, holatni yangilang.",
+        "task_reminder_admin_notice": "⏰ Eslatma: {name} \"{text}\" topshirig'i muddatida javob bermadi.",
         "table_col_employee": "Xodim",
         "table_col_task": "Topshiriq",
         "table_col_time": "Vaqt",
@@ -438,6 +479,39 @@ TEXT = {
         "task_marked_done": "Thanks! The task was marked as done. ✅",
         "task_employee_done_notice": "✅ {name} marked \"{text}\" as done.",
         "admin_btn_report": "📊 Report table",
+        "admin_btn_recurring": "🔁 Recurring task",
+        "recurring_ask_time": "🕒 What time should this be sent every day? (e.g. 08:00)",
+        "recurring_bad_time": "Invalid format. Enter the time as HH:MM, e.g. 08:00",
+        "recurring_created": "✅ Recurring task set up — it will be sent automatically every day at {time}.",
+        "help_text": (
+            "ℹ️ *How to use this bot:*\n\n"
+            "1️⃣ Pick a machine/line from the buttons below.\n"
+            "2️⃣ Describe the problem (e.g. \"conveyor not moving\") or just type "
+            "an address (e.g. I0.1).\n"
+            "📷 You can also send a photo — of an HMI screen or indicator.\n"
+            "🎤 Voice messages are supported too.\n\n"
+            "🤖 *AI Assistant* — for questions unrelated to PLC.\n"
+            "🏭 *Factory monitoring* — view compressor/chiller status (if set up).\n"
+            "👥 *Employees* — your profile and assigned tasks.\n"
+            "🔑 *Admin* — (admins only) assign tasks, view reports.\n"
+            "🌐 *Language* — switch language anytime.\n\n"
+            "Not registered yet? /register <name> <phone>"
+        ),
+        "already_registered": "You're already registered.",
+        "register_usage": "Usage: /register <your name> <your phone number>\nExample: /register John Smith +998901234567",
+        "register_admin_notice": "🆕 *New registration request*\nName: {name}\nPhone: {phone}\nID: {uid}",
+        "register_sent": "✅ Your request was sent to the admin. You'll be notified once it's reviewed.",
+        "register_already_handled": "This request has already been handled.",
+        "register_approved_admin": "✅ {name} approved.",
+        "register_approved_user": "🎉 Congrats! Your request was approved, you can now use the bot. Type /start.",
+        "register_rejected_admin": "❌ {name} rejected.",
+        "register_rejected_user": "Sorry, your request was rejected. Please contact the administrator.",
+        "ask_proof_photo": "📷 Optional: you can send a photo confirming the completed work (you can skip this).",
+        "proof_photo_thanks": "✅ Photo received and sent to the admin. Thanks!",
+        "proof_photo_caption": "📷 {name} — proof photo for \"{text}\"",
+        "voice_processing": "🎤 Listening to the voice message...",
+        "voice_failed": "I couldn't understand the voice message. Please type it instead.",
+        "voice_transcribed": "🎤 Heard: \"{text}\"",
         "task_ask_schedule": "🕒 Enter the start and end time (e.g. \"14:00 to 18:00\" or \"by end of day\"):",
         "task_no_schedule": "Not set",
         "task_start_button": "🔄 Started",
@@ -447,6 +521,8 @@ TEXT = {
         "task_status_in_progress": "🔄 In progress",
         "task_status_failed": "❌ Not done",
         "task_employee_status_notice": "🔔 {name}: \"{text}\" — status: {status}",
+        "task_reminder_dm": "⏰ *Reminder:* the deadline for \"{text}\" has passed. Please update the status.",
+        "task_reminder_admin_notice": "⏰ Reminder: {name} hasn't responded to \"{text}\" by the deadline.",
         "table_col_employee": "Employee",
         "table_col_task": "Task",
         "table_col_time": "Time",
@@ -561,6 +637,38 @@ TEXT = {
         "task_marked_done": "谢谢！任务已标记为完成。✅",
         "task_employee_done_notice": "✅ {name} 已将\"{text}\"标记为完成。",
         "admin_btn_report": "📊 报表",
+        "admin_btn_recurring": "🔁 每日重复任务",
+        "recurring_ask_time": "🕒 每天几点发送？（例如 08:00）",
+        "recurring_bad_time": "格式不正确。请输入时间，格式为 HH:MM，例如 08:00",
+        "recurring_created": "✅ 每日重复任务已设置——将于每天{time}自动发送。",
+        "help_text": (
+            "ℹ️ *如何使用本机器人：*\n\n"
+            "1️⃣ 从下方按钮选择设备/产线。\n"
+            "2️⃣ 描述问题（例如\"输送带不动\"），或直接输入地址（例如 I0.1）。\n"
+            "📷 也可以发送照片——HMI屏幕或指示灯。\n"
+            "🎤 也支持语音消息。\n\n"
+            "🤖 *人工智能* — 用于与PLC无关的问题。\n"
+            "🏭 *工厂监控* — 查看压缩机/冷水机状态（如已配置）。\n"
+            "👥 *员工* — 您的资料和分配的任务。\n"
+            "🔑 *管理员* — （仅限管理员）分配任务、查看报表。\n"
+            "🌐 *语言* — 随时切换语言。\n\n"
+            "还未注册？发送 /register <姓名> <电话>"
+        ),
+        "already_registered": "您已经注册过了。",
+        "register_usage": "用法：/register <姓名> <电话号码>\n例如：/register 张三 +998901234567",
+        "register_admin_notice": "🆕 *新的注册请求*\n姓名：{name}\n电话：{phone}\nID：{uid}",
+        "register_sent": "✅ 您的请求已发送给管理员，审核后会通知您。",
+        "register_already_handled": "此请求已被处理。",
+        "register_approved_admin": "✅ 已批准{name}。",
+        "register_approved_user": "🎉 恭喜！您的请求已被批准，现在可以使用机器人了。请输入 /start。",
+        "register_rejected_admin": "❌ 已拒绝{name}。",
+        "register_rejected_user": "抱歉，您的请求被拒绝。请联系管理员。",
+        "ask_proof_photo": "📷 可选：您可以发送一张照片来确认已完成的工作（也可以跳过）。",
+        "proof_photo_thanks": "✅ 照片已收到并发送给管理员。谢谢！",
+        "proof_photo_caption": "📷 {name} — \"{text}\"的证明照片",
+        "voice_processing": "🎤 正在听取语音消息...",
+        "voice_failed": "无法理解该语音消息。请改为输入文字。",
+        "voice_transcribed": "🎤 听到：\"{text}\"",
         "task_ask_schedule": "🕒 请输入开始和结束时间（例如：\"14:00到18:00\"或\"今天下班前\"）：",
         "task_no_schedule": "未设定",
         "task_start_button": "🔄 已开始",
@@ -570,6 +678,8 @@ TEXT = {
         "task_status_in_progress": "🔄 进行中",
         "task_status_failed": "❌ 未完成",
         "task_employee_status_notice": "🔔 {name}：\"{text}\" — 状态：{status}",
+        "task_reminder_dm": "⏰ *提醒：*\"{text}\"任务的截止时间已过。请更新状态。",
+        "task_reminder_admin_notice": "⏰ 提醒：{name}在截止时间前未对\"{text}\"做出回应。",
         "table_col_employee": "员工",
         "table_col_task": "任务",
         "table_col_time": "时间",
@@ -1043,6 +1153,11 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
     await query.answer()
     data = query.data or ""
 
+    if data.startswith("reg:"):
+        _, action, reg_id = data.split(":", 2)
+        await handle_registration_callback(update, context, action, reg_id)
+        return
+
     if data.startswith("task_status:"):
         _, status, task_id = data.split(":", 2)
         lang = context.user_data.get("lang", "uz")
@@ -1080,6 +1195,14 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
                 await query.edit_message_reply_markup(reply_markup=None)
         except Exception:
             pass
+
+        if status in ("done", "failed"):
+            context.user_data["awaiting_proof_task"] = task_id
+            context.user_data["awaiting_proof_until"] = time.time() + 600  # 10 daqiqa
+            try:
+                await context.bot.send_message(chat_id=update.effective_chat.id, text=t(lang, "ask_proof_photo"))
+            except Exception:
+                pass
         return
 
     parts = data.split(":", 2)
@@ -1154,6 +1277,25 @@ def _save_tasks():
         logger.warning("tasks.json saqlashda xatolik: %s", e)
 
 
+DEADLINE_TIME_RE = re.compile(r"(\d{1,2}):(\d{2})(?!.*\d{1,2}:\d{2})")  # oxirgi HH:MM
+
+
+def _parse_deadline(schedule: str):
+    """Schedule matnidan (masalan '14:00 dan 18:00 gacha') oxirgi vaqtni topib,
+    shu kunning shu vaqti sifatida deadline hisoblaydi. Topilmasa None."""
+    if not schedule:
+        return None
+    m = DEADLINE_TIME_RE.search(schedule)
+    if not m:
+        return None
+    try:
+        hh, mm = int(m.group(1)), int(m.group(2))
+        today = datetime.now().replace(hour=hh, minute=mm, second=0, microsecond=0)
+        return today.isoformat()
+    except Exception:
+        return None
+
+
 def create_task(admin_uid: int, target, text: str, schedule: str = None) -> dict:
     if target == "all":
         status = {str(uid): "pending" for uid in ALLOWED_USERS.keys()}
@@ -1165,9 +1307,12 @@ def create_task(admin_uid: int, target, text: str, schedule: str = None) -> dict
         "target": target,
         "text": text,
         "schedule": schedule,
+        "deadline": _parse_deadline(schedule),
         "created_at": datetime.now().isoformat(),
         "status": status,
         "status_updated_at": {},
+        "reminded_uids": [],
+        "proof_photos": {},
     }
     TASKS.append(task)
     _save_tasks()
@@ -1194,6 +1339,69 @@ def set_task_status(task_id: str, uid: int, status: str):
 def todays_tasks():
     today = datetime.now().date().isoformat()
     return [tk for tk in TASKS if tk["created_at"][:10] == today]
+
+
+# ---------------------------------------------------------------------------
+# Doimiy/takrorlanuvchi kunlik topshiriqlar (shablonlar): admin bir marta
+# sozlaydi, bot har kuni belgilangan vaqtda avtomatik yuboradi.
+# ---------------------------------------------------------------------------
+
+try:
+    with open(RECURRING_TASKS_PATH, "r", encoding="utf-8") as f:
+        RECURRING_TASKS = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    RECURRING_TASKS = []
+
+
+def _save_recurring_tasks():
+    try:
+        with open(RECURRING_TASKS_PATH, "w", encoding="utf-8") as f:
+            json.dump(RECURRING_TASKS, f, ensure_ascii=False, indent=1)
+    except Exception as e:
+        logger.warning("recurring_tasks.json saqlashda xatolik: %s", e)
+
+
+def create_recurring_template(admin_uid: int, target, text: str, time_str: str) -> dict:
+    tpl = {
+        "id": uuid.uuid4().hex[:10], "from": admin_uid, "target": target,
+        "text": text, "time": time_str, "created_at": datetime.now().isoformat(),
+    }
+    RECURRING_TASKS.append(tpl)
+    _save_recurring_tasks()
+    return tpl
+
+
+async def fire_recurring_task(context: ContextTypes.DEFAULT_TYPE):
+    tpl_id = context.job.data
+    tpl = next((x for x in RECURRING_TASKS if x["id"] == tpl_id), None)
+    if not tpl:
+        return
+    admin_name = employee_name(tpl["from"]) if tpl["from"] in ALLOWED_USERS else "Admin"
+    task = create_task(tpl["from"], tpl["target"], tpl["text"], None)
+    for uid_str in task["status"].keys():
+        emp_uid = int(uid_str)
+        emp_lang = employee_lang(context, emp_uid)
+        dm_text = t(emp_lang, "task_sent_dm", text=tpl["text"], admin_name=admin_name,
+                    schedule=t(emp_lang, "task_no_schedule"))
+        try:
+            await context.bot.send_message(
+                chat_id=emp_uid, text=dm_text, parse_mode="Markdown",
+                reply_markup=build_task_buttons(emp_lang, task["id"], "pending"),
+            )
+        except Exception as e:
+            logger.warning("Doimiy topshiriqni yuborishda xatolik (%s): %s", uid_str, e)
+
+
+def register_recurring_jobs(app):
+    for tpl in RECURRING_TASKS:
+        try:
+            hh, mm = map(int, tpl["time"].split(":"))
+            app.job_queue.run_daily(
+                fire_recurring_task, time=datetime.now().replace(hour=hh, minute=mm, second=0).time(),
+                data=tpl["id"], name=f"recurring_{tpl['id']}",
+            )
+        except Exception as e:
+            logger.warning("Doimiy topshiriq (%s) rejalashtirishda xatolik: %s", tpl.get("id"), e)
 
 
 STATUS_LABEL_KEY = {
@@ -1237,6 +1445,7 @@ def build_tasks_table(tasks: list, lang: str) -> str:
 def admin_submenu_keyboard(lang: str) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup([
         [t(lang, "admin_btn_new_task")],
+        [t(lang, "admin_btn_recurring")],
         [t(lang, "admin_btn_report")],
         [t(lang, "admin_btn_list_users")],
         [t(lang, "admin_btn_back")],
@@ -1281,6 +1490,14 @@ async def handle_admin_menu_input(update: Update, context: ContextTypes.DEFAULT_
     if user_text == t(lang, "admin_btn_report"):
         table = build_tasks_table(todays_tasks(), lang)
         await update.message.reply_text(table, parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang))
+        return
+
+    if user_text == t(lang, "admin_btn_recurring"):
+        if not ALLOWED_USERS:
+            await update.message.reply_text(t(lang, "no_employees_yet"), reply_markup=admin_submenu_keyboard(lang))
+            return
+        context.user_data["mode"] = "admin_recurring_target"
+        await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
         return
 
     if user_text == t(lang, "admin_btn_list_users"):
@@ -1370,6 +1587,71 @@ async def handle_admin_task_schedule(update: Update, context: ContextTypes.DEFAU
             logger.warning("Xodimga (%s) topshiriq yuborishda xatolik: %s", uid_str, e)
 
     await update.message.reply_text(t(lang, "task_sent_confirm", count=sent))
+    await show_admin_menu(update, context)
+
+
+async def handle_admin_recurring_target(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
+    lang = get_lang(context)
+    if user_text == t(lang, "admin_btn_back"):
+        await show_admin_menu(update, context)
+        return
+    if user_text == t(lang, "task_target_all"):
+        context.user_data["recurring_target"] = "all"
+        target_label = t(lang, "task_target_all")
+    else:
+        matched_uid = None
+        for uid, info in ALLOWED_USERS.items():
+            if user_text == f"{info['name']} ({uid})":
+                matched_uid = uid
+                break
+        if matched_uid is None:
+            await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
+            return
+        context.user_data["recurring_target"] = matched_uid
+        target_label = employee_name(matched_uid)
+
+    context.user_data["mode"] = "admin_recurring_text"
+    await update.message.reply_text(
+        t(lang, "task_ask_text", target=target_label), parse_mode="Markdown",
+        reply_markup=ReplyKeyboardMarkup([[t(lang, "admin_btn_back")]], resize_keyboard=True),
+    )
+
+
+async def handle_admin_recurring_text(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
+    lang = get_lang(context)
+    if user_text == t(lang, "admin_btn_back"):
+        await show_admin_menu(update, context)
+        return
+    context.user_data["recurring_text"] = user_text
+    context.user_data["mode"] = "admin_recurring_time"
+    await update.message.reply_text(
+        t(lang, "recurring_ask_time"), parse_mode="Markdown",
+        reply_markup=ReplyKeyboardMarkup([[t(lang, "admin_btn_back")]], resize_keyboard=True),
+    )
+
+
+async def handle_admin_recurring_time(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str, app):
+    lang = get_lang(context)
+    if user_text == t(lang, "admin_btn_back"):
+        await show_admin_menu(update, context)
+        return
+    m = re.match(r"^(\d{1,2}):(\d{2})$", user_text.strip())
+    if not m:
+        await update.message.reply_text(t(lang, "recurring_bad_time"))
+        return
+
+    target = context.user_data.get("recurring_target")
+    text = context.user_data.get("recurring_text", "")
+    admin_uid = update.effective_user.id
+    tpl = create_recurring_template(admin_uid, target, text, user_text.strip())
+
+    hh, mm = map(int, tpl["time"].split(":"))
+    app.job_queue.run_daily(
+        fire_recurring_task, time=datetime.now().replace(hour=hh, minute=mm, second=0).time(),
+        data=tpl["id"], name=f"recurring_{tpl['id']}",
+    )
+
+    await update.message.reply_text(t(lang, "recurring_created", time=tpl["time"]))
     await show_admin_menu(update, context)
 
 
@@ -1592,6 +1874,11 @@ async def choose_machine(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(t(lang, "choose_machine_prompt"), reply_markup=kb_for(update))
 
 
+async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    await update.message.reply_text(t(lang, "help_text"), parse_mode="Markdown", reply_markup=kb_for(update))
+
+
 async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
     if not is_authorized(update.effective_user.id):
@@ -1612,6 +1899,99 @@ def _looks_like_phone(token: str) -> bool:
     if cleaned.startswith("+"):
         cleaned = cleaned[1:]
     return cleaned.isdigit() and len(cleaned) >= 7
+
+
+# ---------------------------------------------------------------------------
+# Xodimlarni osonroq ro'yxatdan o'tkazish: /register orqali o'zi so'rov
+# yuboradi, admin bitta tugma bilan tasdiqlaydi yoki rad etadi.
+# ---------------------------------------------------------------------------
+
+try:
+    with open(PENDING_REG_PATH, "r", encoding="utf-8") as f:
+        PENDING_REGISTRATIONS = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    PENDING_REGISTRATIONS = {}
+
+
+def _save_pending_registrations():
+    try:
+        with open(PENDING_REG_PATH, "w", encoding="utf-8") as f:
+            json.dump(PENDING_REGISTRATIONS, f, ensure_ascii=False)
+    except Exception as e:
+        logger.warning("pending_registrations saqlashda xatolik: %s", e)
+
+
+async def register_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    uid = update.effective_user.id
+
+    if is_authorized(uid):
+        await update.message.reply_text(t(lang, "already_registered"))
+        return
+
+    if len(context.args) < 2:
+        await update.message.reply_text(t(lang, "register_usage"))
+        return
+
+    phone = context.args[-1]
+    name = " ".join(context.args[:-1]).strip()
+    if not _looks_like_phone(phone) or not name:
+        await update.message.reply_text(t(lang, "register_usage"))
+        return
+
+    reg_id = uuid.uuid4().hex[:10]
+    PENDING_REGISTRATIONS[reg_id] = {
+        "uid": uid, "name": name, "phone": phone,
+        "requested_at": datetime.now().isoformat(),
+    }
+    _save_pending_registrations()
+
+    kb = InlineKeyboardMarkup([[
+        InlineKeyboardButton("✅", callback_data=f"reg:approve:{reg_id}"),
+        InlineKeyboardButton("❌", callback_data=f"reg:reject:{reg_id}"),
+    ]])
+    for admin_uid in ADMIN_USER_IDS:
+        admin_lang = employee_lang(context, admin_uid)
+        try:
+            await context.bot.send_message(
+                chat_id=admin_uid,
+                text=t(admin_lang, "register_admin_notice", name=name, phone=phone, uid=uid),
+                reply_markup=kb,
+            )
+        except Exception as e:
+            logger.warning("Adminga registratsiya so'rovini yuborishda xatolik: %s", e)
+
+    await update.message.reply_text(t(lang, "register_sent"))
+
+
+async def handle_registration_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, action: str, reg_id: str):
+    query = update.callback_query
+    lang = get_lang(context)
+    reg = PENDING_REGISTRATIONS.pop(reg_id, None)
+    _save_pending_registrations()
+    if not reg:
+        await query.edit_message_text(t(lang, "register_already_handled"))
+        return
+
+    applicant_uid = reg["uid"]
+    applicant_lang = employee_lang(context, applicant_uid)
+
+    if action == "approve":
+        ALLOWED_USERS[applicant_uid] = {
+            "name": reg["name"], "phone": reg["phone"], "added_at": datetime.now().isoformat(),
+        }
+        _save_allowed_users()
+        await query.edit_message_text(t(lang, "register_approved_admin", name=reg["name"]))
+        try:
+            await context.bot.send_message(chat_id=applicant_uid, text=t(applicant_lang, "register_approved_user"))
+        except Exception:
+            pass
+    else:
+        await query.edit_message_text(t(lang, "register_rejected_admin", name=reg["name"]))
+        try:
+            await context.bot.send_message(chat_id=applicant_uid, text=t(applicant_lang, "register_rejected_user"))
+        except Exception:
+            pass
 
 
 async def adduser_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1712,6 +2092,31 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     lang = get_lang(context)
+
+    # Agar xodim endigina "Bajardim/Bajarilmadi" bosgan bo'lsa va endi rasm
+    # yuborsa — bu diagnostika uchun emas, balki BAJARILGAN ISH DALILI.
+    proof_task_id = context.user_data.pop("awaiting_proof_task", None)
+    proof_until = context.user_data.pop("awaiting_proof_until", 0)
+    if proof_task_id and time.time() <= proof_until:
+        photo = update.message.photo[-1]
+        file_id = photo.file_id
+        uid = update.effective_user.id
+        tk = next((x for x in TASKS if x["id"] == proof_task_id), None)
+        if tk is not None:
+            tk.setdefault("proof_photos", {})[str(uid)] = file_id
+            _save_tasks()
+            for admin_uid in ADMIN_USER_IDS:
+                admin_lang = employee_lang(context, admin_uid)
+                try:
+                    await context.bot.send_photo(
+                        chat_id=admin_uid, photo=file_id,
+                        caption=t(admin_lang, "proof_photo_caption", name=employee_name(uid), text=tk["text"]),
+                    )
+                except Exception as e:
+                    logger.warning("Adminga dalil rasmini yuborishda xatolik: %s", e)
+        await update.message.reply_text(t(lang, "proof_photo_thanks"), reply_markup=kb_for(update))
+        return
+
     await update.message.reply_text(t(lang, "photo_processing"))
 
     photo = update.message.photo[-1]
@@ -1783,6 +2188,67 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     log_query(update, ln.id, query_label, answer)
     cache_set(ln.id, lang, query_label, answer)
+
+
+# ---------------------------------------------------------------------------
+# Ovozli xabar orqali murojaat (Groq Whisper orqali matnga aylantiriladi)
+# ---------------------------------------------------------------------------
+
+def _transcribe_voice_sync(audio_bytes: bytes, lang_hint: str) -> str:
+    if not groq_client:
+        raise RuntimeError("Groq sozlanmagan — ovozni matnga aylantirish uchun GROQ_API_KEY kerak")
+    lang_map = {"uz": "uz", "en": "en", "zh": "zh"}
+    resp = groq_client.audio.transcriptions.create(
+        model=GROQ_WHISPER_MODEL,
+        file=("audio.ogg", audio_bytes),
+        language=lang_map.get(lang_hint, "uz"),
+        response_format="text",
+    )
+    return str(resp).strip()
+
+
+async def transcribe_voice(audio_bytes: bytes, lang_hint: str):
+    try:
+        return await asyncio.to_thread(_transcribe_voice_sync, audio_bytes, lang_hint)
+    except Exception as e:
+        logger.warning("Ovozni matnga aylantirishda xatolik: %s", e)
+        return None
+
+
+async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(get_lang(context), "access_denied"))
+        return
+    if not context.user_data.get("lang"):
+        await update.message.reply_text(TEXT["uz"]["choose_lang"], reply_markup=language_keyboard())
+        return
+
+    lang = get_lang(context)
+    await update.message.reply_text(t(lang, "voice_processing"))
+
+    voice = update.message.voice
+    file = await voice.get_file()
+    audio_bytes = bytes(await file.download_as_bytearray())
+
+    text_val = await transcribe_voice(audio_bytes, lang)
+    if not text_val:
+        await update.message.reply_text(t(lang, "voice_failed"), reply_markup=kb_for(update))
+        return
+
+    await update.message.reply_text(t(lang, "voice_transcribed", text=text_val))
+
+    # Endi xuddi yozma xabar kelgandek, mavjud yo'nalishlar bo'yicha davom etamiz.
+    mode = context.user_data.get("mode")
+    if mode == "general":
+        await handle_general_ai(update, context, text_val)
+        return
+    ln = get_selected_line(context)
+    if ln is None:
+        await update.message.reply_text(
+            t(lang, "no_machine_selected", ai=AI_CHAT_LABEL), reply_markup=kb_for(update)
+        )
+        return
+    await handle_machine_query(update, context, ln, text_val)
 
 
 async def tag_lookup(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1982,6 +2448,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await handle_admin_task_schedule(update, context, user_text)
         return
 
+    if mode == "admin_recurring_target":
+        await handle_admin_recurring_target(update, context, user_text)
+        return
+
+    if mode == "admin_recurring_text":
+        await handle_admin_recurring_text(update, context, user_text)
+        return
+
+    if mode == "admin_recurring_time":
+        await handle_admin_recurring_time(update, context, user_text, context.application)
+        return
+
     if mode == "general":
         await handle_general_ai(update, context, user_text)
         return
@@ -2015,6 +2493,51 @@ async def error_handler(update, context):
 # Rejalashtirilgan vazifalar: kunlik hisobot (adminga), haftalik statistika,
 # bot salomatligi (healthcheck)
 # ---------------------------------------------------------------------------
+
+async def task_reminder_job(context: ContextTypes.DEFAULT_TYPE):
+    """Muddati (deadline) o'tib ketgan, lekin hali 'bajarildi/bajarilmadi'
+    deb belgilanmagan topshiriqlar uchun xodimga eslatma, adminga esa
+    ogohlantirish yuboradi. Har bir xodimga bir marta eslatiladi."""
+    now = datetime.now()
+    for tk in TASKS:
+        deadline = tk.get("deadline")
+        if not deadline:
+            continue
+        try:
+            if datetime.fromisoformat(deadline) > now:
+                continue
+        except Exception:
+            continue
+        reminded = set(tk.get("reminded_uids", []))
+        for uid_str, state in tk["status"].items():
+            if state in ("done", "failed"):
+                continue
+            if uid_str in reminded:
+                continue
+            uid = int(uid_str)
+            emp_lang = employee_lang(context, uid)
+            try:
+                await context.bot.send_message(
+                    chat_id=uid,
+                    text=t(emp_lang, "task_reminder_dm", text=tk["text"]),
+                    reply_markup=build_task_buttons(emp_lang, tk["id"], state),
+                )
+            except Exception as e:
+                logger.warning("Eslatma yuborishda xatolik (%s): %s", uid_str, e)
+            for admin_uid in ADMIN_USER_IDS:
+                admin_lang = employee_lang(context, admin_uid)
+                try:
+                    await context.bot.send_message(
+                        chat_id=admin_uid,
+                        text=t(admin_lang, "task_reminder_admin_notice",
+                               name=employee_name(uid), text=tk["text"]),
+                    )
+                except Exception as e:
+                    logger.warning("Adminga eslatma xabarida xatolik: %s", e)
+            reminded.add(uid_str)
+        tk["reminded_uids"] = list(reminded)
+    _save_tasks()
+
 
 async def daily_report_job(context: ContextTypes.DEFAULT_TYPE):
     """Har kuni belgilangan vaqtda (standart 18:00) o'sha kunning barcha
@@ -2090,6 +2613,79 @@ async def healthcheck_job(context: ContextTypes.DEFAULT_TYPE):
 
 
 # ---------------------------------------------------------------------------
+# Log arxivlash va zaxira nusxa (backup)
+# ---------------------------------------------------------------------------
+
+LOG_FILES_TO_ROTATE = [QUERY_LOG_PATH, NO_MATCH_LOG_PATH, "feedback.log"]
+BACKUP_FILES = [TASKS_PATH, ALLOWED_USERS_PATH, RECURRING_TASKS_PATH]
+
+
+def _rotate_logs_sync():
+    """Har bir log faylini oy boshida (fayl shu oyga tegishli bo'lmasa)
+    '<nom>-YYYY-MM.log' deb arxivlab, yangisini boshlaydi."""
+    this_month = datetime.now().strftime("%Y-%m")
+    for path in LOG_FILES_TO_ROTATE:
+        if not os.path.exists(path):
+            continue
+        try:
+            mtime = datetime.fromtimestamp(os.path.getmtime(path)).strftime("%Y-%m")
+            if mtime != this_month:
+                base, ext = os.path.splitext(path)
+                archive_path = f"{base}-{mtime}{ext}"
+                if not os.path.exists(archive_path):
+                    os.rename(path, archive_path)
+                    logger.info("Log arxivlandi: %s -> %s", path, archive_path)
+        except Exception as e:
+            logger.warning("Log arxivlashda xatolik (%s): %s", path, e)
+
+
+def _backup_sync():
+    """tasks.json, allowed_users.json, recurring_tasks.json fayllaridan
+    kunlik zaxira nusxa oladi, eng so'nggi BACKUP_KEEP tasi saqlanadi."""
+    try:
+        os.makedirs(BACKUP_DIR, exist_ok=True)
+    except Exception as e:
+        logger.warning("Backup papkasini yaratishda xatolik: %s", e)
+        return
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    for path in BACKUP_FILES:
+        if not os.path.exists(path):
+            continue
+        try:
+            base = os.path.basename(path)
+            dest = os.path.join(BACKUP_DIR, f"{today}-{base}")
+            if not os.path.exists(dest):
+                with open(path, "rb") as src_f, open(dest, "wb") as dst_f:
+                    dst_f.write(src_f.read())
+        except Exception as e:
+            logger.warning("Zaxira nusxa olishda xatolik (%s): %s", path, e)
+
+    # Eskirgan zaxiralarni tozalash
+    try:
+        files = sorted(os.listdir(BACKUP_DIR))
+        by_base = {}
+        for fn in files:
+            for base in (os.path.basename(p) for p in BACKUP_FILES):
+                if fn.endswith(base):
+                    by_base.setdefault(base, []).append(fn)
+        for base, fnames in by_base.items():
+            fnames.sort()
+            for old in fnames[:-BACKUP_KEEP]:
+                try:
+                    os.remove(os.path.join(BACKUP_DIR, old))
+                except Exception:
+                    pass
+    except Exception as e:
+        logger.warning("Eski zaxiralarni tozalashda xatolik: %s", e)
+
+
+async def log_rotation_job(context: ContextTypes.DEFAULT_TYPE):
+    await asyncio.to_thread(_rotate_logs_sync)
+    await asyncio.to_thread(_backup_sync)
+
+
+# ---------------------------------------------------------------------------
 # Ishga tushirish
 # ---------------------------------------------------------------------------
 
@@ -2111,13 +2707,16 @@ def main():
     app.add_handler(CommandHandler("machine", choose_machine))
     app.add_handler(CommandHandler("tag", tag_lookup))
     app.add_handler(CommandHandler("status", status_cmd))
+    app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CommandHandler("adduser", adduser_cmd))
     app.add_handler(CommandHandler("setphone", setphone_cmd))
     app.add_handler(CommandHandler("removeuser", removeuser_cmd))
     app.add_handler(CommandHandler("listusers", listusers_cmd))
     app.add_handler(CommandHandler("nomatches", nomatches_cmd))
+    app.add_handler(CommandHandler("register", register_cmd))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+    app.add_handler(MessageHandler(filters.VOICE, handle_voice))
     app.add_handler(CallbackQueryHandler(handle_feedback_callback))
     app.add_error_handler(error_handler)
 
@@ -2128,6 +2727,9 @@ def main():
             app.job_queue.run_daily(weekly_stats_job, time=datetime.strptime("08:00", "%H:%M").time())
         if HEALTHCHECK_PING_URL:
             app.job_queue.run_repeating(healthcheck_job, interval=HEALTHCHECK_INTERVAL_MIN * 60, first=10)
+        app.job_queue.run_repeating(task_reminder_job, interval=TASK_REMINDER_CHECK_MIN * 60, first=60)
+        app.job_queue.run_repeating(log_rotation_job, interval=6 * 3600, first=30)
+        register_recurring_jobs(app)
 
     logger.info(
         "Bot ishga tushdi... (%d ta uskuna, AI provayderlar: %s, kirish nazorati: %s)",
