@@ -72,7 +72,7 @@ load_dotenv()
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 GROQ_WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
@@ -102,6 +102,14 @@ PENDING_REG_PATH = os.getenv("PENDING_REG_PATH", "pending_registrations.json")
 BACKUP_DIR = os.getenv("BACKUP_DIR", "backups")
 BACKUP_KEEP = int(os.getenv("BACKUP_KEEP", "14"))
 
+# --- Ichki kutubxona (faqat admin yuklaydi, faqat ruxsatli foydalanuvchilar ko'radi) ---
+LIBRARY_DOCS_PATH = os.getenv("LIBRARY_DOCS_PATH", "library_docs.json")
+LIBRARY_FILES_DIR = os.getenv("LIBRARY_FILES_DIR", "library_files")
+MAX_LIBRARY_FILE_MB = float(os.getenv("MAX_LIBRARY_FILE_MB", "20"))
+# Registratsiya spam himoyasi
+REG_RATE_LIMIT_PER_HOUR = int(os.getenv("REG_RATE_LIMIT_PER_HOUR", "3"))
+
+
 # --- Bot salomatligini kuzatish (ixtiyoriy, masalan healthchecks.io) ---
 HEALTHCHECK_PING_URL = os.getenv("HEALTHCHECK_PING_URL", "").strip()
 HEALTHCHECK_INTERVAL_MIN = int(os.getenv("HEALTHCHECK_INTERVAL_MIN", "5"))
@@ -121,6 +129,22 @@ logging.basicConfig(
     level=logging.INFO,
 )
 logger = logging.getLogger("plc-fault-bot")
+
+
+def atomic_json_write(path: str, data, indent=None) -> None:
+    """Race-safe JSON write: temp file + os.replace."""
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=indent)
+    os.replace(tmp, path)
+
+
+def atomic_text_write(path: str, text: str) -> None:
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(text)
+    os.replace(tmp, path)
+
 
 QUERY_LOG_PATH = os.getenv("QUERY_LOG_PATH", "queries.log")
 
@@ -144,7 +168,14 @@ if OPENROUTER_API_KEY and not OpenAI:
 # adminlar va ular ruxsat bergan foydalanuvchilar botdan foydalana oladi.
 # ---------------------------------------------------------------------------
 
-ACCESS_CONTROL_ENABLED = bool(ADMIN_USER_IDS)
+# Majburiy kirish nazorati: ADMIN_USER_IDS bo'sh bo'lsa bot ishga tushmaydi.
+ACCESS_CONTROL_ENABLED = True
+if not ADMIN_USER_IDS:
+    raise RuntimeError(
+        "XAVFSIZLIK: ADMIN_USER_IDS .env da bo'sh. "
+        "Botga kirish uchun kamida bitta admin Telegram ID kiriting "
+        "(masalan ADMIN_USER_IDS=123456789)."
+    )
 
 # ALLOWED_USERS: {user_id (int): {"name": str, "added_at": iso-str}}
 # Eski formatdan (ID'lar ro'yxati) ham avtomatik o'tkaziladi.
@@ -161,15 +192,92 @@ except (FileNotFoundError, json.JSONDecodeError):
 
 def _save_allowed_users():
     try:
-        with open(ALLOWED_USERS_PATH, "w", encoding="utf-8") as f:
-            json.dump({str(uid): info for uid, info in ALLOWED_USERS.items()}, f, ensure_ascii=False)
+        atomic_json_write(
+            ALLOWED_USERS_PATH,
+            {str(uid): info for uid, info in ALLOWED_USERS.items()},
+        )
     except Exception as e:
         logger.warning("allowed_users saqlashda xatolik: %s", e)
 
 
-def is_authorized(user_id: int) -> bool:
-    if not ACCESS_CONTROL_ENABLED:
+
+# ---------------------------------------------------------------------------
+# Ichki kutubxona: admin yuklaydi, faqat ruxsat berilgan foydalanuvchilar ko'radi
+# ---------------------------------------------------------------------------
+
+os.makedirs(LIBRARY_FILES_DIR, exist_ok=True)
+
+try:
+    with open(LIBRARY_DOCS_PATH, "r", encoding="utf-8") as f:
+        _lib_raw = json.load(f)
+    LIBRARY_DOCS = _lib_raw.get("docs", []) if isinstance(_lib_raw, dict) else (_lib_raw if isinstance(_lib_raw, list) else [])
+except (FileNotFoundError, json.JSONDecodeError):
+    LIBRARY_DOCS = []
+
+_reg_request_times = {}  # uid -> [timestamps] spam himoyasi
+
+
+def _save_library_docs():
+    try:
+        atomic_json_write(LIBRARY_DOCS_PATH, {"docs": LIBRARY_DOCS}, indent=2)
+    except Exception as e:
+        logger.warning("library_docs saqlashda xatolik: %s", e)
+
+
+def library_list_visible():
+    """Ruxsatli foydalanuvchiga ko'rinadigan hujjatlar (visible=True)."""
+    return [d for d in LIBRARY_DOCS if d.get("visible", True)]
+
+
+def library_get(doc_id: str):
+    for d in LIBRARY_DOCS:
+        if d.get("id") == doc_id:
+            return d
+    return None
+
+
+def library_add(doc: dict):
+    LIBRARY_DOCS.append(doc)
+    _save_library_docs()
+
+
+def library_delete(doc_id: str) -> bool:
+    global LIBRARY_DOCS
+    before = len(LIBRARY_DOCS)
+    LIBRARY_DOCS = [d for d in LIBRARY_DOCS if d.get("id") != doc_id]
+    if len(LIBRARY_DOCS) < before:
+        _save_library_docs()
         return True
+    return False
+
+
+def check_reg_rate_limit(user_id: int) -> bool:
+    """Registratsiya spam: soatiga REG_RATE_LIMIT_PER_HOUR dan oshmasin."""
+    now = time.time()
+    hits = [ts for ts in _reg_request_times.get(user_id, []) if now - ts < 3600]
+    if len(hits) >= REG_RATE_LIMIT_PER_HOUR:
+        _reg_request_times[user_id] = hits
+        return False
+    hits.append(now)
+    _reg_request_times[user_id] = hits
+    return True
+
+
+def sanitize_filename(name: str) -> str:
+    """Xavfli belgilarni olib tashlash — path traversal himoyasi."""
+    name = os.path.basename(name or "file")
+    name = re.sub(r"[^\w.\- ()\u0400-\u04FF\u4e00-\u9fff]+", "_", name, flags=re.UNICODE)
+    return name[:120] or "file"
+
+
+def safe_callback_data(prefix: str, *parts) -> str:
+    """Callback data 64 baytdan oshmasin (Telegram limiti)."""
+    raw = prefix + ":" + ":".join(str(p) for p in parts)
+    return raw[:64]
+
+
+def is_authorized(user_id: int) -> bool:
+    # Doimo ruxsat tekshiruvi — begona foydalanuvchilar hech narsa ko'rmaydi
     return user_id in ADMIN_USER_IDS or user_id in ALLOWED_USERS
 
 
@@ -262,7 +370,7 @@ TEXT = {
             "Nomi: {name}\n"
             "Izoh: {comment}"
         ),
-        "access_denied": "Kechirasiz, bu botdan foydalanish uchun ruxsatingiz yo'q. Administratorga murojaat qiling.",
+        "access_denied": "⛔ Kirish taqiqlangan. Ro'yxatdan o'ting: /register Ism +99890... — admin tasdiqlashi shart.",
         "user_added": "✅ Foydalanuvchi {uid} ro'yxatga qo'shildi.",
         "user_removed": "✅ Foydalanuvchi {uid} ro'yxatdan o'chirildi.",
         "admin_only": "Bu buyruq faqat administrator uchun.",
@@ -322,6 +430,27 @@ TEXT = {
         "library_ask_topic": "📚 *{machine} qo'llanmasi*\nQaysi mavzuni qidiryapsiz? (masalan: \"moylash\", \"xavfsizlik to'ri sozlash\")",
         "library_no_results": "Qo'llanmadan bu mavzu bo'yicha hech narsa topa olmadim. Boshqacha so'z bilan yozib ko'ring.",
         "library_found": "📖 {count} ta tegishli sahifa topildi:",
+        "lib_menu_title": "📚 *Kutubxona*\nFaqat ruxsat berilgan xodimlar ko'ra oladi.\n\nMavjud hujjatlar:",
+        "lib_empty": "Kutubxona hozircha bo'sh. Admin hujjat yuklagach paydo bo'ladi.",
+        "lib_item": "• *{title}*\n  {desc}\n  ID: `{id}`",
+        "lib_download_hint": "Hujjatni olish: /libget <ID>",
+        "lib_get_usage": "Foydalanish: /libget <hujjat_id>",
+        "lib_not_found": "Hujjat topilmadi yoki o'chirilgan.",
+        "lib_no_access": "⛔ Bu bo'lim faqat ruxsat berilgan xodimlar uchun.",
+        "lib_admin_menu": "🔐 *Admin — Kutubxona boshqaruvi*\n\n• Hujjat yuklash: /libadd <sarlavha>\n  so'ng PDF/DOC/rasm yuboring\n• Ro'yxat: /liblist\n• O'chirish: /libdel <ID>\n• Oddiy kutubxona: 📚 Kutubxona",
+        "lib_add_usage": "Foydalanish:\n1) /libadd <sarlavha>\n2) Keyin PDF, DOC yoki rasm yuboring (caption ixtiyoriy).",
+        "lib_add_waiting": "✅ Sarlavha qabul qilindi: *{title}*\nEndi faylni yuboring (PDF/DOC/DOCX/TXT/rasm, max {mb} MB).",
+        "lib_add_done": "✅ Kutubxonaga qo'shildi.\nSarlavha: *{title}*\nID: `{id}`",
+        "lib_add_too_big": "Fayl juda katta (max {mb} MB).",
+        "lib_add_bad_type": "Ruxsat etilmagan fayl turi. PDF, DOC, DOCX, TXT, JPG, PNG yuboring.",
+        "lib_del_usage": "Foydalanish: /libdel <hujjat_id>",
+        "lib_del_done": "🗑 O'chirildi: {title}",
+        "lib_del_fail": "O'chirib bo'lmadi — ID topilmadi.",
+        "lib_list_admin": "📋 *Kutubxona (admin)* — jami {n} ta:",
+        "access_denied_detail": "⛔ *Kirish taqiqlangan*\n\nBu bot faqat zavod xodimlari uchun.\nFoydalanish uchun admin ruxsati shart.\n\nRo'yxatdan o'tish:\n`/register Ism Familiya +998901234567`\n\nAdmin tasdiqlagach bot ochiladi.",
+        "reg_rate_limited": "⏳ Juda ko'p so'rov yubordingiz. 1 soatdan keyin qayta urinib ko'ring.",
+        "security_blocked": "⛔ Xavfsizlik: so'rov rad etildi.",
+
         "manual_page_caption": "📖 Qo'llanma — {machine}, {page}-sahifa",
         "manual_page_text": "📖 {page}-sahifa:\n{text}",
         "addcomment_usage": "Foydalanish: /addcomment <uskuna_id> <manzil> <izoh matni>\nMasalan: /addcomment gem %I0.1 Konveyer old sensori",
@@ -448,6 +577,27 @@ TEXT = {
         "library_ask_topic": "📚 *{machine} manual*\nWhat topic are you looking for? (e.g. \"lubrication\", \"light curtain setup\")",
         "library_no_results": "I couldn't find anything on that topic in the manual. Try different wording.",
         "library_found": "📖 Found {count} relevant page(s):",
+        "lib_menu_title": "📚 *Library*\nVisible only to authorized staff.\n\nDocuments:",
+        "lib_empty": "Library is empty. Documents appear after admin upload.",
+        "lib_item": "• *{title}*\n  {desc}\n  ID: `{id}`",
+        "lib_download_hint": "Get a file: /libget <ID>",
+        "lib_get_usage": "Usage: /libget <doc_id>",
+        "lib_not_found": "Document not found or removed.",
+        "lib_no_access": "⛔ This section is for authorized staff only.",
+        "lib_admin_menu": "🔐 *Admin — Library management*\n\n• Upload: /libadd <title> then send PDF/DOC/image\n• List: /liblist\n• Delete: /libdel <ID>\n• User library: 📚 Library",
+        "lib_add_usage": "Usage:\n1) /libadd <title>\n2) Then send PDF, DOC or image.",
+        "lib_add_waiting": "✅ Title accepted: *{title}*\nNow send the file (PDF/DOC/DOCX/TXT/image, max {mb} MB).",
+        "lib_add_done": "✅ Added to library.\nTitle: *{title}*\nID: `{id}`",
+        "lib_add_too_big": "File too large (max {mb} MB).",
+        "lib_add_bad_type": "File type not allowed. Send PDF, DOC, DOCX, TXT, JPG, PNG.",
+        "lib_del_usage": "Usage: /libdel <doc_id>",
+        "lib_del_done": "🗑 Deleted: {title}",
+        "lib_del_fail": "Could not delete — ID not found.",
+        "lib_list_admin": "📋 *Library (admin)* — {n} total:",
+        "access_denied_detail": "⛔ *Access denied*\n\nThis bot is for factory staff only.\nAdmin approval is required.\n\nRegister:\n`/register Full Name +998901234567`\n\nThe bot opens after admin approval.",
+        "reg_rate_limited": "⏳ Too many requests. Try again in 1 hour.",
+        "security_blocked": "⛔ Security: request rejected.",
+
         "manual_page_caption": "📖 Manual — {machine}, page {page}",
         "manual_page_text": "📖 Page {page}:\n{text}",
         "addcomment_usage": "Usage: /addcomment <machine_id> <address> <comment text>\nExample: /addcomment gem %I0.1 Conveyor entry sensor",
@@ -568,6 +718,27 @@ TEXT = {
         "library_ask_topic": "📚 *{machine}手册*\n您要查找什么主题？（例如：\"润滑\"、\"光幕设置\"）",
         "library_no_results": "未能在手册中找到该主题的相关内容。请尝试其他措辞。",
         "library_found": "📖 找到{count}个相关页面：",
+        "lib_menu_title": "📚 *资料库*\n仅授权员工可见。\n\n文件列表：",
+        "lib_empty": "资料库为空。管理员上传后显示。",
+        "lib_item": "• *{title}*\n  {desc}\n  ID: `{id}`",
+        "lib_download_hint": "获取文件：/libget <ID>",
+        "lib_get_usage": "用法：/libget <文档ID>",
+        "lib_not_found": "未找到该文档或已删除。",
+        "lib_no_access": "⛔ 此分区仅限授权员工。",
+        "lib_admin_menu": "🔐 *管理员 — 资料库管理*\n\n• 上传：/libadd <标题> 然后发送文件\n• 列表：/liblist\n• 删除：/libdel <ID>",
+        "lib_add_usage": "用法：\n1) /libadd <标题>\n2) 然后发送 PDF/DOC/图片。",
+        "lib_add_waiting": "✅ 标题已接受：*{title}*\n请发送文件（最大 {mb} MB）。",
+        "lib_add_done": "✅ 已加入资料库。\n标题：*{title}*\nID：`{id}`",
+        "lib_add_too_big": "文件过大（最大 {mb} MB）。",
+        "lib_add_bad_type": "不支持的文件类型。",
+        "lib_del_usage": "用法：/libdel <文档ID>",
+        "lib_del_done": "🗑 已删除：{title}",
+        "lib_del_fail": "无法删除 — 未找到ID。",
+        "lib_list_admin": "📋 *资料库（管理员）* — 共 {n} 个：",
+        "access_denied_detail": "⛔ *禁止访问*\n\n本机器人仅供工厂员工使用。\n需要管理员批准。\n\n注册：\n`/register 姓名 +998901234567`",
+        "reg_rate_limited": "⏳ 请求过多。请1小时后再试。",
+        "security_blocked": "⛔ 安全：请求被拒绝。",
+
         "manual_page_caption": "📖 手册 — {machine}，第{page}页",
         "manual_page_text": "📖 第{page}页：\n{text}",
         "addcomment_usage": "用法：/addcomment <设备ID> <地址> <注释文本>\n例如：/addcomment gem %I0.1 输送带入口传感器",
@@ -605,7 +776,8 @@ def get_lang(context: ContextTypes.DEFAULT_TYPE) -> str:
 MACHINE_MENU_LABEL = "🔀 Uskunani tanlash/almashtirish"
 AI_CHAT_LABEL = "🤖 Sun'iy intellekt (erkin savol) / AI Assistant / 人工智能"
 ESP32_MENU_LABEL = "🏭 Zavod monitoring (kompressor/chiller)"
-LIBRARY_MENU_LABEL = "📚 Qo'llanma / Manual / 手册"
+LIBRARY_MENU_LABEL = "📚 Kutubxona / Library"
+ADMIN_LIBRARY_LABEL = "🔐 Admin: Kutubxona boshqaruvi"
 
 # ---------------------------------------------------------------------------
 # Uskunalar (liniyalar) konfiguratsiyasini yuklash
@@ -770,11 +942,16 @@ class MachineLine:
                 logger.warning("Qo'llanma indeksini yuklashda xatolik (%s): %s", self.label, e)
 
     def find_tag(self, address: str):
+        """Exact tag lookup. Accepts I0.1, %I0.1, DB1.DBX0.0, etc."""
         address = address.strip()
         if not address.startswith("%"):
             address = "%" + address
+        target = address.lower()
+        # also try without leading % for comparison flexibility
+        target_nopct = target.lstrip("%")
         for tg in self.tags:
-            if tg["address"].lower() == address.lower():
+            a = (tg.get("address") or "").lower()
+            if a == target or a.lstrip("%") == target_nopct:
                 return tg
         return None
 
@@ -819,13 +996,19 @@ def language_keyboard() -> ReplyKeyboardMarkup:
 
 
 def machine_keyboard(user_id: int = None) -> ReplyKeyboardMarkup:
+    """Asosiy menyu — aniq bo'limlar, admin uchun qo'shimcha tugma."""
     rows = [[line.label] for line in LINES.values()]
+    # Ikkinchi qator: yordamchi bo'limlar
+    util = [LIBRARY_MENU_LABEL]
     if ESP32_STATUS_URL:
-        rows.append([ESP32_MENU_LABEL])
-    if any(ln.manual_pdf for ln in LINES.values()):
-        rows.append([LIBRARY_MENU_LABEL])
+        util.append(ESP32_MENU_LABEL)
+    # 2 tadan qatorlarga bo'lish
+    for i in range(0, len(util), 2):
+        rows.append(util[i:i + 2])
     rows.append([AI_CHAT_LABEL])
-    rows.append([LANG_CHANGE_LABEL])
+    rows.append([LANG_CHANGE_LABEL, MACHINE_MENU_LABEL])
+    if user_id and is_admin(user_id):
+        rows.append([ADMIN_LIBRARY_LABEL])
     return ReplyKeyboardMarkup(rows, resize_keyboard=True)
 
 
@@ -843,9 +1026,15 @@ def get_selected_line(context: ContextTypes.DEFAULT_TYPE):
 # Tag qidiruv (kerakli taglarni topish — butun ro'yxatni yubormaslik uchun)
 # ---------------------------------------------------------------------------
 
-ADDR_RE = re.compile(r"^%?[A-Za-z]{1,4}\d+(\.\d+)?$")
+ADDR_RE = re.compile(
+    r"^%?(?:"
+    r"[A-Za-z]{1,4}\d+(?:\.\d+)?"           # %I0.1, Q53.2, M110.3, T1, IW64
+    r"|DB\d+\.DB[XBWD]\d+(?:\.\d+)?"      # DB1.DBX0.0, DB10.DBW2
+    r")$",
+    re.IGNORECASE,
+)
 ADDR_SEARCH_RE = re.compile(r"%?\b[IQM]\d+\.\d+\b", re.IGNORECASE)
-WORD_RE = re.compile(r"[a-zA-Z\u4e00-\u9fff]+")
+WORD_RE = re.compile(r"[a-zA-Zа-яА-ЯёЁ\u4e00-\u9fff]+")
 
 # Ko'p ishlatiladigan o'zbek/rus so'zlarini inglizcha texnik atamalarga
 # moslashtiruvchi lug'at. Bu orqali ko'pgina so'rovlarda AI'ga alohida
@@ -876,6 +1065,33 @@ GLOSSARY = {
     "gaz": ["gas"], "havo": ["air"],
     "flesh": ["flash", "deflash"], "flash": ["flash", "deflash"],
     "zolotnik": ["valve"], "datчik": ["sensor"],
+    # Russian (Cyrillic) — local search for operators typing in Russian
+    "конвейер": ["conveyor"], "конвеер": ["conveyor"], "лента": ["conveyor", "belt"],
+    "мотор": ["motor"], "двигатель": ["motor"],
+    "датчик": ["sensor"], "сенсор": ["sensor"],
+    "цилиндр": ["cylinder"],
+    "клапан": ["valve"], "вентиль": ["valve"],
+    "робот": ["robot"],
+    "сварка": ["weld", "welding"], "сваривание": ["welding"],
+    "давление": ["pressure"],
+    "охлаждение": ["cooling", "water"], "вода": ["water", "cooling"],
+    "нагрев": ["heat", "heater"], "нагреватель": ["heater"],
+    "безопасность": ["safety"], "штора": ["curtain", "light curtain"],
+    "захват": ["gripper"],
+    "кабель": ["cable"],
+    "реле": ["relay"],
+    "станция": ["station"], "участок": ["station"],
+    "насос": ["pump"],
+    "сигнал": ["signal"],
+    "движение": ["motion", "move"],
+    "дверь": ["door"], "крышка": ["cover", "door"],
+    "кнопка": ["button"],
+    "лампа": ["lamp", "light"], "индикатор": ["lamp", "light"],
+    "газ": ["gas"], "воздух": ["air"],
+    "облой": ["flash", "deflash"],
+    "авария": ["fault", "alarm", "error"], "ошибка": ["fault", "alarm", "error"],
+    "не работает": ["fault", "alarm"], "стоит": ["stop", "fault"],
+    "нагрев": ["heat", "heater"], "температура": ["temperature", "heat"],
 }
 
 
@@ -1029,6 +1245,217 @@ async def handle_library_query(update: Update, context: ContextTypes.DEFAULT_TYP
     )
 
 
+
+
+# ---------------------------------------------------------------------------
+# Kutubxona: foydalanuvchi ko'rish + admin yuklash/o'chirish
+# ---------------------------------------------------------------------------
+
+ALLOWED_LIB_MIME = {
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/plain",
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+}
+ALLOWED_LIB_EXT = {".pdf", ".doc", ".docx", ".txt", ".jpg", ".jpeg", ".png", ".webp"}
+
+
+async def show_user_library(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Ruxsatli foydalanuvchiga kutubxona ro'yxati."""
+    lang = get_lang(context)
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(lang, "access_denied_detail"), parse_mode="Markdown")
+        return
+    docs = library_list_visible()
+    if not docs:
+        await update.message.reply_text(t(lang, "lib_empty"), reply_markup=kb_for(update))
+        return
+    lines = [t(lang, "lib_menu_title")]
+    for d in docs[:40]:
+        desc = (d.get("description") or d.get("category") or "")[:80]
+        lines.append(t(lang, "lib_item", title=d.get("title", "?"), desc=desc, id=d.get("id", "")))
+    lines.append("")
+    lines.append(t(lang, "lib_download_hint"))
+    text = "\n".join(lines)
+    await safe_reply_text(update, text, reply_markup=kb_for(update))
+
+
+async def show_admin_library_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"), reply_markup=kb_for(update))
+        return
+    await update.message.reply_text(
+        t(lang, "lib_admin_menu"), parse_mode="Markdown", reply_markup=kb_for(update)
+    )
+
+
+async def libadd_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    title = " ".join(context.args).strip() if context.args else ""
+    if not title:
+        await update.message.reply_text(t(lang, "lib_add_usage"))
+        return
+    # XSS/injection: sarlavhani soddalashtirish
+    title = re.sub(r"[\r\n`]", " ", title)[:200]
+    context.user_data["mode"] = "lib_admin_upload"
+    context.user_data["lib_pending_title"] = title
+    await update.message.reply_text(
+        t(lang, "lib_add_waiting", title=title, mb=int(MAX_LIBRARY_FILE_MB)),
+        parse_mode="Markdown",
+        reply_markup=kb_for(update),
+    )
+
+
+async def liblist_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    if not LIBRARY_DOCS:
+        await update.message.reply_text(t(lang, "lib_empty"))
+        return
+    lines = [t(lang, "lib_list_admin", n=len(LIBRARY_DOCS))]
+    for d in LIBRARY_DOCS:
+        vis = "✅" if d.get("visible", True) else "🙈"
+        lines.append(f"{vis} `{d.get('id')}` — *{d.get('title','?')}*")
+    await safe_reply_text(update, "\n".join(lines), reply_markup=kb_for(update))
+
+
+async def libdel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    if not context.args:
+        await update.message.reply_text(t(lang, "lib_del_usage"))
+        return
+    doc_id = context.args[0].strip()
+    doc = library_get(doc_id)
+    if not doc:
+        await update.message.reply_text(t(lang, "lib_del_fail"))
+        return
+    # Local file cleanup
+    local = doc.get("local_path")
+    if local and os.path.isfile(local) and os.path.abspath(local).startswith(os.path.abspath(LIBRARY_FILES_DIR)):
+        try:
+            os.remove(local)
+        except Exception as e:
+            logger.warning("library file delete: %s", e)
+    title = doc.get("title", doc_id)
+    library_delete(doc_id)
+    await update.message.reply_text(t(lang, "lib_del_done", title=title), reply_markup=kb_for(update))
+
+
+async def libget_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(lang, "access_denied_detail"), parse_mode="Markdown")
+        return
+    if not context.args:
+        await update.message.reply_text(t(lang, "lib_get_usage"))
+        return
+    doc_id = context.args[0].strip()
+    doc = library_get(doc_id)
+    if not doc or not doc.get("visible", True):
+        await update.message.reply_text(t(lang, "lib_not_found"))
+        return
+    # Prefer telegram file_id (no local disk needed after re-upload)
+    file_id = doc.get("file_id")
+    local = doc.get("local_path")
+    caption = f"📄 {doc.get('title', '')}"
+    try:
+        if file_id:
+            await context.bot.send_document(
+                chat_id=update.effective_chat.id,
+                document=file_id,
+                caption=caption,
+            )
+        elif local and os.path.isfile(local):
+            # path traversal check
+            if not os.path.abspath(local).startswith(os.path.abspath(LIBRARY_FILES_DIR)):
+                await update.message.reply_text(t(lang, "security_blocked"))
+                return
+            with open(local, "rb") as f:
+                await context.bot.send_document(
+                    chat_id=update.effective_chat.id,
+                    document=f,
+                    filename=sanitize_filename(doc.get("filename") or os.path.basename(local)),
+                    caption=caption,
+                )
+        else:
+            await update.message.reply_text(t(lang, "lib_not_found"))
+    except Exception as e:
+        logger.warning("libget yuborish xato: %s", e)
+        await update.message.reply_text(t(lang, "lib_not_found"))
+
+
+async def handle_library_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Admin kutubxonaga fayl yuklaydi (mode=lib_admin_upload)."""
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    if context.user_data.get("mode") != "lib_admin_upload":
+        await update.message.reply_text(t(lang, "lib_add_usage"))
+        return
+    title = context.user_data.get("lib_pending_title") or "Document"
+    doc = update.message.document
+    if not doc:
+        await update.message.reply_text(t(lang, "lib_add_bad_type"))
+        return
+    # Size check
+    if doc.file_size and doc.file_size > MAX_LIBRARY_FILE_MB * 1024 * 1024:
+        await update.message.reply_text(t(lang, "lib_add_too_big", mb=int(MAX_LIBRARY_FILE_MB)))
+        return
+    fname = sanitize_filename(doc.file_name or "file.bin")
+    ext = os.path.splitext(fname)[1].lower()
+    mime = (doc.mime_type or "").lower()
+    if ext not in ALLOWED_LIB_EXT and mime not in ALLOWED_LIB_MIME:
+        await update.message.reply_text(t(lang, "lib_add_bad_type"))
+        return
+    # Download to library_files
+    doc_id = uuid.uuid4().hex[:10]
+    local_name = f"{doc_id}_{fname}"
+    local_path = os.path.join(LIBRARY_FILES_DIR, local_name)
+    try:
+        tg_file = await context.bot.get_file(doc.file_id)
+        await tg_file.download_to_drive(local_path)
+    except Exception as e:
+        logger.warning("library download failed: %s", e)
+        await update.message.reply_text(t(lang, "lib_add_too_big", mb=int(MAX_LIBRARY_FILE_MB)))
+        return
+
+    entry = {
+        "id": doc_id,
+        "title": title,
+        "description": (update.message.caption or "")[:300],
+        "category": "manual",
+        "filename": fname,
+        "file_id": doc.file_id,
+        "local_path": local_path,
+        "mime": mime,
+        "size": doc.file_size,
+        "added_by": update.effective_user.id,
+        "added_at": datetime.now().isoformat(),
+        "visible": True,
+    }
+    library_add(entry)
+    context.user_data["mode"] = None
+    context.user_data.pop("lib_pending_title", None)
+    await update.message.reply_text(
+        t(lang, "lib_add_done", title=title, id=doc_id),
+        parse_mode="Markdown",
+        reply_markup=kb_for(update),
+    )
+
+
 def format_raw_tags(tags, machine_label: str, lang: str) -> str:
     lines = [t(lang, "raw_fallback_header", machine=machine_label)]
     kind_labels = KIND_LABELS.get(lang, KIND_LABELS["uz"])
@@ -1159,6 +1586,38 @@ LANG_REMINDER = {
 }
 
 
+
+async def safe_reply_text(update: Update, text: str, reply_markup=None, prefer_markdown: bool = True):
+    """Send text; try Markdown, fall back to plain text if Telegram rejects formatting.
+    Also split messages longer than Telegram limit (~4096).
+    """
+    if not text:
+        return
+    # Telegram hard limit
+    MAX_LEN = 4000
+    chunks = []
+    while text:
+        if len(text) <= MAX_LEN:
+            chunks.append(text)
+            break
+        # split on nearest newline
+        cut = text.rfind("\n", 0, MAX_LEN)
+        if cut < MAX_LEN // 2:
+            cut = MAX_LEN
+        chunks.append(text[:cut])
+        text = text[cut:].lstrip("\n")
+
+    for i, chunk in enumerate(chunks):
+        markup = reply_markup if i == len(chunks) - 1 else None
+        if prefer_markdown:
+            try:
+                await update.message.reply_text(chunk, parse_mode="Markdown", reply_markup=markup)
+                continue
+            except Exception as e:
+                logger.warning("Markdown yuborish muvaffaqiyatsiz, plain text: %s", e)
+        await update.message.reply_text(chunk, reply_markup=markup)
+
+
 async def ask_ai(system_prompt: str, user_text: str, lang: str = None):
     if lang:
         user_text = user_text + LANG_REMINDER.get(lang, LANG_REMINDER["uz"])
@@ -1216,8 +1675,7 @@ def cache_get(scope: str, lang: str, text: str):
 def cache_set(scope: str, lang: str, text: str, answer: str):
     ANSWER_CACHE[_cache_key(scope, lang, text)] = [time.time(), answer]
     try:
-        with open(CACHE_PATH, "w", encoding="utf-8") as f:
-            json.dump(ANSWER_CACHE, f, ensure_ascii=False)
+        atomic_json_write(CACHE_PATH, ANSWER_CACHE)
     except Exception as e:
         logger.warning("Keshni saqlashda xatolik: %s", e)
 
@@ -1459,15 +1917,20 @@ async def handle_esp32_status(update: Update, context: ContextTypes.DEFAULT_TYPE
 # ---------------------------------------------------------------------------
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not is_authorized(update.effective_user.id):
-        await update.message.reply_text(t(get_lang(context), "access_denied"))
-        return
-
+    # Avval til (ro'yxatdan o'tmaganlar ham til tanlay oladi)
     if not context.user_data.get("lang"):
         await update.message.reply_text(TEXT["uz"]["choose_lang"], reply_markup=language_keyboard())
         return
 
     lang = get_lang(context)
+
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(
+            t(lang, "access_denied_detail"),
+            parse_mode="Markdown",
+        )
+        return
+
     ln = get_selected_line(context)
     if ln is not None:
         await update.message.reply_text(
@@ -1485,7 +1948,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def choose_machine(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
     if not is_authorized(update.effective_user.id):
-        await update.message.reply_text(t(lang, "access_denied"))
+        await update.message.reply_text(t(lang, "access_denied_detail"), parse_mode="Markdown")
         return
     await update.message.reply_text(t(lang, "choose_machine_prompt"), reply_markup=kb_for(update))
 
@@ -1493,7 +1956,7 @@ async def choose_machine(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
     if not is_authorized(update.effective_user.id):
-        await update.message.reply_text(t(lang, "access_denied"))
+        await update.message.reply_text(t(lang, "access_denied_detail"), parse_mode="Markdown")
         return
     await update.message.reply_text(t(lang, "help_text"), parse_mode="Markdown", reply_markup=kb_for(update))
 
@@ -1534,8 +1997,7 @@ except (FileNotFoundError, json.JSONDecodeError):
 
 def _save_pending_registrations():
     try:
-        with open(PENDING_REG_PATH, "w", encoding="utf-8") as f:
-            json.dump(PENDING_REGISTRATIONS, f, ensure_ascii=False)
+        atomic_json_write(PENDING_REG_PATH, PENDING_REGISTRATIONS)
     except Exception as e:
         logger.warning("pending_registrations saqlashda xatolik: %s", e)
 
@@ -1546,6 +2008,10 @@ async def register_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if is_authorized(uid):
         await update.message.reply_text(t(lang, "already_registered"))
+        return
+
+    if not check_reg_rate_limit(uid):
+        await update.message.reply_text(t(lang, "reg_rate_limited"))
         return
 
     if len(context.args) < 2:
@@ -1737,8 +2203,7 @@ async def addcomment_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     tg["comment"] = comment_text
     try:
-        with open(ln.kb_file, "w", encoding="utf-8") as f:
-            json.dump(ln.tags, f, ensure_ascii=False, indent=1)
+        atomic_json_write(ln.kb_file, ln.tags, indent=1)
     except Exception as e:
         logger.warning("tags_kb faylini saqlashda xatolik (%s): %s", ln.id, e)
         await update.message.reply_text(t(lang, "addcomment_save_error"))
@@ -1872,7 +2337,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     answer_id = register_answer(ln.id, lang, query_label, answer)
-    await update.message.reply_text(answer, parse_mode="Markdown")
+    await safe_reply_text(update, answer)
     await context.bot.send_message(
         chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"),
         reply_markup=build_feedback_keyboard(answer_id, lang),
@@ -2010,7 +2475,7 @@ async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, 
 
     cached = cache_get("general", lang, user_text)
     if cached:
-        await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=kb_for(update))
+        await safe_reply_text(update, cached, reply_markup=kb_for(update))
         return
 
     if not check_rate_limit(update.effective_user.id):
@@ -2023,7 +2488,7 @@ async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, 
         await update.message.reply_text(t(lang, "ai_busy_general"), reply_markup=kb_for(update))
         return
     answer_id = register_answer("general", lang, user_text, answer)
-    await update.message.reply_text(answer, parse_mode="Markdown")
+    await safe_reply_text(update, answer)
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=t(lang, "feedback_prompt"),
@@ -2038,7 +2503,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
 
     cached = cache_get(ln.id, lang, user_text)
     if cached:
-        await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=kb_for(update))
+        await safe_reply_text(update, cached, reply_markup=kb_for(update))
         return
 
     if not check_rate_limit(update.effective_user.id):
@@ -2099,7 +2564,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
         return
 
     answer_id = register_answer(ln.id, lang, user_text, answer)
-    await update.message.reply_text(answer, parse_mode="Markdown")
+    await safe_reply_text(update, answer)
     await context.bot.send_message(
         chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"), reply_markup=build_feedback_keyboard(answer_id, lang)
     )
@@ -2115,8 +2580,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not is_authorized(update.effective_user.id):
-        await update.message.reply_text(t(get_lang(context), "access_denied"))
-        return
+        # Ro'yxatdan o'tishga ruxsat (til tanlash /register)
+        user_text_check = (update.message.text or "").strip()
+        if user_text_check in LANG_BUTTON_TO_CODE or user_text_check.startswith("/register"):
+            pass  # pastga tushadi
+        else:
+            await update.message.reply_text(
+                t(get_lang(context), "access_denied_detail"),
+                parse_mode="Markdown",
+            )
+            return
 
     # Til tanlash tugmasi bosilganmi?
     if user_text in LANG_BUTTON_TO_CODE:
@@ -2125,10 +2598,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             t(lang, "lang_selected", label=user_text), parse_mode="Markdown"
         )
-        await update.message.reply_text(
-            t(lang, "greeting_after_lang", ai=AI_CHAT_LABEL),
-            reply_markup=kb_for(update),
-        )
+        if not is_authorized(update.effective_user.id):
+            await update.message.reply_text(
+                t(lang, "access_denied_detail"),
+                parse_mode="Markdown",
+            )
+        else:
+            await update.message.reply_text(
+                t(lang, "greeting_after_lang", ai=AI_CHAT_LABEL),
+                reply_markup=kb_for(update),
+            )
         return
 
     if user_text == LANG_CHANGE_LABEL:
@@ -2163,7 +2642,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if user_text == LIBRARY_MENU_LABEL:
         context.user_data["mode"] = None
-        await show_library_menu(update, context)
+        await show_user_library(update, context)
+        return
+
+    if user_text == ADMIN_LIBRARY_LABEL:
+        await show_admin_library_menu(update, context)
         return
 
     if user_text == MACHINE_MENU_LABEL:
@@ -2369,6 +2852,13 @@ def main():
     app.add_handler(CommandHandler("listusers", listusers_cmd))
     app.add_handler(CommandHandler("nomatches", nomatches_cmd))
     app.add_handler(CommandHandler("register", register_cmd))
+    # Kutubxona
+    app.add_handler(CommandHandler("libadd", libadd_cmd))
+    app.add_handler(CommandHandler("liblist", liblist_cmd))
+    app.add_handler(CommandHandler("libdel", libdel_cmd))
+    app.add_handler(CommandHandler("libget", libget_cmd))
+    app.add_handler(CommandHandler("library", show_user_library))
+    app.add_handler(MessageHandler(filters.Document.ALL, handle_library_document))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     app.add_handler(MessageHandler(filters.VOICE, handle_voice))
@@ -2385,7 +2875,7 @@ def main():
     logger.info(
         "Bot ishga tushdi... (%d ta uskuna, AI provayderlar: %s, kirish nazorati: %s)",
         len(LINES), ", ".join(name for name, _ in AI_PROVIDERS),
-        "yoqilgan" if ACCESS_CONTROL_ENABLED else "o'chirilgan",
+        "MAJBURIY (admin ruxsati shart)",
     )
     app.run_polling()
 

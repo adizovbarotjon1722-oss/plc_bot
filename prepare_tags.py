@@ -24,15 +24,31 @@ STATION_RE_CN = re.compile(r"([一二三四五六七八九十])工位")
 STATION_RE_ST = re.compile(r"\bST0*([0-9]+)\b", re.IGNORECASE)
 
 
+STATION_RE_NUM = re.compile(r"(?:station|stansiya|участок|станция)\s*#?\s*0*([0-9]+)", re.IGNORECASE)
+STATION_RE_CN2 = re.compile(r"工位\s*0*([0-9]+)")
+
+
 def extract_station(text: str):
     """Matndan stansiya raqamini ajratib olishga harakat qiladi.
-    Ikki formatni tushunadi: xitoycha ('三工位' -> 3) va lotincha ('ST3' -> 3)."""
+    Formatlar: '三工位', '工位3', 'ST3', 'Station 3', 'станция 2'."""
     if not text:
         return None
     m = STATION_RE_CN.search(text)
     if m:
         return CN_NUM.get(m.group(1))
+    m = STATION_RE_CN2.search(text)
+    if m:
+        try:
+            return int(m.group(1))
+        except ValueError:
+            pass
     m = STATION_RE_ST.search(text)
+    if m:
+        try:
+            return int(m.group(1))
+        except ValueError:
+            return None
+    m = STATION_RE_NUM.search(text)
     if m:
         try:
             return int(m.group(1))
@@ -45,15 +61,19 @@ def io_kind(address: str):
     """Manzil turini aniqlaydi: kiruvchi (I), chiquvchi (Q) yoki ichki/marker (M, DB va h.k.)."""
     if not address:
         return "unknown"
-    a = address.lstrip("%")
-    if a.startswith("I"):
+    a = address.lstrip("%").upper()
+    if a.startswith("I") or a.startswith("PI") or a.startswith("AI"):
         return "input"
-    if a.startswith("Q"):
+    if a.startswith("Q") or a.startswith("PQ") or a.startswith("AQ"):
         return "output"
     if a.startswith("M"):
         return "memory"
     if a.startswith("DB"):
         return "db"
+    if a.startswith("T"):
+        return "timer"
+    if a.startswith("C"):
+        return "counter"
     return "other"
 
 
