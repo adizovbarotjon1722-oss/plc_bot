@@ -84,26 +84,21 @@ MAX_CANDIDATE_TAGS = int(os.getenv("MAX_CANDIDATE_TAGS", "25"))
 CACHE_PATH = os.getenv("CACHE_PATH", "answer_cache.json")
 CACHE_TTL_HOURS = float(os.getenv("CACHE_TTL_HOURS", "72"))
 MIN_LOCAL_CANDIDATES = int(os.getenv("MIN_LOCAL_CANDIDATES", "3"))
+RATE_LIMIT_PER_MIN = int(os.getenv("RATE_LIMIT_PER_MIN", "3"))
+RATE_LIMIT_WINDOW_SEC = 60
+RATE_LIMIT_PER_DAY = int(os.getenv("RATE_LIMIT_PER_DAY", "30"))
 
 # --- Kirishni cheklash (ixtiyoriy) ---
 ADMIN_USER_IDS = {int(x) for x in os.getenv("ADMIN_USER_IDS", "").split(",") if x.strip().isdigit()}
 ALLOWED_USERS_PATH = os.getenv("ALLOWED_USERS_PATH", "allowed_users.json")
 
-# --- Eskalatsiya (hal bo'lmagan muammolar) ---
-ESCALATION_CHAT_IDS = [int(x) for x in os.getenv("ESCALATION_CHAT_IDS", "").split(",") if x.strip().lstrip("-").isdigit()]
-
 # --- Haftalik statistika ---
 STATS_CHAT_ID = os.getenv("STATS_CHAT_ID", "").strip()
 STATS_CHAT_ID = int(STATS_CHAT_ID) if STATS_CHAT_ID.lstrip("-").isdigit() else None
-DAILY_REPORT_TIME = os.getenv("DAILY_REPORT_TIME", "18:00")
 
 # --- Ma'lumot sifati (mos kelmagan so'rovlar) ---
 NO_MATCH_LOG_PATH = os.getenv("NO_MATCH_LOG_PATH", "no_match.log")
-TASKS_PATH = os.getenv("TASKS_PATH", "tasks.json")
-TASKS_SHOWN_LIMIT = int(os.getenv("TASKS_SHOWN_LIMIT", "5"))
-RECURRING_TASKS_PATH = os.getenv("RECURRING_TASKS_PATH", "recurring_tasks.json")
 PENDING_REG_PATH = os.getenv("PENDING_REG_PATH", "pending_registrations.json")
-TASK_REMINDER_CHECK_MIN = int(os.getenv("TASK_REMINDER_CHECK_MIN", "15"))
 BACKUP_DIR = os.getenv("BACKUP_DIR", "backups")
 BACKUP_KEEP = int(os.getenv("BACKUP_KEEP", "14"))
 
@@ -186,6 +181,14 @@ def employee_name(user_id: int) -> str:
     info = ALLOWED_USERS.get(user_id)
     return info["name"] if info else str(user_id)
 
+
+def employee_lang(context: ContextTypes.DEFAULT_TYPE, uid: int) -> str:
+    try:
+        return context.application.user_data.get(uid, {}).get("lang", "uz")
+    except Exception:
+        return "uz"
+
+
 # ---------------------------------------------------------------------------
 # Tillar va tarjimalar
 # ---------------------------------------------------------------------------
@@ -267,17 +270,7 @@ TEXT = {
         "feedback_prompt": "💬 Bu javob foydali bo'ldimi?",
         "feedback_thanks_up": "Rahmat! ✅",
         "feedback_thanks_down": "Xabar uchun rahmat, buni yaxshilashga harakat qilamiz. 🙏",
-        "resolved_thanks": "Ajoyib! Yopildi. ✅",
-        "escalated": "Xabar smenaga/muhandisga yuborildi. Tez orada bog'lanishadi. 📨",
-        "escalation_message": (
-            "⚠️ *Hal qilinmagan muammo*\n"
-            "Uskuna: {machine}\n"
-            "Foydalanuvchi: @{username} (ID: {uid})\n"
-            "Savol: {question}\n\n"
-            "Bot javobi:\n{answer}"
-        ),
         "photo_processing": "🖼 Rasmni o'qiyapman...",
-        "photo_no_text": "Rasmda o'qiladigan xatolik matni topa olmadim. Iltimos, matnni qo'lda yozing.",
         "photo_extracted": "📷 Rasmdan o'qildi: \"{text}\"",
         "esp32_fetching": "📡 ESP32'dan ma'lumot olinmoqda...",
         "esp32_unreachable": "⚠️ ESP32 qurilmasiga ulanib bo'lmadi. Wi-Fi yoki qurilma o'chgan bo'lishi mumkin.",
@@ -296,35 +289,6 @@ TEXT = {
         "esp32_on": "yoqilgan ✅", "esp32_off": "o'chirilgan ⏸️",
         "esp32_alarm_yes": "faol 🚨", "esp32_alarm_no": "yo'q ✅",
         "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
-        "admin_menu_title": "🔑 *Admin bo'limi*\nNima qilmoqchisiz?",
-        "admin_btn_new_task": "📋 Kunlik topshiriq berish",
-        "admin_btn_list_users": "👥 Xodimlar ro'yxati",
-        "admin_btn_back": "⬅️ Orqaga",
-        "task_choose_target": "Topshiriqni kimga berasiz?",
-        "task_target_all": "🌐 Hammaga",
-        "task_ask_text": "✅ Qabul qildim: *{target}*.\nEndi topshiriq/vazifa matnini yozing:",
-        "task_sent_dm": (
-            "📋 *Sizga yangi kunlik topshiriq bor!*\n\n"
-            "{text}\n\n"
-            "🕒 Vaqt: {schedule}\n\n"
-            "— {admin_name}"
-        ),
-        "task_sent_confirm": "✅ Topshiriq yuborildi: {count} kishiga.",
-        "no_employees_yet": "Hozircha ro'yxatda xodim yo'q. Avval /adduser orqali qo'shing.",
-        "employees_profile": "👤 *Sizning profilingiz*\nIsm: {name}\nID: {id}",
-        "employees_no_tasks": "Hozircha sizga berilgan topshiriq yo'q.",
-        "employees_tasks_title": "📋 *So'nggi topshiriqlar:*",
-        "task_item": "{date} — {text}\n🕒 Vaqt: {schedule}\nHolat: {status}",
-        "task_status_pending": "⏳ Bajarilmoqda",
-        "task_status_done": "✅ Bajarildi",
-        "task_done_button": "✅ Bajardim",
-        "task_marked_done": "Rahmat! Topshiriq bajarilgan deb belgilandi. ✅",
-        "task_employee_done_notice": "✅ {name} \"{text}\" topshirig'ini bajardi deb belgiladi.",
-        "admin_btn_report": "📊 Hisobot jadvali",
-        "admin_btn_recurring": "🔁 Doimiy topshiriq",
-        "recurring_ask_time": "🕒 Har kuni soat nechada yuborilsin? (masalan 08:00)",
-        "recurring_bad_time": "Noto'g'ri format. Vaqtni SS:DD ko'rinishida yozing, masalan 08:00",
-        "recurring_created": "✅ Doimiy topshiriq sozlandi — har kuni soat {time} da avtomatik yuboriladi.",
         "help_text": (
             "ℹ️ *Botdan qanday foydalanish:*\n\n"
             "1️⃣ Pastdagi tugmalardan uskuna/liniyani tanlang.\n"
@@ -348,29 +312,30 @@ TEXT = {
         "register_approved_user": "🎉 Tabriklaymiz! So'rovingiz qabul qilindi, endi botdan foydalanishingiz mumkin. /start yozing.",
         "register_rejected_admin": "❌ {name} rad etildi.",
         "register_rejected_user": "Kechirasiz, so'rovingiz rad etildi. Administratorga murojaat qiling.",
-        "ask_proof_photo": "📷 Ixtiyoriy: bajarilgan ishni tasdiqlovchi rasm yuborishingiz mumkin (yubormasangiz ham bo'ladi).",
-        "proof_photo_thanks": "✅ Rasm qabul qilindi, adminga yuborildi. Rahmat!",
-        "proof_photo_caption": "📷 {name} — \"{text}\" bo'yicha dalil rasmi",
         "voice_processing": "🎤 Ovozli xabar tinglanmoqda...",
         "voice_failed": "Ovozli xabarni tushuna olmadim. Iltimos, matn bilan yozing.",
         "voice_transcribed": "🎤 Eshitdim: \"{text}\"",
         "schematic_page_caption": "🔌 Elektr sxemasi — {machine}, {page}-sahifa",
-        "task_ask_schedule": "🕒 Ish boshlanish va tugash vaqtini yozing (masalan: \"14:00 dan 18:00 gacha\" yoki \"bugun kechgacha\"):",
-        "task_no_schedule": "Belgilanmagan",
-        "task_start_button": "🔄 Boshladim",
-        "task_fail_button": "❌ Bajarilmadi",
-        "task_marked_in_progress": "Qabul qilindi, omad! 🔄",
-        "task_marked_failed": "Xabar uchun rahmat, adminga yetkazdik. 🙏",
-        "task_status_in_progress": "🔄 Jarayonda",
-        "task_status_failed": "❌ Bajarilmadi",
-        "task_employee_status_notice": "🔔 {name}: \"{text}\" — holat: {status}",
-        "task_reminder_dm": "⏰ *Eslatma:* \"{text}\" topshirig'ining muddati o'tdi. Iltimos, holatni yangilang.",
-        "task_reminder_admin_notice": "⏰ Eslatma: {name} \"{text}\" topshirig'i muddatida javob bermadi.",
-        "table_col_employee": "Xodim",
-        "table_col_task": "Topshiriq",
-        "table_col_time": "Vaqt",
-        "table_col_status": "Holat",
-        "no_tasks_today": "Bugun hali topshiriq berilmagan.",
+        "library_select_machine_first": "Avval uskunani tanlang, so'ng qayta \"📚 Qo'llanma\" tugmasini bosing.",
+        "library_no_manual_for_machine": "\"{machine}\" uchun qo'llanma hali yuklanmagan.",
+        "library_none_available": "Hozircha hech qanday qo'llanma yuklanmagan.",
+        "library_ask_topic": "📚 *{machine} qo'llanmasi*\nQaysi mavzuni qidiryapsiz? (masalan: \"moylash\", \"xavfsizlik to'ri sozlash\")",
+        "library_no_results": "Qo'llanmadan bu mavzu bo'yicha hech narsa topa olmadim. Boshqacha so'z bilan yozib ko'ring.",
+        "library_found": "📖 {count} ta tegishli sahifa topildi:",
+        "manual_page_caption": "📖 Qo'llanma — {machine}, {page}-sahifa",
+        "manual_page_text": "📖 {page}-sahifa:\n{text}",
+        "addcomment_usage": "Foydalanish: /addcomment <uskuna_id> <manzil> <izoh matni>\nMasalan: /addcomment gem %I0.1 Konveyer old sensori",
+        "addcomment_bad_machine": "Noto'g'ri uskuna ID. Mavjudlari: {ids}",
+        "addcomment_save_error": "Saqlashda xatolik yuz berdi, qaytadan urinib ko'ring.",
+        "addcomment_done": "✅ {machine} — {addr} uchun izoh yangilandi: \"{comment}\"",
+        "topfaults_empty": "So'nggi {days} kunda hali ma'lumot yo'q.",
+        "topfaults_header": "📈 *So'nggi {days} kunlik statistika:*",
+        "topfaults_by_machine": "*Uskuna bo'yicha:*",
+        "topfaults_by_address": "*Eng ko'p so'ralgan manzillar:*",
+        "rate_limited": "⏳ Bir daqiqada juda ko'p savol yubordingiz. Biroz kuting, yoki aniq manzilni bilsangiz /tag %I0.5 dan foydalaning (AI'siz, darhol javob beradi).",
+        "find_usage": "Foydalanish: /find <kalit so'z>\nMasalan: /find konveyer",
+        "find_no_results": "'{query}' bo'yicha hech narsa topilmadi.",
+        "find_results_header": "🔎 '{query}' bo'yicha {count} ta natija:",
         "setphone_usage": "Foydalanish: /setphone <telegram_id> <telefon_raqam>",
         "phone_updated": "✅ {uid} uchun telefon raqami yangilandi: {phone}",
         "user_not_found": "Bunday ID ro'yxatda topilmadi.",
@@ -431,17 +396,7 @@ TEXT = {
         "feedback_prompt": "💬 Was this answer helpful?",
         "feedback_thanks_up": "Thanks! ✅",
         "feedback_thanks_down": "Thanks for the feedback, we'll try to improve. 🙏",
-        "resolved_thanks": "Great, closed. ✅",
-        "escalated": "The issue was sent to the shift lead/engineer. They'll follow up soon. 📨",
-        "escalation_message": (
-            "⚠️ *Unresolved issue*\n"
-            "Machine: {machine}\n"
-            "User: @{username} (ID: {uid})\n"
-            "Question: {question}\n\n"
-            "Bot's answer:\n{answer}"
-        ),
         "photo_processing": "🖼 Reading the photo...",
-        "photo_no_text": "I couldn't find readable error text in the photo. Please type the message instead.",
         "photo_extracted": "📷 Read from photo: \"{text}\"",
         "esp32_fetching": "📡 Fetching data from ESP32...",
         "esp32_unreachable": "⚠️ Could not reach the ESP32 device. Wi-Fi or the device may be down.",
@@ -460,35 +415,6 @@ TEXT = {
         "esp32_on": "ON ✅", "esp32_off": "OFF ⏸️",
         "esp32_alarm_yes": "active 🚨", "esp32_alarm_no": "none ✅",
         "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
-        "admin_menu_title": "🔑 *Admin panel*\nWhat would you like to do?",
-        "admin_btn_new_task": "📋 Assign daily task",
-        "admin_btn_list_users": "👥 Employee list",
-        "admin_btn_back": "⬅️ Back",
-        "task_choose_target": "Who is this task for?",
-        "task_target_all": "🌐 Everyone",
-        "task_ask_text": "✅ Got it: *{target}*.\nNow type the task/assignment text:",
-        "task_sent_dm": (
-            "📋 *You have a new daily task!*\n\n"
-            "{text}\n\n"
-            "🕒 Time: {schedule}\n\n"
-            "— {admin_name}"
-        ),
-        "task_sent_confirm": "✅ Task sent to {count} people.",
-        "no_employees_yet": "No employees registered yet. Add them with /adduser first.",
-        "employees_profile": "👤 *Your profile*\nName: {name}\nID: {id}",
-        "employees_no_tasks": "You have no assigned tasks yet.",
-        "employees_tasks_title": "📋 *Recent tasks:*",
-        "task_item": "{date} — {text}\n🕒 Time: {schedule}\nStatus: {status}",
-        "task_status_pending": "⏳ In progress",
-        "task_status_done": "✅ Done",
-        "task_done_button": "✅ Mark done",
-        "task_marked_done": "Thanks! The task was marked as done. ✅",
-        "task_employee_done_notice": "✅ {name} marked \"{text}\" as done.",
-        "admin_btn_report": "📊 Report table",
-        "admin_btn_recurring": "🔁 Recurring task",
-        "recurring_ask_time": "🕒 What time should this be sent every day? (e.g. 08:00)",
-        "recurring_bad_time": "Invalid format. Enter the time as HH:MM, e.g. 08:00",
-        "recurring_created": "✅ Recurring task set up — it will be sent automatically every day at {time}.",
         "help_text": (
             "ℹ️ *How to use this bot:*\n\n"
             "1️⃣ Pick a machine/line from the buttons below.\n"
@@ -512,29 +438,30 @@ TEXT = {
         "register_approved_user": "🎉 Congrats! Your request was approved, you can now use the bot. Type /start.",
         "register_rejected_admin": "❌ {name} rejected.",
         "register_rejected_user": "Sorry, your request was rejected. Please contact the administrator.",
-        "ask_proof_photo": "📷 Optional: you can send a photo confirming the completed work (you can skip this).",
-        "proof_photo_thanks": "✅ Photo received and sent to the admin. Thanks!",
-        "proof_photo_caption": "📷 {name} — proof photo for \"{text}\"",
         "voice_processing": "🎤 Listening to the voice message...",
         "voice_failed": "I couldn't understand the voice message. Please type it instead.",
         "voice_transcribed": "🎤 Heard: \"{text}\"",
         "schematic_page_caption": "🔌 Electrical schematic — {machine}, page {page}",
-        "task_ask_schedule": "🕒 Enter the start and end time (e.g. \"14:00 to 18:00\" or \"by end of day\"):",
-        "task_no_schedule": "Not set",
-        "task_start_button": "🔄 Started",
-        "task_fail_button": "❌ Not done",
-        "task_marked_in_progress": "Got it, good luck! 🔄",
-        "task_marked_failed": "Thanks for letting us know, the admin was notified. 🙏",
-        "task_status_in_progress": "🔄 In progress",
-        "task_status_failed": "❌ Not done",
-        "task_employee_status_notice": "🔔 {name}: \"{text}\" — status: {status}",
-        "task_reminder_dm": "⏰ *Reminder:* the deadline for \"{text}\" has passed. Please update the status.",
-        "task_reminder_admin_notice": "⏰ Reminder: {name} hasn't responded to \"{text}\" by the deadline.",
-        "table_col_employee": "Employee",
-        "table_col_task": "Task",
-        "table_col_time": "Time",
-        "table_col_status": "Status",
-        "no_tasks_today": "No tasks assigned today yet.",
+        "library_select_machine_first": "Please select a machine first, then tap \"📚 Manual\" again.",
+        "library_no_manual_for_machine": "No manual has been loaded for \"{machine}\" yet.",
+        "library_none_available": "No manual is loaded yet.",
+        "library_ask_topic": "📚 *{machine} manual*\nWhat topic are you looking for? (e.g. \"lubrication\", \"light curtain setup\")",
+        "library_no_results": "I couldn't find anything on that topic in the manual. Try different wording.",
+        "library_found": "📖 Found {count} relevant page(s):",
+        "manual_page_caption": "📖 Manual — {machine}, page {page}",
+        "manual_page_text": "📖 Page {page}:\n{text}",
+        "addcomment_usage": "Usage: /addcomment <machine_id> <address> <comment text>\nExample: /addcomment gem %I0.1 Conveyor entry sensor",
+        "addcomment_bad_machine": "Invalid machine ID. Available: {ids}",
+        "addcomment_save_error": "There was an error saving. Please try again.",
+        "addcomment_done": "✅ {machine} — comment updated for {addr}: \"{comment}\"",
+        "topfaults_empty": "No data yet for the last {days} days.",
+        "topfaults_header": "📈 *Stats for the last {days} days:*",
+        "topfaults_by_machine": "*By machine:*",
+        "topfaults_by_address": "*Most-queried addresses:*",
+        "rate_limited": "⏳ You've sent too many questions in one minute. Please wait a bit, or use /tag %I0.5 if you know the exact address (no AI needed, instant reply).",
+        "find_usage": "Usage: /find <keyword>\nExample: /find conveyor",
+        "find_no_results": "No results found for '{query}'.",
+        "find_results_header": "🔎 {count} result(s) for '{query}':",
         "setphone_usage": "Usage: /setphone <telegram_id> <phone_number>",
         "phone_updated": "✅ Phone number updated for {uid}: {phone}",
         "user_not_found": "No such ID found in the list.",
@@ -590,17 +517,7 @@ TEXT = {
         "feedback_prompt": "💬 这个回答有帮助吗？",
         "feedback_thanks_up": "谢谢！✅",
         "feedback_thanks_down": "感谢反馈，我们会努力改进。🙏",
-        "resolved_thanks": "太好了，已关闭。✅",
-        "escalated": "问题已发送给班组长/工程师，他们会尽快跟进。📨",
-        "escalation_message": (
-            "⚠️ *未解决的问题*\n"
-            "设备：{machine}\n"
-            "用户：@{username}（ID：{uid}）\n"
-            "问题：{question}\n\n"
-            "机器人的回答：\n{answer}"
-        ),
         "photo_processing": "🖼 正在读取图片...",
-        "photo_no_text": "未能在图片中找到可读的错误文本。请改为输入文字。",
         "photo_extracted": "📷 从图片中读取：\"{text}\"",
         "esp32_fetching": "📡 正在从ESP32获取数据...",
         "esp32_unreachable": "⚠️ 无法连接到ESP32设备。可能是Wi-Fi或设备已关闭。",
@@ -619,35 +536,6 @@ TEXT = {
         "esp32_on": "已开启 ✅", "esp32_off": "已关闭 ⏸️",
         "esp32_alarm_yes": "报警中 🚨", "esp32_alarm_no": "无 ✅",
         "esp32_sensor_ok": "✅", "esp32_sensor_bad": "❌",
-        "admin_menu_title": "🔑 *管理员面板*\n您想做什么？",
-        "admin_btn_new_task": "📋 分配每日任务",
-        "admin_btn_list_users": "👥 员工列表",
-        "admin_btn_back": "⬅️ 返回",
-        "task_choose_target": "这个任务分配给谁？",
-        "task_target_all": "🌐 所有人",
-        "task_ask_text": "✅ 已选择：*{target}*。\n现在请输入任务内容：",
-        "task_sent_dm": (
-            "📋 *您有新的每日任务！*\n\n"
-            "{text}\n\n"
-            "🕒 时间：{schedule}\n\n"
-            "— {admin_name}"
-        ),
-        "task_sent_confirm": "✅ 任务已发送给 {count} 人。",
-        "no_employees_yet": "暂无注册员工。请先使用 /adduser 添加。",
-        "employees_profile": "👤 *您的资料*\n姓名：{name}\nID：{id}",
-        "employees_no_tasks": "您目前没有分配的任务。",
-        "employees_tasks_title": "📋 *最近的任务：*",
-        "task_item": "{date} — {text}\n🕒 时间：{schedule}\n状态：{status}",
-        "task_status_pending": "⏳ 进行中",
-        "task_status_done": "✅ 已完成",
-        "task_done_button": "✅ 标记完成",
-        "task_marked_done": "谢谢！任务已标记为完成。✅",
-        "task_employee_done_notice": "✅ {name} 已将\"{text}\"标记为完成。",
-        "admin_btn_report": "📊 报表",
-        "admin_btn_recurring": "🔁 每日重复任务",
-        "recurring_ask_time": "🕒 每天几点发送？（例如 08:00）",
-        "recurring_bad_time": "格式不正确。请输入时间，格式为 HH:MM，例如 08:00",
-        "recurring_created": "✅ 每日重复任务已设置——将于每天{time}自动发送。",
         "help_text": (
             "ℹ️ *如何使用本机器人：*\n\n"
             "1️⃣ 从下方按钮选择设备/产线。\n"
@@ -670,29 +558,30 @@ TEXT = {
         "register_approved_user": "🎉 恭喜！您的请求已被批准，现在可以使用机器人了。请输入 /start。",
         "register_rejected_admin": "❌ 已拒绝{name}。",
         "register_rejected_user": "抱歉，您的请求被拒绝。请联系管理员。",
-        "ask_proof_photo": "📷 可选：您可以发送一张照片来确认已完成的工作（也可以跳过）。",
-        "proof_photo_thanks": "✅ 照片已收到并发送给管理员。谢谢！",
-        "proof_photo_caption": "📷 {name} — \"{text}\"的证明照片",
         "voice_processing": "🎤 正在听取语音消息...",
         "voice_failed": "无法理解该语音消息。请改为输入文字。",
         "voice_transcribed": "🎤 听到：\"{text}\"",
         "schematic_page_caption": "🔌 电气原理图 — {machine}，第{page}页",
-        "task_ask_schedule": "🕒 请输入开始和结束时间（例如：\"14:00到18:00\"或\"今天下班前\"）：",
-        "task_no_schedule": "未设定",
-        "task_start_button": "🔄 已开始",
-        "task_fail_button": "❌ 未完成",
-        "task_marked_in_progress": "收到，加油！🔄",
-        "task_marked_failed": "感谢反馈，已通知管理员。🙏",
-        "task_status_in_progress": "🔄 进行中",
-        "task_status_failed": "❌ 未完成",
-        "task_employee_status_notice": "🔔 {name}：\"{text}\" — 状态：{status}",
-        "task_reminder_dm": "⏰ *提醒：*\"{text}\"任务的截止时间已过。请更新状态。",
-        "task_reminder_admin_notice": "⏰ 提醒：{name}在截止时间前未对\"{text}\"做出回应。",
-        "table_col_employee": "员工",
-        "table_col_task": "任务",
-        "table_col_time": "时间",
-        "table_col_status": "状态",
-        "no_tasks_today": "今天还没有分配任务。",
+        "library_select_machine_first": "请先选择设备，然后再次点击\"📚 手册\"。",
+        "library_no_manual_for_machine": "\"{machine}\"尚未上传手册。",
+        "library_none_available": "目前还没有上传任何手册。",
+        "library_ask_topic": "📚 *{machine}手册*\n您要查找什么主题？（例如：\"润滑\"、\"光幕设置\"）",
+        "library_no_results": "未能在手册中找到该主题的相关内容。请尝试其他措辞。",
+        "library_found": "📖 找到{count}个相关页面：",
+        "manual_page_caption": "📖 手册 — {machine}，第{page}页",
+        "manual_page_text": "📖 第{page}页：\n{text}",
+        "addcomment_usage": "用法：/addcomment <设备ID> <地址> <注释文本>\n例如：/addcomment gem %I0.1 输送带入口传感器",
+        "addcomment_bad_machine": "设备ID无效。可用的有：{ids}",
+        "addcomment_save_error": "保存时出错，请重试。",
+        "addcomment_done": "✅ {machine} — {addr}的注释已更新：\"{comment}\"",
+        "topfaults_empty": "最近{days}天还没有数据。",
+        "topfaults_header": "📈 *最近{days}天统计：*",
+        "topfaults_by_machine": "*按设备：*",
+        "topfaults_by_address": "*被查询最多的地址：*",
+        "rate_limited": "⏳ 您在一分钟内发送的问题太多了。请稍等，或者如果您知道确切地址，可使用 /tag %I0.5（无需AI，立即回复）。",
+        "find_usage": "用法：/find <关键词>\n例如：/find 输送带",
+        "find_no_results": "未找到与'{query}'相关的结果。",
+        "find_results_header": "🔎 找到{count}条与'{query}'相关的结果：",
         "setphone_usage": "用法：/setphone <telegram_id> <电话号码>",
         "phone_updated": "✅ 已更新{uid}的电话号码：{phone}",
         "user_not_found": "未在列表中找到该ID。",
@@ -716,8 +605,7 @@ def get_lang(context: ContextTypes.DEFAULT_TYPE) -> str:
 MACHINE_MENU_LABEL = "🔀 Uskunani tanlash/almashtirish"
 AI_CHAT_LABEL = "🤖 Sun'iy intellekt (erkin savol) / AI Assistant / 人工智能"
 ESP32_MENU_LABEL = "🏭 Zavod monitoring (kompressor/chiller)"
-EMPLOYEES_MENU_LABEL = "👥 Xodimlar / Employees / 员工"
-ADMIN_MENU_LABEL = "🔑 Admin bo'limi / Admin panel / 管理员"
+LIBRARY_MENU_LABEL = "📚 Qo'llanma / Manual / 手册"
 
 # ---------------------------------------------------------------------------
 # Uskunalar (liniyalar) konfiguratsiyasini yuklash
@@ -741,7 +629,7 @@ def build_tag_block(tags):
     return "\n".join(lines)
 
 
-def build_diagnosis_prompt(machine_label: str, tag_block: str, found_all: bool, lang: str) -> str:
+def build_diagnosis_prompt(machine_label: str, tag_block: str, found_all: bool, lang: str, manual_excerpt: str = "") -> str:
     scope_note = (
         "The FULL tag list is given below."
         if found_all
@@ -749,24 +637,44 @@ def build_diagnosis_prompt(machine_label: str, tag_block: str, found_all: bool, 
              "employee's message (not the full list)."
     )
     hl = HEADER_LABELS.get(lang, HEADER_LABELS["uz"])
-    return f"""You are a PLC diagnostics assistant for the "{machine_label}" equipment.
+    manual_block = ""
+    if manual_excerpt:
+        manual_block = f"""
+RELEVANT MANUAL/DOCUMENTATION EXCERPT (from the equipment's real manual —
+use it to ground and deepen your answer, e.g. official procedure steps,
+specified tolerances, or manufacturer-recommended checks; do not contradict
+it, and prefer it over generic guesses):
+---
+{manual_excerpt}
+---
+"""
+    return f"""You are a senior PLC diagnostics engineer for the "{machine_label}" equipment.
 {scope_note} Each row: address TAB kind TAB station number (if known) TAB
 group/location TAB data type TAB tag name TAB comment. Names/comments may be
 in Chinese or English — understand them naturally regardless of language.
 
 An employee (often new, inexperienced) describes a problem they see on the
-equipment, in Uzbek, English, Chinese, or a mix.
+equipment, in Uzbek, English, Chinese, or a mix. Give the most precise and
+COMPLETE analysis you can — do not give a superficial one-line guess.
 
 Your task:
-1. Find the matching PLC tag(s) from the list and state the exact address.
-2. Explain in simple terms what this signal physically represents.
-3. List common causes of problems with this signal (cable break, dirty
-   sensor, mechanical obstruction, wrong wiring, sticking relay, etc.).
-4. Give concrete, practical troubleshooting steps.
-5. If multiple tags could match, list them and indicate which is most likely.
+1. Find the matching PLC tag(s) from the list and state the exact address(es).
+2. Explain in simple terms what this signal physically represents and where
+   it sits in the equipment's logic (e.g. what it's interlocked with, what
+   depends on it).
+3. Give a THOROUGH list of possible root causes, ordered from most to least
+   likely, covering electrical (cable break, loose terminal, blown fuse,
+   sticking relay/contactor), mechanical (misalignment, obstruction, worn
+   part), and sensor-specific (dirty/misaligned sensor, wrong sensitivity,
+   wrong wiring polarity) causes as relevant to this signal's type.
+4. Give concrete, step-by-step troubleshooting instructions an inexperienced
+   technician could follow directly (what to check first, what tool/meter to
+   use, what a good vs. bad reading looks like, in what order).
+5. If multiple tags could match, list all of them and indicate which is most
+   likely and why.
 6. If nothing in the list matches, say so clearly and ask for more detail
-   (which station/robot, which indicator is lit, etc.).
-
+   (which station/robot, which indicator is lit, etc.) rather than guessing.
+{manual_block}
 LANGUAGE RULE (important): Your default reply language is {LANG_NAME.get(lang, "o'zbek")}.
 However, if the employee's message is clearly written in one of the other
 two supported languages (Uzbek, English, or Chinese), reply in THAT language
@@ -816,7 +724,8 @@ class MachineLine:
     def __init__(self, cfg: dict):
         self.id = cfg["id"]
         self.label = cfg["label"]
-        with open(cfg["kb_file"], "r", encoding="utf-8") as f:
+        self.kb_file = cfg["kb_file"]
+        with open(self.kb_file, "r", encoding="utf-8") as f:
             self.tags = json.load(f)
         logger.info("Yuklandi: '%s' -> %d ta tag", self.label, len(self.tags))
 
@@ -840,6 +749,26 @@ class MachineLine:
             except Exception as e:
                 logger.warning("Sxema indeksini yuklashda xatolik (%s): %s", self.label, e)
 
+        # Qo'llanma/kutubxona (ixtiyoriy): agar lines.json'da "manual_index"
+        # ko'rsatilgan bo'lsa, shu PDF'dagi har bir sahifa matnini yuklaymiz.
+        self.manual_pdf = None
+        self.manual_pages = {}  # "1" -> "sahifa matni"
+        man_path = cfg.get("manual_index")
+        if man_path and os.path.exists(man_path):
+            try:
+                with open(man_path, "r", encoding="utf-8") as f:
+                    man = json.load(f)
+                self.manual_pdf = man.get("pdf_path")
+                self.manual_pages = man.get("pages", {})
+                if self.manual_pdf and not os.path.exists(self.manual_pdf):
+                    logger.warning("'%s' uchun qo'llanma PDF topilmadi: %s", self.label, self.manual_pdf)
+                    self.manual_pdf = None
+                else:
+                    logger.info("'%s' uchun qo'llanma yuklandi (%d sahifa)",
+                                self.label, len(self.manual_pages))
+            except Exception as e:
+                logger.warning("Qo'llanma indeksini yuklashda xatolik (%s): %s", self.label, e)
+
     def find_tag(self, address: str):
         address = address.strip()
         if not address.startswith("%"):
@@ -861,6 +790,21 @@ class MachineLine:
                 pages.add(p)
         return sorted(pages)
 
+    def search_manual(self, keywords: set, limit: int = 3):
+        """Qo'llanma sahifalari orasidan kalit so'zlarga eng mos kelganlarini
+        topadi. [(sahifa_raqami, matn), ...] qaytaradi, mos kelish darajasi
+        bo'yicha tartiblangan."""
+        if not self.manual_pages or not keywords:
+            return []
+        scored = []
+        for page_str, text in self.manual_pages.items():
+            low = text.lower()
+            score = sum(1 for kw in keywords if kw and kw in low)
+            if score > 0:
+                scored.append((score, int(page_str), text))
+        scored.sort(key=lambda x: -x[0])
+        return [(p, txt) for _, p, txt in scored[:limit]]
+
 
 LINES = {}
 LABEL_TO_ID = {}
@@ -878,9 +822,8 @@ def machine_keyboard(user_id: int = None) -> ReplyKeyboardMarkup:
     rows = [[line.label] for line in LINES.values()]
     if ESP32_STATUS_URL:
         rows.append([ESP32_MENU_LABEL])
-    rows.append([EMPLOYEES_MENU_LABEL])
-    if user_id is not None and is_admin(user_id):
-        rows.append([ADMIN_MENU_LABEL])
+    if any(ln.manual_pdf for ln in LINES.values()):
+        rows.append([LIBRARY_MENU_LABEL])
     rows.append([AI_CHAT_LABEL])
     rows.append([LANG_CHANGE_LABEL])
     return ReplyKeyboardMarkup(rows, resize_keyboard=True)
@@ -901,6 +844,7 @@ def get_selected_line(context: ContextTypes.DEFAULT_TYPE):
 # ---------------------------------------------------------------------------
 
 ADDR_RE = re.compile(r"^%?[A-Za-z]{1,4}\d+(\.\d+)?$")
+ADDR_SEARCH_RE = re.compile(r"%?\b[IQM]\d+\.\d+\b", re.IGNORECASE)
 WORD_RE = re.compile(r"[a-zA-Z\u4e00-\u9fff]+")
 
 # Ko'p ishlatiladigan o'zbek/rus so'zlarini inglizcha texnik atamalarga
@@ -1009,6 +953,82 @@ async def send_schematic_pages(update: Update, context: ContextTypes.DEFAULT_TYP
                 logger.warning("Sxema sahifasini yuborishda xatolik: %s", e)
 
 
+async def send_manual_pages(update: Update, context: ContextTypes.DEFAULT_TYPE, ln, pages: list, lang: str):
+    """Tashxis chiqarishda ishlatilgan qo'llanma sahifalarini rasm sifatida yuboradi."""
+    if not ln.manual_pdf or not pages:
+        return
+    for page_num in pages[:MAX_SCHEMATIC_PAGES]:
+        img_bytes = await render_pdf_page(ln.manual_pdf, page_num)
+        if img_bytes:
+            try:
+                await context.bot.send_photo(
+                    chat_id=update.effective_chat.id, photo=img_bytes,
+                    caption=t(lang, "manual_page_caption", page=page_num, machine=ln.label),
+                )
+            except Exception as e:
+                logger.warning("Qo'llanma sahifasini yuborishda xatolik: %s", e)
+
+
+# ---------------------------------------------------------------------------
+# Kutubxona/Qo'llanma bo'limi: xodim uskuna qo'llanmasidan mavzu bo'yicha
+# to'g'ridan-to'g'ri qidirishi mumkin (AI'siz, haqiqiy sahifa ko'rsatiladi).
+# ---------------------------------------------------------------------------
+
+MAX_LIBRARY_RESULTS = int(os.getenv("MAX_LIBRARY_RESULTS", "3"))
+
+
+async def show_library_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    ln = get_selected_line(context)
+
+    if ln is None:
+        await update.message.reply_text(t(lang, "library_select_machine_first"), reply_markup=kb_for(update))
+        return
+
+    if not ln.manual_pdf:
+        await update.message.reply_text(
+            t(lang, "library_no_manual_for_machine", machine=ln.label), reply_markup=kb_for(update)
+        )
+        return
+
+    context.user_data["mode"] = "library_wait"
+    await update.message.reply_text(t(lang, "library_ask_topic", machine=ln.label), reply_markup=kb_for(update))
+
+
+async def handle_library_query(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
+    lang = get_lang(context)
+    ln = get_selected_line(context)
+    if ln is None or not ln.manual_pdf:
+        await update.message.reply_text(t(lang, "library_none_available"), reply_markup=kb_for(update))
+        return
+
+    results = ln.search_manual(local_keywords(user_text), limit=MAX_LIBRARY_RESULTS)
+    if not results:
+        await update.message.reply_text(t(lang, "library_no_results"), reply_markup=kb_for(update))
+        return
+
+    await update.message.reply_text(t(lang, "library_found", count=len(results)))
+    for page_num, text in results:
+        img_bytes = await render_pdf_page(ln.manual_pdf, page_num)
+        if img_bytes:
+            try:
+                await context.bot.send_photo(
+                    chat_id=update.effective_chat.id, photo=img_bytes,
+                    caption=t(lang, "manual_page_caption", page=page_num, machine=ln.label),
+                )
+            except Exception as e:
+                logger.warning("Qo'llanma sahifasini yuborishda xatolik: %s", e)
+        else:
+            await update.message.reply_text(
+                t(lang, "manual_page_text", page=page_num, text=text[:800])
+            )
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=t(lang, "library_ask_topic", machine=ln.label),
+        reply_markup=kb_for(update),
+    )
+
+
 def format_raw_tags(tags, machine_label: str, lang: str) -> str:
     lines = [t(lang, "raw_fallback_header", machine=machine_label)]
     kind_labels = KIND_LABELS.get(lang, KIND_LABELS["uz"])
@@ -1028,6 +1048,28 @@ def format_raw_tags(tags, machine_label: str, lang: str) -> str:
 # ---------------------------------------------------------------------------
 
 _provider_cooldown_until = {}
+
+# ---------------------------------------------------------------------------
+# Foydalanuvchi boshiga so'rov chegarasi (bepul AI limitlarini adolatli
+# taqsimlash uchun) — adminlar bundan mustasno.
+# ---------------------------------------------------------------------------
+
+_user_request_times = {}  # user_id -> [timestamp, timestamp, ...] (oxirgi 24 soat)
+
+
+def check_rate_limit(user_id: int) -> bool:
+    """True — ruxsat berilsin, False — hozircha limit tugagan (daqiqalik yoki kunlik)."""
+    if is_admin(user_id):
+        return True
+    now = time.time()
+    all_hits = [ts for ts in _user_request_times.get(user_id, []) if now - ts < 86400]
+    minute_hits = [ts for ts in all_hits if now - ts < RATE_LIMIT_WINDOW_SEC]
+    if len(minute_hits) >= RATE_LIMIT_PER_MIN or len(all_hits) >= RATE_LIMIT_PER_DAY:
+        _user_request_times[user_id] = all_hits
+        return False
+    all_hits.append(now)
+    _user_request_times[user_id] = all_hits
+    return True
 
 
 def _provider_ready(name: str) -> bool:
@@ -1189,20 +1231,10 @@ def cache_set(scope: str, lang: str, text: str, answer: str):
 PENDING_ANSWERS = {}
 
 
-RESOLVE_BUTTON = {
-    "uz": ("✅ Hal bo'ldi", "❌ Hal bo'lmadi"),
-    "en": ("✅ Resolved", "❌ Not resolved"),
-    "zh": ("✅ 已解决", "❌ 未解决"),
-}
-
-
 def build_feedback_keyboard(answer_id: str, lang: str = "uz") -> InlineKeyboardMarkup:
-    yes_label, no_label = RESOLVE_BUTTON.get(lang, RESOLVE_BUTTON["uz"])
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("👍", callback_data=f"fb:up:{answer_id}"),
          InlineKeyboardButton("👎", callback_data=f"fb:down:{answer_id}")],
-        [InlineKeyboardButton(yes_label, callback_data=f"res:yes:{answer_id}"),
-         InlineKeyboardButton(no_label, callback_data=f"res:no:{answer_id}")],
     ])
 
 
@@ -1239,56 +1271,22 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
     await query.answer()
     data = query.data or ""
 
-    if data.startswith("reg:"):
-        _, action, reg_id = data.split(":", 2)
-        await handle_registration_callback(update, context, action, reg_id)
-        return
-
-    if data.startswith("task_status:"):
-        _, status, task_id = data.split(":", 2)
-        lang = context.user_data.get("lang", "uz")
-        uid = update.effective_user.id
-        tk = set_task_status(task_id, uid, status)
-        confirm_key = {
-            "in_progress": "task_marked_in_progress",
-            "done": "task_marked_done",
-            "failed": "task_marked_failed",
-        }.get(status, "task_marked_done")
-        await query.answer(text=t(lang, confirm_key), show_alert=False)
-        if tk:
-            try:
-                # Vazifa yaratgan adminga, va (agar boshqacha bo'lsa) barcha adminlarga xabar beramiz —
-                # har birining o'z tilida.
-                notified = set()
-                for admin_uid in list(ADMIN_USER_IDS) + [tk["from"]]:
-                    if admin_uid in notified:
-                        continue
-                    notified.add(admin_uid)
-                    admin_lang = employee_lang(context, admin_uid)
-                    status_label = t(admin_lang, STATUS_LABEL_KEY.get(status, "task_status_pending"))
-                    notice = t(admin_lang, "task_employee_status_notice",
-                               name=employee_name(uid), text=tk["text"], status=status_label)
-                    try:
-                        await context.bot.send_message(chat_id=admin_uid, text=notice)
-                    except Exception as e:
-                        logger.warning("Adminga (%s) xabar berishda xatolik: %s", admin_uid, e)
-            except Exception as e:
-                logger.warning("Holat haqida xabar berishda xatolik: %s", e)
+    # XAVFSIZLIK: har qanday tugma bosilishidan oldin ruxsatni tekshiramiz —
+    # aks holda begona/ruxsatsiz shaxs (masalan bot tokeni sizib chiqqan bo'lsa)
+    # o'zi uchun soxta tugma yaratib, ma'lumotlarni o'zgartira olishi mumkin edi.
+    if not is_authorized(update.effective_user.id):
         try:
-            if status == "in_progress":
-                await query.edit_message_reply_markup(reply_markup=build_task_buttons(lang, task_id, "in_progress"))
-            else:
-                await query.edit_message_reply_markup(reply_markup=None)
+            await query.edit_message_reply_markup(reply_markup=None)
         except Exception:
             pass
+        return
 
-        if status in ("done", "failed"):
-            context.user_data["awaiting_proof_task"] = task_id
-            context.user_data["awaiting_proof_until"] = time.time() + 600  # 10 daqiqa
-            try:
-                await context.bot.send_message(chat_id=update.effective_chat.id, text=t(lang, "ask_proof_photo"))
-            except Exception:
-                pass
+    if data.startswith("reg:"):
+        _, action, reg_id = data.split(":", 2)
+        # XAVFSIZLIK: faqat admin ro'yxatdan o'tishni tasdiqlay/rad eta oladi.
+        if not is_admin(update.effective_user.id):
+            return
+        await handle_registration_callback(update, context, action, reg_id)
         return
 
     parts = data.split(":", 2)
@@ -1296,35 +1294,15 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
         return
     kind, value, answer_id = parts
     lang = context.user_data.get("lang", "uz")
-    info = PENDING_ANSWERS.get(answer_id, {})
 
     if kind == "fb":
         log_feedback(answer_id, "feedback", value)
         msg = t(lang, "feedback_thanks_up") if value == "up" else t(lang, "feedback_thanks_down")
         await query.answer(text=msg, show_alert=False)
-        return
-
-    if kind == "res":
-        log_feedback(answer_id, "resolution", value)
-        if value == "yes":
-            await query.answer(text=t(lang, "resolved_thanks"), show_alert=False)
-        else:
-            ln = LINES.get(info.get("line_id"))
-            machine_label = ln.label if ln else info.get("line_id", "?")
-            user = update.effective_user
-            esc_text = t(lang, "escalation_message",
-                         machine=machine_label, username=user.username or user.id,
-                         uid=user.id, question=info.get("question", "?"),
-                         answer=info.get("answer", "?"))
-            for chat_id in ESCALATION_CHAT_IDS:
-                try:
-                    await context.bot.send_message(chat_id=chat_id, text=esc_text, parse_mode="Markdown")
-                except Exception as e:
-                    logger.warning("Eskalatsiya xabarini yuborishda xatolik (%s): %s", chat_id, e)
-            if ESCALATION_CHAT_IDS:
-                await query.answer(text=t(lang, "escalated"), show_alert=True)
-            else:
-                await query.answer(text=t(lang, "resolved_thanks"), show_alert=False)
+        try:
+            await query.edit_message_reply_markup(reply_markup=None)
+        except Exception:
+            pass
 
 
 # ---------------------------------------------------------------------------
@@ -1340,457 +1318,6 @@ def log_no_match(line_id: str, lang: str, text: str):
             }, ensure_ascii=False) + "\n")
     except Exception as e:
         logger.warning("no_match logga yozishda xatolik: %s", e)
-
-
-# ---------------------------------------------------------------------------
-# Kunlik topshiriqlar: admin/muhandis mexaniklarga vazifa beradi, bu vazifa
-# botda saqlanadi VA har bir tegishli xodimning shaxsiy Telegram chatiga
-# darhol yuboriladi.
-# ---------------------------------------------------------------------------
-
-try:
-    with open(TASKS_PATH, "r", encoding="utf-8") as f:
-        TASKS = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError):
-    TASKS = []
-
-
-def _save_tasks():
-    try:
-        with open(TASKS_PATH, "w", encoding="utf-8") as f:
-            json.dump(TASKS, f, ensure_ascii=False, indent=1)
-    except Exception as e:
-        logger.warning("tasks.json saqlashda xatolik: %s", e)
-
-
-DEADLINE_TIME_RE = re.compile(r"(\d{1,2}):(\d{2})(?!.*\d{1,2}:\d{2})")  # oxirgi HH:MM
-
-
-def _parse_deadline(schedule: str):
-    """Schedule matnidan (masalan '14:00 dan 18:00 gacha') oxirgi vaqtni topib,
-    shu kunning shu vaqti sifatida deadline hisoblaydi. Topilmasa None."""
-    if not schedule:
-        return None
-    m = DEADLINE_TIME_RE.search(schedule)
-    if not m:
-        return None
-    try:
-        hh, mm = int(m.group(1)), int(m.group(2))
-        today = datetime.now().replace(hour=hh, minute=mm, second=0, microsecond=0)
-        return today.isoformat()
-    except Exception:
-        return None
-
-
-def create_task(admin_uid: int, target, text: str, schedule: str = None) -> dict:
-    if target == "all":
-        status = {str(uid): "pending" for uid in ALLOWED_USERS.keys()}
-    else:
-        status = {str(target): "pending"}
-    task = {
-        "id": uuid.uuid4().hex[:10],
-        "from": admin_uid,
-        "target": target,
-        "text": text,
-        "schedule": schedule,
-        "deadline": _parse_deadline(schedule),
-        "created_at": datetime.now().isoformat(),
-        "status": status,
-        "status_updated_at": {},
-        "reminded_uids": [],
-        "proof_photos": {},
-    }
-    TASKS.append(task)
-    _save_tasks()
-    return task
-
-
-def tasks_for_employee(uid: int, limit: int = TASKS_SHOWN_LIMIT):
-    uid_str = str(uid)
-    relevant = [tk for tk in TASKS if tk["target"] == "all" or str(tk["target"]) == uid_str]
-    relevant.sort(key=lambda tk: tk["created_at"], reverse=True)
-    return relevant[:limit]
-
-
-def set_task_status(task_id: str, uid: int, status: str):
-    for tk in TASKS:
-        if tk["id"] == task_id:
-            tk["status"][str(uid)] = status
-            tk.setdefault("status_updated_at", {})[str(uid)] = datetime.now().isoformat()
-            _save_tasks()
-            return tk
-    return None
-
-
-def todays_tasks():
-    today = datetime.now().date().isoformat()
-    return [tk for tk in TASKS if tk["created_at"][:10] == today]
-
-
-# ---------------------------------------------------------------------------
-# Doimiy/takrorlanuvchi kunlik topshiriqlar (shablonlar): admin bir marta
-# sozlaydi, bot har kuni belgilangan vaqtda avtomatik yuboradi.
-# ---------------------------------------------------------------------------
-
-try:
-    with open(RECURRING_TASKS_PATH, "r", encoding="utf-8") as f:
-        RECURRING_TASKS = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError):
-    RECURRING_TASKS = []
-
-
-def _save_recurring_tasks():
-    try:
-        with open(RECURRING_TASKS_PATH, "w", encoding="utf-8") as f:
-            json.dump(RECURRING_TASKS, f, ensure_ascii=False, indent=1)
-    except Exception as e:
-        logger.warning("recurring_tasks.json saqlashda xatolik: %s", e)
-
-
-def create_recurring_template(admin_uid: int, target, text: str, time_str: str) -> dict:
-    tpl = {
-        "id": uuid.uuid4().hex[:10], "from": admin_uid, "target": target,
-        "text": text, "time": time_str, "created_at": datetime.now().isoformat(),
-    }
-    RECURRING_TASKS.append(tpl)
-    _save_recurring_tasks()
-    return tpl
-
-
-async def fire_recurring_task(context: ContextTypes.DEFAULT_TYPE):
-    tpl_id = context.job.data
-    tpl = next((x for x in RECURRING_TASKS if x["id"] == tpl_id), None)
-    if not tpl:
-        return
-    admin_name = employee_name(tpl["from"]) if tpl["from"] in ALLOWED_USERS else "Admin"
-    task = create_task(tpl["from"], tpl["target"], tpl["text"], None)
-    for uid_str in task["status"].keys():
-        emp_uid = int(uid_str)
-        emp_lang = employee_lang(context, emp_uid)
-        dm_text = t(emp_lang, "task_sent_dm", text=tpl["text"], admin_name=admin_name,
-                    schedule=t(emp_lang, "task_no_schedule"))
-        try:
-            await context.bot.send_message(
-                chat_id=emp_uid, text=dm_text, parse_mode="Markdown",
-                reply_markup=build_task_buttons(emp_lang, task["id"], "pending"),
-            )
-        except Exception as e:
-            logger.warning("Doimiy topshiriqni yuborishda xatolik (%s): %s", uid_str, e)
-
-
-def register_recurring_jobs(app):
-    for tpl in RECURRING_TASKS:
-        try:
-            hh, mm = map(int, tpl["time"].split(":"))
-            app.job_queue.run_daily(
-                fire_recurring_task, time=datetime.now().replace(hour=hh, minute=mm, second=0).time(),
-                data=tpl["id"], name=f"recurring_{tpl['id']}",
-            )
-        except Exception as e:
-            logger.warning("Doimiy topshiriq (%s) rejalashtirishda xatolik: %s", tpl.get("id"), e)
-
-
-STATUS_LABEL_KEY = {
-    "pending": "task_status_pending",
-    "in_progress": "task_status_in_progress",
-    "done": "task_status_done",
-    "failed": "task_status_failed",
-}
-
-
-def build_tasks_table(tasks: list, lang: str) -> str:
-    if not tasks:
-        return t(lang, "no_tasks_today")
-    rows = []
-    for tk in tasks:
-        for uid_str, status in tk["status"].items():
-            uid = int(uid_str)
-            name = employee_name(uid)
-            status_label = t(lang, STATUS_LABEL_KEY.get(status, "task_status_pending"))
-            rows.append((name, tk["text"], tk.get("schedule") or "—", status_label))
-
-    name_w = max(6, max(len(r[0]) for r in rows))
-    text_w = max(8, min(28, max(len(r[1]) for r in rows)))
-    sched_w = max(6, max(len(r[2]) for r in rows))
-
-    def clip(s, w):
-        return s if len(s) <= w else s[: w - 1] + "…"
-
-    header = f"{t(lang,'table_col_employee').ljust(name_w)} | {t(lang,'table_col_task').ljust(text_w)} | {t(lang,'table_col_time').ljust(sched_w)} | {t(lang,'table_col_status')}"
-    sep = "-" * len(header)
-    lines = [header, sep]
-    for name, text, sched, status_label in rows:
-        lines.append(f"{clip(name, name_w).ljust(name_w)} | {clip(text, text_w).ljust(text_w)} | {clip(sched, sched_w).ljust(sched_w)} | {status_label}")
-    return "```\n" + "\n".join(lines) + "\n```"
-
-
-# ---------------------------------------------------------------------------
-# Admin bo'limi: kunlik topshiriq berish, xodimlar ro'yxati, hisobot (jadval)
-# ---------------------------------------------------------------------------
-
-def admin_submenu_keyboard(lang: str) -> ReplyKeyboardMarkup:
-    return ReplyKeyboardMarkup([
-        [t(lang, "admin_btn_new_task")],
-        [t(lang, "admin_btn_recurring")],
-        [t(lang, "admin_btn_report")],
-        [t(lang, "admin_btn_list_users")],
-        [t(lang, "admin_btn_back")],
-    ], resize_keyboard=True)
-
-
-def task_target_keyboard(lang: str) -> ReplyKeyboardMarkup:
-    rows = [[t(lang, "task_target_all")]]
-    for uid, info in ALLOWED_USERS.items():
-        rows.append([f"{info['name']} ({uid})"])
-    rows.append([t(lang, "admin_btn_back")])
-    return ReplyKeyboardMarkup(rows, resize_keyboard=True)
-
-
-async def show_admin_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    lang = get_lang(context)
-    context.user_data["mode"] = "admin_menu"
-    context.user_data.pop("task_flow", None)
-    context.user_data.pop("task_target", None)
-    context.user_data.pop("task_text", None)
-    await update.message.reply_text(
-        t(lang, "admin_menu_title"), parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang)
-    )
-
-
-async def handle_admin_menu_input(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
-    lang = get_lang(context)
-
-    if user_text == t(lang, "admin_btn_back"):
-        context.user_data["mode"] = None
-        await update.message.reply_text(t(lang, "greeting_after_lang", ai=AI_CHAT_LABEL), reply_markup=kb_for(update))
-        return
-
-    if user_text == t(lang, "admin_btn_new_task"):
-        if not ALLOWED_USERS:
-            await update.message.reply_text(t(lang, "no_employees_yet"), reply_markup=admin_submenu_keyboard(lang))
-            return
-        context.user_data["mode"] = "admin_task_target"
-        await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
-        return
-
-    if user_text == t(lang, "admin_btn_report"):
-        table = build_tasks_table(todays_tasks(), lang)
-        await update.message.reply_text(table, parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang))
-        return
-
-    if user_text == t(lang, "admin_btn_recurring"):
-        if not ALLOWED_USERS:
-            await update.message.reply_text(t(lang, "no_employees_yet"), reply_markup=admin_submenu_keyboard(lang))
-            return
-        context.user_data["mode"] = "admin_recurring_target"
-        await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
-        return
-
-    if user_text == t(lang, "admin_btn_list_users"):
-        await listusers_cmd(update, context)
-        await update.message.reply_text(t(lang, "admin_menu_title"), parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang))
-        return
-
-    # Noma'lum matn — menyuni qayta ko'rsatamiz
-    await update.message.reply_text(t(lang, "admin_menu_title"), parse_mode="Markdown", reply_markup=admin_submenu_keyboard(lang))
-
-
-async def handle_admin_task_target(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
-    lang = get_lang(context)
-
-    if user_text == t(lang, "admin_btn_back"):
-        await show_admin_menu(update, context)
-        return
-
-    if user_text == t(lang, "task_target_all"):
-        context.user_data["task_target"] = "all"
-        target_label = t(lang, "task_target_all")
-    else:
-        matched_uid = None
-        for uid, info in ALLOWED_USERS.items():
-            if user_text == f"{info['name']} ({uid})":
-                matched_uid = uid
-                break
-        if matched_uid is None:
-            await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
-            return
-        context.user_data["task_target"] = matched_uid
-        target_label = employee_name(matched_uid)
-
-    context.user_data["mode"] = "admin_task_text"
-    await update.message.reply_text(
-        t(lang, "task_ask_text", target=target_label), parse_mode="Markdown",
-        reply_markup=ReplyKeyboardMarkup([[t(lang, "admin_btn_back")]], resize_keyboard=True),
-    )
-
-
-async def handle_admin_task_text(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
-    lang = get_lang(context)
-
-    if user_text == t(lang, "admin_btn_back"):
-        await show_admin_menu(update, context)
-        return
-
-    context.user_data["task_text"] = user_text
-    context.user_data["mode"] = "admin_task_schedule"
-    await update.message.reply_text(
-        t(lang, "task_ask_schedule"), parse_mode="Markdown",
-        reply_markup=ReplyKeyboardMarkup(
-            [[t(lang, "task_no_schedule")], [t(lang, "admin_btn_back")]], resize_keyboard=True
-        ),
-    )
-
-
-async def handle_admin_task_schedule(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
-    lang = get_lang(context)
-
-    if user_text == t(lang, "admin_btn_back"):
-        await show_admin_menu(update, context)
-        return
-
-    schedule = None if user_text == t(lang, "task_no_schedule") else user_text.strip()
-
-    target = context.user_data.get("task_target")
-    task_text = context.user_data.get("task_text", "")
-    admin_uid = update.effective_user.id
-    admin_name = employee_name(admin_uid) if admin_uid in ALLOWED_USERS else (update.effective_user.first_name or "Admin")
-
-    task = create_task(admin_uid, target, task_text, schedule)
-
-    sent = 0
-    for uid_str in task["status"].keys():
-        emp_uid = int(uid_str)
-        emp_lang = employee_lang(context, emp_uid)
-        dm_text = t(emp_lang, "task_sent_dm", text=task_text, admin_name=admin_name,
-                    schedule=(schedule or t(emp_lang, "task_no_schedule")))
-        try:
-            await context.bot.send_message(
-                chat_id=emp_uid, text=dm_text, parse_mode="Markdown",
-                reply_markup=build_task_buttons(emp_lang, task["id"], "pending"),
-            )
-            sent += 1
-        except Exception as e:
-            logger.warning("Xodimga (%s) topshiriq yuborishda xatolik: %s", uid_str, e)
-
-    await update.message.reply_text(t(lang, "task_sent_confirm", count=sent))
-    await show_admin_menu(update, context)
-
-
-async def handle_admin_recurring_target(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
-    lang = get_lang(context)
-    if user_text == t(lang, "admin_btn_back"):
-        await show_admin_menu(update, context)
-        return
-    if user_text == t(lang, "task_target_all"):
-        context.user_data["recurring_target"] = "all"
-        target_label = t(lang, "task_target_all")
-    else:
-        matched_uid = None
-        for uid, info in ALLOWED_USERS.items():
-            if user_text == f"{info['name']} ({uid})":
-                matched_uid = uid
-                break
-        if matched_uid is None:
-            await update.message.reply_text(t(lang, "task_choose_target"), reply_markup=task_target_keyboard(lang))
-            return
-        context.user_data["recurring_target"] = matched_uid
-        target_label = employee_name(matched_uid)
-
-    context.user_data["mode"] = "admin_recurring_text"
-    await update.message.reply_text(
-        t(lang, "task_ask_text", target=target_label), parse_mode="Markdown",
-        reply_markup=ReplyKeyboardMarkup([[t(lang, "admin_btn_back")]], resize_keyboard=True),
-    )
-
-
-async def handle_admin_recurring_text(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
-    lang = get_lang(context)
-    if user_text == t(lang, "admin_btn_back"):
-        await show_admin_menu(update, context)
-        return
-    context.user_data["recurring_text"] = user_text
-    context.user_data["mode"] = "admin_recurring_time"
-    await update.message.reply_text(
-        t(lang, "recurring_ask_time"), parse_mode="Markdown",
-        reply_markup=ReplyKeyboardMarkup([[t(lang, "admin_btn_back")]], resize_keyboard=True),
-    )
-
-
-async def handle_admin_recurring_time(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str, app):
-    lang = get_lang(context)
-    if user_text == t(lang, "admin_btn_back"):
-        await show_admin_menu(update, context)
-        return
-    m = re.match(r"^(\d{1,2}):(\d{2})$", user_text.strip())
-    if not m:
-        await update.message.reply_text(t(lang, "recurring_bad_time"))
-        return
-
-    target = context.user_data.get("recurring_target")
-    text = context.user_data.get("recurring_text", "")
-    admin_uid = update.effective_user.id
-    tpl = create_recurring_template(admin_uid, target, text, user_text.strip())
-
-    hh, mm = map(int, tpl["time"].split(":"))
-    app.job_queue.run_daily(
-        fire_recurring_task, time=datetime.now().replace(hour=hh, minute=mm, second=0).time(),
-        data=tpl["id"], name=f"recurring_{tpl['id']}",
-    )
-
-    await update.message.reply_text(t(lang, "recurring_created", time=tpl["time"]))
-    await show_admin_menu(update, context)
-
-
-# ---------------------------------------------------------------------------
-# Xodimlar bo'limi: profil va shaxsiy topshiriqlar
-# ---------------------------------------------------------------------------
-
-def build_task_buttons(lang: str, task_id: str, status: str = "pending") -> InlineKeyboardMarkup:
-    buttons = []
-    if status == "pending":
-        buttons.append(InlineKeyboardButton(t(lang, "task_start_button"), callback_data=f"task_status:in_progress:{task_id}"))
-    buttons.append(InlineKeyboardButton(t(lang, "task_done_button"), callback_data=f"task_status:done:{task_id}"))
-    buttons.append(InlineKeyboardButton(t(lang, "task_fail_button"), callback_data=f"task_status:failed:{task_id}"))
-    return InlineKeyboardMarkup([buttons])
-
-
-def employee_lang(context: ContextTypes.DEFAULT_TYPE, uid: int) -> str:
-    try:
-        return context.application.user_data.get(uid, {}).get("lang", "uz")
-    except Exception:
-        return "uz"
-
-
-async def show_employees_section(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    lang = get_lang(context)
-    uid = update.effective_user.id
-    info = ALLOWED_USERS.get(uid)
-    name = info["name"] if info else (update.effective_user.first_name or str(uid))
-    phone = info.get("phone") if info else ""
-
-    profile_text = t(lang, "employees_profile", name=name, id=uid)
-    if phone:
-        profile_text += f"\n📞 {phone}"
-    await update.message.reply_text(profile_text, parse_mode="Markdown")
-
-    my_tasks = tasks_for_employee(uid)
-    if not my_tasks:
-        await update.message.reply_text(t(lang, "employees_no_tasks"), reply_markup=kb_for(update))
-        return
-
-    await update.message.reply_text(t(lang, "employees_tasks_title"), parse_mode="Markdown")
-    for tk in my_tasks:
-        status = tk["status"].get(str(uid), "pending")
-        status_label = t(lang, STATUS_LABEL_KEY.get(status, "task_status_pending"))
-        date_str = tk["created_at"][:16].replace("T", " ")
-        schedule = tk.get("schedule") or t(lang, "task_no_schedule")
-        item_text = t(lang, "task_item", date=date_str, text=tk["text"], schedule=schedule, status=status_label)
-        if status in ("pending", "in_progress"):
-            kb = build_task_buttons(lang, tk["id"], status)
-            await update.message.reply_text(item_text, reply_markup=kb)
-        else:
-            await update.message.reply_text(item_text)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=t(lang, "greeting_after_lang", ai=AI_CHAT_LABEL), reply_markup=kb_for(update))
 
 
 # ---------------------------------------------------------------------------
@@ -1957,11 +1484,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def choose_machine(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(lang, "access_denied"))
+        return
     await update.message.reply_text(t(lang, "choose_machine_prompt"), reply_markup=kb_for(update))
 
 
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(lang, "access_denied"))
+        return
     await update.message.reply_text(t(lang, "help_text"), parse_mode="Markdown", reply_markup=kb_for(update))
 
 
@@ -2053,6 +1586,13 @@ async def register_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_registration_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, action: str, reg_id: str):
     query = update.callback_query
     lang = get_lang(context)
+
+    # XAVFSIZLIK: ikkinchi marta tekshirish (bu funksiya boshqa joydan
+    # chaqirilib qolsa ham himoyalangan bo'lsin).
+    if not is_admin(update.effective_user.id):
+        await query.answer(text=t(lang, "admin_only"), show_alert=True)
+        return
+
     reg = PENDING_REGISTRATIONS.pop(reg_id, None)
     _save_pending_registrations()
     if not reg:
@@ -2169,6 +1709,95 @@ async def nomatches_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("*So'nggi mos kelmagan so'rovlar:*\n" + "\n".join(out), parse_mode="Markdown")
 
 
+async def addcomment_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Admin ma'lumot bo'shlig'ini to'g'ridan-to'g'ri bot orqali to'ldiradi:
+    /addcomment <uskuna_id> <manzil> <izoh matni>
+    Bu Excel'ni qayta ochish va prepare_tags.py'ni qayta ishga tushirishni
+    talab qilmaydi — o'zgarish darhol kuchga kiradi va faylga saqlanadi."""
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    if len(context.args) < 3:
+        await update.message.reply_text(t(lang, "addcomment_usage"))
+        return
+
+    line_id, address = context.args[0], context.args[1]
+    comment_text = " ".join(context.args[2:])
+
+    ln = LINES.get(line_id)
+    if ln is None:
+        await update.message.reply_text(t(lang, "addcomment_bad_machine", ids=", ".join(LINES.keys())))
+        return
+
+    tg = ln.find_tag(address)
+    if tg is None:
+        await update.message.reply_text(t(lang, "tag_not_found", addr=address, machine=ln.label))
+        return
+
+    tg["comment"] = comment_text
+    try:
+        with open(ln.kb_file, "w", encoding="utf-8") as f:
+            json.dump(ln.tags, f, ensure_ascii=False, indent=1)
+    except Exception as e:
+        logger.warning("tags_kb faylini saqlashda xatolik (%s): %s", ln.id, e)
+        await update.message.reply_text(t(lang, "addcomment_save_error"))
+        return
+
+    await update.message.reply_text(t(lang, "addcomment_done", addr=tg["address"], machine=ln.label, comment=comment_text))
+
+
+# ---------------------------------------------------------------------------
+# Eng ko'p nosozlik chiqaradigan uskuna/manzillar statistikasi
+# ---------------------------------------------------------------------------
+
+async def topfaults_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+
+    days = 30
+    if context.args and context.args[0].isdigit():
+        days = int(context.args[0])
+    cutoff = datetime.now() - timedelta(days=days)
+
+    by_line = Counter()
+    by_addr = Counter()
+    try:
+        with open(QUERY_LOG_PATH, "r", encoding="utf-8") as f:
+            for raw in f:
+                try:
+                    d = json.loads(raw)
+                    ts = datetime.fromisoformat(d["time"])
+                    if ts < cutoff:
+                        continue
+                    by_line[d.get("line", "?")] += 1
+                    for m in ADDR_SEARCH_RE.finditer(d.get("question", "")):
+                        by_addr[m.group(0).upper().lstrip("%")] += 1
+                except Exception:
+                    continue
+    except FileNotFoundError:
+        pass
+
+    if not by_line:
+        await update.message.reply_text(t(lang, "topfaults_empty", days=days))
+        return
+
+    lines = [t(lang, "topfaults_header", days=days)]
+    lines.append("\n" + t(lang, "topfaults_by_machine"))
+    for line_id, cnt in by_line.most_common(10):
+        label = LINES[line_id].label if line_id in LINES else line_id
+        lines.append(f"• {label}: {cnt}")
+
+    if by_addr:
+        lines.append("\n" + t(lang, "topfaults_by_address"))
+        for addr, cnt in by_addr.most_common(10):
+            lines.append(f"• {addr}: {cnt}")
+
+    await update.message.reply_text("\n".join(lines))
+
+
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update.effective_user.id):
         await update.message.reply_text(t(get_lang(context), "access_denied"))
@@ -2178,30 +1807,6 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     lang = get_lang(context)
-
-    # Agar xodim endigina "Bajardim/Bajarilmadi" bosgan bo'lsa va endi rasm
-    # yuborsa — bu diagnostika uchun emas, balki BAJARILGAN ISH DALILI.
-    proof_task_id = context.user_data.pop("awaiting_proof_task", None)
-    proof_until = context.user_data.pop("awaiting_proof_until", 0)
-    if proof_task_id and time.time() <= proof_until:
-        photo = update.message.photo[-1]
-        file_id = photo.file_id
-        uid = update.effective_user.id
-        tk = next((x for x in TASKS if x["id"] == proof_task_id), None)
-        if tk is not None:
-            tk.setdefault("proof_photos", {})[str(uid)] = file_id
-            _save_tasks()
-            for admin_uid in ADMIN_USER_IDS:
-                admin_lang = employee_lang(context, admin_uid)
-                try:
-                    await context.bot.send_photo(
-                        chat_id=admin_uid, photo=file_id,
-                        caption=t(admin_lang, "proof_photo_caption", name=employee_name(uid), text=tk["text"]),
-                    )
-                except Exception as e:
-                    logger.warning("Adminga dalil rasmini yuborishda xatolik: %s", e)
-        await update.message.reply_text(t(lang, "proof_photo_thanks"), reply_markup=kb_for(update))
-        return
 
     await update.message.reply_text(t(lang, "photo_processing"))
 
@@ -2367,12 +1972,49 @@ async def tag_lookup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_schematic_pages(update, context, ln, [tg["address"]], lang)
 
 
+MAX_FIND_RESULTS = int(os.getenv("MAX_FIND_RESULTS", "15"))
+
+
+async def find_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Tezkor, AI'siz kalit-so'z qidiruvi — mahalliy lug'at orqali."""
+    lang = get_lang(context)
+    if not is_authorized(update.effective_user.id):
+        await update.message.reply_text(t(lang, "access_denied"))
+        return
+    ln = get_selected_line(context)
+    if ln is None:
+        await update.message.reply_text(t(lang, "choose_machine_first_tag"), reply_markup=kb_for(update))
+        return
+    if not context.args:
+        await update.message.reply_text(t(lang, "find_usage"))
+        return
+
+    query_text = " ".join(context.args)
+    keywords = local_keywords(query_text)
+    results = local_search(ln.tags, keywords, limit=MAX_FIND_RESULTS)
+    if not results:
+        await update.message.reply_text(t(lang, "find_no_results", query=query_text))
+        return
+
+    kind_labels = KIND_LABELS.get(lang, KIND_LABELS["uz"])
+    lines = [t(lang, "find_results_header", query=query_text, count=len(results))]
+    for tg in results:
+        lines.append(
+            f"📍 `{tg['address']}` — {tg.get('name') or ''} {tg.get('comment') or ''}".strip()
+        )
+    await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+
+
 async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
     lang = get_lang(context)
 
     cached = cache_get("general", lang, user_text)
     if cached:
         await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=kb_for(update))
+        return
+
+    if not check_rate_limit(update.effective_user.id):
+        await update.message.reply_text(t(lang, "rate_limited"), reply_markup=kb_for(update))
         return
 
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
@@ -2397,6 +2039,10 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
     cached = cache_get(ln.id, lang, user_text)
     if cached:
         await update.message.reply_text(cached, parse_mode="Markdown", reply_markup=kb_for(update))
+        return
+
+    if not check_rate_limit(update.effective_user.id):
+        await update.message.reply_text(t(lang, "rate_limited"), reply_markup=kb_for(update))
         return
 
     if looks_like_address(user_text):
@@ -2427,8 +2073,18 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
             await update.message.reply_text(t(lang, "no_match"), reply_markup=kb_for(update))
             return
 
+    # Qo'llanma bo'lsa, mavzuga tegishli sahifalarni topib, AI javobini
+    # chuqurlashtirish uchun kontekstga qo'shamiz (tashxis aniqroq bo'ladi).
+    manual_excerpt = ""
+    manual_pages_used = []
+    if ln.manual_pdf:
+        m_results = ln.search_manual(local_keywords(user_text), limit=2)
+        if m_results:
+            manual_pages_used = [p for p, _ in m_results]
+            manual_excerpt = "\n\n".join(f"[page {p}]\n{txt[:1200]}" for p, txt in m_results)
+
     tag_block = build_tag_block(candidates)
-    system_prompt = build_diagnosis_prompt(ln.label, tag_block, found_all, lang)
+    system_prompt = build_diagnosis_prompt(ln.label, tag_block, found_all, lang, manual_excerpt)
     answer = await ask_ai(system_prompt, user_text, lang=lang)
 
     if not answer:
@@ -2439,6 +2095,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
             chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"), reply_markup=build_feedback_keyboard(answer_id, lang)
         )
         await send_schematic_pages(update, context, ln, [c["address"] for c in candidates], lang)
+        await send_manual_pages(update, context, ln, manual_pages_used, lang)
         return
 
     answer_id = register_answer(ln.id, lang, user_text, answer)
@@ -2447,6 +2104,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
         chat_id=update.effective_chat.id, text=t(lang, "feedback_prompt"), reply_markup=build_feedback_keyboard(answer_id, lang)
     )
     await send_schematic_pages(update, context, ln, [c["address"] for c in candidates], lang)
+    await send_manual_pages(update, context, ln, manual_pages_used, lang)
     log_query(update, ln.id, user_text, answer)
     cache_set(ln.id, lang, user_text, answer)
 
@@ -2503,16 +2161,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await handle_esp32_status(update, context)
         return
 
-    if user_text == EMPLOYEES_MENU_LABEL:
+    if user_text == LIBRARY_MENU_LABEL:
         context.user_data["mode"] = None
-        await show_employees_section(update, context)
-        return
-
-    if user_text == ADMIN_MENU_LABEL:
-        if not is_admin(update.effective_user.id):
-            await update.message.reply_text(t(lang, "admin_only"))
-            return
-        await show_admin_menu(update, context)
+        await show_library_menu(update, context)
         return
 
     if user_text == MACHINE_MENU_LABEL:
@@ -2521,32 +2172,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     mode = context.user_data.get("mode")
 
-    if mode == "admin_menu":
-        await handle_admin_menu_input(update, context, user_text)
-        return
-
-    if mode == "admin_task_target":
-        await handle_admin_task_target(update, context, user_text)
-        return
-
-    if mode == "admin_task_text":
-        await handle_admin_task_text(update, context, user_text)
-        return
-
-    if mode == "admin_task_schedule":
-        await handle_admin_task_schedule(update, context, user_text)
-        return
-
-    if mode == "admin_recurring_target":
-        await handle_admin_recurring_target(update, context, user_text)
-        return
-
-    if mode == "admin_recurring_text":
-        await handle_admin_recurring_text(update, context, user_text)
-        return
-
-    if mode == "admin_recurring_time":
-        await handle_admin_recurring_time(update, context, user_text, context.application)
+    if mode == "library_wait":
+        await handle_library_query(update, context, user_text)
         return
 
     if mode == "general":
@@ -2579,72 +2206,8 @@ async def error_handler(update, context):
 
 
 # ---------------------------------------------------------------------------
-# Rejalashtirilgan vazifalar: kunlik hisobot (adminga), haftalik statistika,
-# bot salomatligi (healthcheck)
+# Rejalashtirilgan vazifalar: haftalik statistika, bot salomatligi (healthcheck)
 # ---------------------------------------------------------------------------
-
-async def task_reminder_job(context: ContextTypes.DEFAULT_TYPE):
-    """Muddati (deadline) o'tib ketgan, lekin hali 'bajarildi/bajarilmadi'
-    deb belgilanmagan topshiriqlar uchun xodimga eslatma, adminga esa
-    ogohlantirish yuboradi. Har bir xodimga bir marta eslatiladi."""
-    now = datetime.now()
-    for tk in TASKS:
-        deadline = tk.get("deadline")
-        if not deadline:
-            continue
-        try:
-            if datetime.fromisoformat(deadline) > now:
-                continue
-        except Exception:
-            continue
-        reminded = set(tk.get("reminded_uids", []))
-        for uid_str, state in tk["status"].items():
-            if state in ("done", "failed"):
-                continue
-            if uid_str in reminded:
-                continue
-            uid = int(uid_str)
-            emp_lang = employee_lang(context, uid)
-            try:
-                await context.bot.send_message(
-                    chat_id=uid,
-                    text=t(emp_lang, "task_reminder_dm", text=tk["text"]),
-                    reply_markup=build_task_buttons(emp_lang, tk["id"], state),
-                )
-            except Exception as e:
-                logger.warning("Eslatma yuborishda xatolik (%s): %s", uid_str, e)
-            for admin_uid in ADMIN_USER_IDS:
-                admin_lang = employee_lang(context, admin_uid)
-                try:
-                    await context.bot.send_message(
-                        chat_id=admin_uid,
-                        text=t(admin_lang, "task_reminder_admin_notice",
-                               name=employee_name(uid), text=tk["text"]),
-                    )
-                except Exception as e:
-                    logger.warning("Adminga eslatma xabarida xatolik: %s", e)
-            reminded.add(uid_str)
-        tk["reminded_uids"] = list(reminded)
-    _save_tasks()
-
-
-async def daily_report_job(context: ContextTypes.DEFAULT_TYPE):
-    """Har kuni belgilangan vaqtda (standart 18:00) o'sha kunning barcha
-    topshiriqlari va ularning holati (bajarildi/jarayonda/bajarilmadi)
-    haqidagi to'liq jadvalni barcha adminlarga yuboradi."""
-    if not ADMIN_USER_IDS:
-        return
-    tasks = todays_tasks()
-    if not tasks:
-        return
-    table = build_tasks_table(tasks, "uz")
-    header = f"📊 *Kunlik hisobot* — {datetime.now().strftime('%d.%m.%Y')}\n\n"
-    for admin_id in ADMIN_USER_IDS:
-        try:
-            await context.bot.send_message(chat_id=admin_id, text=header + table, parse_mode="Markdown")
-        except Exception as e:
-            logger.warning("Kunlik hisobotni yuborishda xatolik (%s): %s", admin_id, e)
-
 
 async def weekly_stats_job(context: ContextTypes.DEFAULT_TYPE):
     if not STATS_CHAT_ID:
@@ -2706,7 +2269,7 @@ async def healthcheck_job(context: ContextTypes.DEFAULT_TYPE):
 # ---------------------------------------------------------------------------
 
 LOG_FILES_TO_ROTATE = [QUERY_LOG_PATH, NO_MATCH_LOG_PATH, "feedback.log"]
-BACKUP_FILES = [TASKS_PATH, ALLOWED_USERS_PATH, RECURRING_TASKS_PATH]
+BACKUP_FILES = [ALLOWED_USERS_PATH, PENDING_REG_PATH]
 
 
 def _rotate_logs_sync():
@@ -2795,6 +2358,9 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("machine", choose_machine))
     app.add_handler(CommandHandler("tag", tag_lookup))
+    app.add_handler(CommandHandler("find", find_cmd))
+    app.add_handler(CommandHandler("addcomment", addcomment_cmd))
+    app.add_handler(CommandHandler("topfaults", topfaults_cmd))
     app.add_handler(CommandHandler("status", status_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CommandHandler("adduser", adduser_cmd))
@@ -2810,15 +2376,11 @@ def main():
     app.add_error_handler(error_handler)
 
     if app.job_queue is not None:
-        if ADMIN_USER_IDS:
-            app.job_queue.run_daily(daily_report_job, time=datetime.strptime(DAILY_REPORT_TIME, "%H:%M").time())
         if STATS_CHAT_ID:
             app.job_queue.run_daily(weekly_stats_job, time=datetime.strptime("08:00", "%H:%M").time())
         if HEALTHCHECK_PING_URL:
             app.job_queue.run_repeating(healthcheck_job, interval=HEALTHCHECK_INTERVAL_MIN * 60, first=10)
-        app.job_queue.run_repeating(task_reminder_job, interval=TASK_REMINDER_CHECK_MIN * 60, first=60)
         app.job_queue.run_repeating(log_rotation_job, interval=6 * 3600, first=30)
-        register_recurring_jobs(app)
 
     logger.info(
         "Bot ishga tushdi... (%d ta uskuna, AI provayderlar: %s, kirish nazorati: %s)",
