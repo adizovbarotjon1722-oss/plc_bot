@@ -2831,10 +2831,18 @@ def main():
         asyncio.set_event_loop(asyncio.new_event_loop())
 
     persistence = PicklePersistence(filepath=PERSISTENCE_PATH)
+    # Timeout qiymatlari oshirildi — sekin/notekis tarmoqda TimedOut xatosini
+    # kamaytirish uchun (default odatda 5–10 s bo'ladi).
     app = (
         Application.builder()
         .token(TELEGRAM_BOT_TOKEN)
         .persistence(persistence)
+        .connect_timeout(30.0)
+        .read_timeout(30.0)
+        .write_timeout(30.0)
+        .pool_timeout(30.0)
+        .get_updates_connect_timeout(30.0)
+        .get_updates_read_timeout(30.0)
         .build()
     )
 
@@ -2877,7 +2885,13 @@ def main():
         len(LINES), ", ".join(name for name, _ in AI_PROVIDERS),
         "MAJBURIY (admin ruxsati shart)",
     )
-    app.run_polling()
+    # bootstrap_retries: ishga tushishda getMe() timeout bo'lsa qayta urinadi
+    # drop_pending_updates: eski navbatdagi update'larni tashlab yuboradi
+    app.run_polling(
+        bootstrap_retries=10,
+        drop_pending_updates=True,
+        allowed_updates=Update.ALL_TYPES,
+    )
 
 
 if __name__ == "__main__":
