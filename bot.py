@@ -105,9 +105,22 @@ BACKUP_KEEP = int(os.getenv("BACKUP_KEEP", "14"))
 # --- Ichki kutubxona (faqat admin yuklaydi, faqat ruxsatli foydalanuvchilar ko'radi) ---
 LIBRARY_DOCS_PATH = os.getenv("LIBRARY_DOCS_PATH", "library_docs.json")
 LIBRARY_FILES_DIR = os.getenv("LIBRARY_FILES_DIR", "library_files")
-MAX_LIBRARY_FILE_MB = float(os.getenv("MAX_LIBRARY_FILE_MB", "20"))
+MAX_LIBRARY_FILE_MB = float(os.getenv("MAX_LIBRARY_FILE_MB", "50"))
+# Telegram Bot API fayl YUKLAB OLISH chegarasi 20 MB — bundan katta fayl
+# diskka saqlanmaydi, faqat file_id orqali qayta yuboriladi (50 MB gacha ishlaydi).
+TG_DOWNLOAD_MAX_BYTES = 20 * 1024 * 1024
+# Xavfli fayl turlari (dastur/skript) — kutubxonaga yuklash qat'iyan taqiqlangan.
+LIB_DENY_EXT = {
+    ".exe", ".bat", ".cmd", ".com", ".scr", ".pif", ".msi", ".dll", ".vbs",
+    ".vbe", ".js", ".jse", ".wsf", ".wsh", ".ps1", ".psm1", ".sh", ".apk",
+    ".jar", ".lnk", ".reg", ".hta", ".cpl", ".inf", ".sys", ".msp", ".gadget",
+}
 # Registratsiya spam himoyasi
 REG_RATE_LIMIT_PER_HOUR = int(os.getenv("REG_RATE_LIMIT_PER_HOUR", "3"))
+
+# --- AI token sarfini nazorat qilish ---
+AI_MAX_OUTPUT_TOKENS = int(os.getenv("AI_MAX_OUTPUT_TOKENS", "400"))
+AI_MAX_INPUT_CHARS = int(os.getenv("AI_MAX_INPUT_CHARS", "1500"))
 
 
 # --- Bot salomatligini kuzatish (ixtiyoriy, masalan healthchecks.io) ---
@@ -118,6 +131,9 @@ HEALTHCHECK_INTERVAL_MIN = int(os.getenv("HEALTHCHECK_INTERVAL_MIN", "5"))
 # ESP32'dagi /status endpoint manzili, masalan: http://192.168.1.50/status
 ESP32_STATUS_URL = os.getenv("ESP32_STATUS_URL", "").strip()
 ESP32_TIMEOUT_SEC = int(os.getenv("ESP32_TIMEOUT_SEC", "5"))
+# SSRF himoyasi: faqat http/https sxemasi ruxsat etilgan
+if ESP32_STATUS_URL and not ESP32_STATUS_URL.startswith(("http://", "https://")):
+    ESP32_STATUS_URL = ""
 
 if not TELEGRAM_BOT_TOKEN:
     raise RuntimeError("TELEGRAM_BOT_TOKEN topilmadi. .env faylni tekshiring.")
@@ -263,6 +279,22 @@ def check_reg_rate_limit(user_id: int) -> bool:
     return True
 
 
+_denied_hits = {}  # uid -> [timestamps] — ruxsatsiz urinishlar
+
+
+def should_answer_denied(user_id: int) -> bool:
+    """Ruxsatsiz foydalanuvchiga javob berish kerakmi? Soatiga 5 martadan
+    ko'p urinish qilganlarga jim e'tibor berilmaydi (spam/probing himoyasi —
+    bot haqida ma'lumot yig'ishni qiyinlashtiradi)."""
+    now = time.time()
+    hits = [ts for ts in _denied_hits.get(user_id, []) if now - ts < 3600]
+    hits.append(now)
+    _denied_hits[user_id] = hits
+    if len(hits) == 6:
+        logger.warning("Ruxsatsiz foydalanuvchi %s spam qilmoqda — javoblar o'chirildi", user_id)
+    return len(hits) <= 5
+
+
 def sanitize_filename(name: str) -> str:
     """Xavfli belgilarni olib tashlash — path traversal himoyasi."""
     name = os.path.basename(name or "file")
@@ -400,16 +432,15 @@ TEXT = {
         "help_text": (
             "ℹ️ *Botdan qanday foydalanish:*\n\n"
             "1️⃣ Pastdagi tugmalardan uskuna/liniyani tanlang.\n"
-            "2️⃣ Muammoni yozing (masalan \"konveyer ishlamayapti\") yoki shunchaki "
+            "2️⃣ Muammoni yozing (masalan \"konveyer ishlamayapti\") yoki "
             "manzilni yozing (masalan I0.1).\n"
-            "📷 Rasm ham yuborishingiz mumkin — HMI ekrani yoki indikator surati.\n"
-            "🎤 Ovozli xabar ham qabul qilinadi.\n\n"
-            "🤖 *Sun'iy intellekt* — PLC bilan bog'liq bo'lmagan savollar uchun.\n"
-            "🏭 *Zavod monitoring* — kompressor/chiller holatini ko'rish (agar sozlangan bo'lsa).\n"
-            "👥 *Xodimlar* — profilingiz va sizga berilgan topshiriqlar.\n"
-            "🔑 *Admin* — (faqat adminlar) topshiriq berish, hisobotlar.\n"
-            "🌐 *Til* — istalgan vaqtda tilni almashtirish.\n\n"
-            "Ro'yxatdan o'tmagan bo'lsangiz: /register <ism> <telefon>"
+            "📷 Rasm (HMI ekrani/indikator) va 🎤 ovozli xabar ham qabul qilinadi.\n\n"
+            "📚 *Kutubxona* — kitob/qo'llanmalar va qo'llanma bo'yicha qidiruv.\n"
+            "🤖 *Sun'iy intellekt* — PLC'ga bog'liq bo'lmagan savollar.\n"
+            "🏭 *Zavod monitoring* — kompressor/chiller holati.\n"
+            "🌐 *Til* — istalgan vaqtda tilni almashtirish.\n"
+            "❓ *Yordam* — shu xabar.\n\n"
+            "Tezkor buyruqlar: /tag %I0.5 · /find <kalit so'z> · /register <ism> <telefon>"
         ),
         "already_registered": "Siz allaqachon ro'yxatdasiz.",
         "register_usage": "Foydalanish: /register <ismingiz> <telefon_raqamingiz>\nMasalan: /register Aziz Karimov +998901234567",
@@ -422,6 +453,7 @@ TEXT = {
         "register_rejected_user": "Kechirasiz, so'rovingiz rad etildi. Administratorga murojaat qiling.",
         "voice_processing": "🎤 Ovozli xabar tinglanmoqda...",
         "voice_failed": "Ovozli xabarni tushuna olmadim. Iltimos, matn bilan yozing.",
+        "voice_too_long": "🎤 Ovozli xabar juda uzun (max 2 daqiqa). Qisqaroq yuboring yoki matn bilan yozing.",
         "voice_transcribed": "🎤 Eshitdim: \"{text}\"",
         "schematic_page_caption": "🔌 Elektr sxemasi — {machine}, {page}-sahifa",
         "library_select_machine_first": "Avval uskunani tanlang, so'ng qayta \"📚 Qo'llanma\" tugmasini bosing.",
@@ -430,19 +462,31 @@ TEXT = {
         "library_ask_topic": "📚 *{machine} qo'llanmasi*\nQaysi mavzuni qidiryapsiz? (masalan: \"moylash\", \"xavfsizlik to'ri sozlash\")",
         "library_no_results": "Qo'llanmadan bu mavzu bo'yicha hech narsa topa olmadim. Boshqacha so'z bilan yozib ko'ring.",
         "library_found": "📖 {count} ta tegishli sahifa topildi:",
-        "lib_menu_title": "📚 *Kutubxona*\nFaqat ruxsat berilgan xodimlar ko'ra oladi.\n\nMavjud hujjatlar:",
+        "lib_menu_title": "📚 *Kutubxona*\nHujjatni ochish uchun ustiga bosing:",
         "lib_empty": "Kutubxona hozircha bo'sh. Admin hujjat yuklagach paydo bo'ladi.",
         "lib_item": "• *{title}*\n  {desc}\n  ID: `{id}`",
         "lib_download_hint": "Hujjatni olish: /libget <ID>",
         "lib_get_usage": "Foydalanish: /libget <hujjat_id>",
         "lib_not_found": "Hujjat topilmadi yoki o'chirilgan.",
         "lib_no_access": "⛔ Bu bo'lim faqat ruxsat berilgan xodimlar uchun.",
-        "lib_admin_menu": "🔐 *Admin — Kutubxona boshqaruvi*\n\n• Hujjat yuklash: /libadd <sarlavha>\n  so'ng PDF/DOC/rasm yuboring\n• Ro'yxat: /liblist\n• O'chirish: /libdel <ID>\n• Oddiy kutubxona: 📚 Kutubxona",
-        "lib_add_usage": "Foydalanish:\n1) /libadd <sarlavha>\n2) Keyin PDF, DOC yoki rasm yuboring (caption ixtiyoriy).",
-        "lib_add_waiting": "✅ Sarlavha qabul qilindi: *{title}*\nEndi faylni yuboring (PDF/DOC/DOCX/TXT/rasm, max {mb} MB).",
+        "lib_manual_search_btn": "🔎 Qo'llanmadan qidirish: {machine}",
+        "lib_back_btn": "⬅️ Orqaga",
+        "lib_del_confirm": "🗑 O'chirilsinmi: *{title}*",
+        "lib_yes": "✅ Ha", "lib_no": "❌ Yo'q",
+        "lib_admin_menu": (
+            "🔐 *Admin — Kutubxona boshqaruvi*\n\n"
+            "• Yuklash: /libadd <sarlavha> — so'ng istalgan turdagi kitob/qo'llanma "
+            "faylini yuboring (PDF, DOC, EPUB, XLSX, TXT, rasm…, max {mb} MB)\n"
+            "• Ro'yxat va o'chirish: /liblist\n"
+            "• O'chirish: /libdel <ID>\n"
+            "• Foydalanuvchi kutubxonasi: 📚 Kutubxona"
+        ),
+        "lib_add_usage": "Foydalanish:\n1) /libadd <sarlavha>\n2) Keyin istalgan hujjat/kitob faylini yuboring.",
+        "lib_add_waiting": "✅ Sarlavha qabul qilindi: *{title}*\nEndi faylni yuboring — istalgan turdagi kitob/qo'llanma (PDF, DOC, EPUB, XLSX, TXT, rasm va b., max {mb} MB).",
         "lib_add_done": "✅ Kutubxonaga qo'shildi.\nSarlavha: *{title}*\nID: `{id}`",
         "lib_add_too_big": "Fayl juda katta (max {mb} MB).",
-        "lib_add_bad_type": "Ruxsat etilmagan fayl turi. PDF, DOC, DOCX, TXT, JPG, PNG yuboring.",
+        "lib_add_bad_type": "Fayl yuklanmadi. Iltimos, hujjat/kitob faylini yuboring.",
+        "lib_denied_type": "⛔ Xavfsizlik: dastur/skript fayllarini yuklash taqiqlangan. Faqat hujjat/kitob fayllari (PDF, DOC, EPUB, rasm…).",
         "lib_del_usage": "Foydalanish: /libdel <hujjat_id>",
         "lib_del_done": "🗑 O'chirildi: {title}",
         "lib_del_fail": "O'chirib bo'lmadi — ID topilmadi.",
@@ -547,16 +591,15 @@ TEXT = {
         "help_text": (
             "ℹ️ *How to use this bot:*\n\n"
             "1️⃣ Pick a machine/line from the buttons below.\n"
-            "2️⃣ Describe the problem (e.g. \"conveyor not moving\") or just type "
+            "2️⃣ Describe the problem (e.g. \"conveyor not moving\") or type "
             "an address (e.g. I0.1).\n"
-            "📷 You can also send a photo — of an HMI screen or indicator.\n"
-            "🎤 Voice messages are supported too.\n\n"
+            "📷 Photos (HMI screen/indicator) and 🎤 voice messages are supported.\n\n"
+            "📚 *Library* — books/manuals and manual search by topic.\n"
             "🤖 *AI Assistant* — for questions unrelated to PLC.\n"
-            "🏭 *Factory monitoring* — view compressor/chiller status (if set up).\n"
-            "👥 *Employees* — your profile and assigned tasks.\n"
-            "🔑 *Admin* — (admins only) assign tasks, view reports.\n"
-            "🌐 *Language* — switch language anytime.\n\n"
-            "Not registered yet? /register <name> <phone>"
+            "🏭 *Factory monitoring* — compressor/chiller status.\n"
+            "🌐 *Language* — switch language anytime.\n"
+            "❓ *Help* — this message.\n\n"
+            "Quick commands: /tag %I0.5 · /find <keyword> · /register <name> <phone>"
         ),
         "already_registered": "You're already registered.",
         "register_usage": "Usage: /register <your name> <your phone number>\nExample: /register John Smith +998901234567",
@@ -569,6 +612,7 @@ TEXT = {
         "register_rejected_user": "Sorry, your request was rejected. Please contact the administrator.",
         "voice_processing": "🎤 Listening to the voice message...",
         "voice_failed": "I couldn't understand the voice message. Please type it instead.",
+        "voice_too_long": "🎤 Voice message is too long (max 2 minutes). Send a shorter one or type it.",
         "voice_transcribed": "🎤 Heard: \"{text}\"",
         "schematic_page_caption": "🔌 Electrical schematic — {machine}, page {page}",
         "library_select_machine_first": "Please select a machine first, then tap \"📚 Manual\" again.",
@@ -577,19 +621,31 @@ TEXT = {
         "library_ask_topic": "📚 *{machine} manual*\nWhat topic are you looking for? (e.g. \"lubrication\", \"light curtain setup\")",
         "library_no_results": "I couldn't find anything on that topic in the manual. Try different wording.",
         "library_found": "📖 Found {count} relevant page(s):",
-        "lib_menu_title": "📚 *Library*\nVisible only to authorized staff.\n\nDocuments:",
+        "lib_menu_title": "📚 *Library*\nTap a document to open it:",
         "lib_empty": "Library is empty. Documents appear after admin upload.",
         "lib_item": "• *{title}*\n  {desc}\n  ID: `{id}`",
         "lib_download_hint": "Get a file: /libget <ID>",
         "lib_get_usage": "Usage: /libget <doc_id>",
         "lib_not_found": "Document not found or removed.",
         "lib_no_access": "⛔ This section is for authorized staff only.",
-        "lib_admin_menu": "🔐 *Admin — Library management*\n\n• Upload: /libadd <title> then send PDF/DOC/image\n• List: /liblist\n• Delete: /libdel <ID>\n• User library: 📚 Library",
-        "lib_add_usage": "Usage:\n1) /libadd <title>\n2) Then send PDF, DOC or image.",
-        "lib_add_waiting": "✅ Title accepted: *{title}*\nNow send the file (PDF/DOC/DOCX/TXT/image, max {mb} MB).",
+        "lib_manual_search_btn": "🔎 Search manual: {machine}",
+        "lib_back_btn": "⬅️ Back",
+        "lib_del_confirm": "🗑 Delete: *{title}*",
+        "lib_yes": "✅ Yes", "lib_no": "❌ No",
+        "lib_admin_menu": (
+            "🔐 *Admin — Library management*\n\n"
+            "• Upload: /libadd <title>, then send any book/manual file "
+            "(PDF, DOC, EPUB, XLSX, TXT, image…, max {mb} MB)\n"
+            "• List & delete: /liblist\n"
+            "• Delete: /libdel <ID>\n"
+            "• User library: 📚 Library"
+        ),
+        "lib_add_usage": "Usage:\n1) /libadd <title>\n2) Then send any document/book file.",
+        "lib_add_waiting": "✅ Title accepted: *{title}*\nNow send the file — any book/manual (PDF, DOC, EPUB, XLSX, TXT, image, etc., max {mb} MB).",
         "lib_add_done": "✅ Added to library.\nTitle: *{title}*\nID: `{id}`",
         "lib_add_too_big": "File too large (max {mb} MB).",
-        "lib_add_bad_type": "File type not allowed. Send PDF, DOC, DOCX, TXT, JPG, PNG.",
+        "lib_add_bad_type": "File was not added. Please send a document/book file.",
+        "lib_denied_type": "⛔ Security: executable/script files are forbidden. Only document/book files (PDF, DOC, EPUB, image…).",
         "lib_del_usage": "Usage: /libdel <doc_id>",
         "lib_del_done": "🗑 Deleted: {title}",
         "lib_del_fail": "Could not delete — ID not found.",
@@ -689,15 +745,14 @@ TEXT = {
         "help_text": (
             "ℹ️ *如何使用本机器人：*\n\n"
             "1️⃣ 从下方按钮选择设备/产线。\n"
-            "2️⃣ 描述问题（例如\"输送带不动\"），或直接输入地址（例如 I0.1）。\n"
-            "📷 也可以发送照片——HMI屏幕或指示灯。\n"
-            "🎤 也支持语音消息。\n\n"
-            "🤖 *人工智能* — 用于与PLC无关的问题。\n"
-            "🏭 *工厂监控* — 查看压缩机/冷水机状态（如已配置）。\n"
-            "👥 *员工* — 您的资料和分配的任务。\n"
-            "🔑 *管理员* — （仅限管理员）分配任务、查看报表。\n"
-            "🌐 *语言* — 随时切换语言。\n\n"
-            "还未注册？发送 /register <姓名> <电话>"
+            "2️⃣ 描述问题（例如\"输送带不动\"），或输入地址（例如 I0.1）。\n"
+            "📷 支持照片（HMI屏幕/指示灯）和 🎤 语音消息。\n\n"
+            "📚 *资料库* — 书籍/手册及按主题搜索手册。\n"
+            "🤖 *人工智能* — 与PLC无关的问题。\n"
+            "🏭 *工厂监控* — 压缩机/冷水机状态。\n"
+            "🌐 *语言* — 随时切换语言。\n"
+            "❓ *帮助* — 本条消息。\n\n"
+            "快捷命令：/tag %I0.5 · /find <关键词> · /register <姓名> <电话>"
         ),
         "already_registered": "您已经注册过了。",
         "register_usage": "用法：/register <姓名> <电话号码>\n例如：/register 张三 +998901234567",
@@ -710,6 +765,7 @@ TEXT = {
         "register_rejected_user": "抱歉，您的请求被拒绝。请联系管理员。",
         "voice_processing": "🎤 正在听取语音消息...",
         "voice_failed": "无法理解该语音消息。请改为输入文字。",
+        "voice_too_long": "🎤 语音消息太长（最多2分钟）。请发送更短的语音或输入文字。",
         "voice_transcribed": "🎤 听到：\"{text}\"",
         "schematic_page_caption": "🔌 电气原理图 — {machine}，第{page}页",
         "library_select_machine_first": "请先选择设备，然后再次点击\"📚 手册\"。",
@@ -718,19 +774,24 @@ TEXT = {
         "library_ask_topic": "📚 *{machine}手册*\n您要查找什么主题？（例如：\"润滑\"、\"光幕设置\"）",
         "library_no_results": "未能在手册中找到该主题的相关内容。请尝试其他措辞。",
         "library_found": "📖 找到{count}个相关页面：",
-        "lib_menu_title": "📚 *资料库*\n仅授权员工可见。\n\n文件列表：",
+        "lib_menu_title": "📚 *资料库*\n点击文档即可打开：",
         "lib_empty": "资料库为空。管理员上传后显示。",
         "lib_item": "• *{title}*\n  {desc}\n  ID: `{id}`",
         "lib_download_hint": "获取文件：/libget <ID>",
         "lib_get_usage": "用法：/libget <文档ID>",
         "lib_not_found": "未找到该文档或已删除。",
         "lib_no_access": "⛔ 此分区仅限授权员工。",
-        "lib_admin_menu": "🔐 *管理员 — 资料库管理*\n\n• 上传：/libadd <标题> 然后发送文件\n• 列表：/liblist\n• 删除：/libdel <ID>",
-        "lib_add_usage": "用法：\n1) /libadd <标题>\n2) 然后发送 PDF/DOC/图片。",
-        "lib_add_waiting": "✅ 标题已接受：*{title}*\n请发送文件（最大 {mb} MB）。",
+        "lib_manual_search_btn": "🔎 搜索手册：{machine}",
+        "lib_back_btn": "⬅️ 返回",
+        "lib_del_confirm": "🗑 删除：*{title}*",
+        "lib_yes": "✅ 是", "lib_no": "❌ 否",
+        "lib_admin_menu": "🔐 *管理员 — 资料库管理*\n\n• 上传：/libadd <标题>，然后发送任何书籍/手册文件（PDF、DOC、EPUB、XLSX、图片等，最大 {mb} MB）\n• 列表与删除：/liblist\n• 删除：/libdel <ID>",
+        "lib_add_usage": "用法：\n1) /libadd <标题>\n2) 然后发送任何文档/书籍文件。",
+        "lib_add_waiting": "✅ 标题已接受：*{title}*\n请发送文件——任何书籍/手册（PDF、DOC、EPUB、XLSX、TXT、图片等，最大 {mb} MB）。",
         "lib_add_done": "✅ 已加入资料库。\n标题：*{title}*\nID：`{id}`",
         "lib_add_too_big": "文件过大（最大 {mb} MB）。",
-        "lib_add_bad_type": "不支持的文件类型。",
+        "lib_add_bad_type": "文件未添加。请发送文档/书籍文件。",
+        "lib_denied_type": "⛔ 安全：禁止上传可执行程序/脚本文件。仅允许文档/书籍文件（PDF、DOC、EPUB、图片等）。",
         "lib_del_usage": "用法：/libdel <文档ID>",
         "lib_del_done": "🗑 已删除：{title}",
         "lib_del_fail": "无法删除 — 未找到ID。",
@@ -776,8 +837,9 @@ def get_lang(context: ContextTypes.DEFAULT_TYPE) -> str:
 MACHINE_MENU_LABEL = "🔀 Uskunani tanlash/almashtirish"
 AI_CHAT_LABEL = "🤖 Sun'iy intellekt (erkin savol) / AI Assistant / 人工智能"
 ESP32_MENU_LABEL = "🏭 Zavod monitoring (kompressor/chiller)"
-LIBRARY_MENU_LABEL = "📚 Kutubxona / Library"
+LIBRARY_MENU_LABEL = "📚 Kutubxona / Library / 资料库"
 ADMIN_LIBRARY_LABEL = "🔐 Admin: Kutubxona boshqaruvi"
+HELP_BTN_LABEL = "ℹ️ Yordam / Help / 帮助"
 
 # ---------------------------------------------------------------------------
 # Uskunalar (liniyalar) konfiguratsiyasini yuklash
@@ -794,9 +856,10 @@ def build_tag_block(tags):
     lines = []
     for tag in tags:
         st = f"ST{tag['station']}" if tag.get("station") else "-"
+        # Token tejash: nom/izoh kesiladi (uzun xitoy izohlari keraksiz)
         lines.append(
-            f"{tag['address']}\t{tag['kind']}\t{st}\t{tag.get('group','')}\t{tag['data_type']}\t"
-            f"{tag.get('name','')}\t{tag.get('comment','')}"
+            f"{tag['address']}\t{tag['kind']}\t{st}\t{(tag.get('group') or '')[:30]}\t{tag['data_type']}\t"
+            f"{(tag.get('name') or '')[:60]}\t{(tag.get('comment') or '')[:80]}"
         )
     return "\n".join(lines)
 
@@ -812,10 +875,7 @@ def build_diagnosis_prompt(machine_label: str, tag_block: str, found_all: bool, 
     manual_block = ""
     if manual_excerpt:
         manual_block = f"""
-RELEVANT MANUAL/DOCUMENTATION EXCERPT (from the equipment's real manual —
-use it to ground and deepen your answer, e.g. official procedure steps,
-specified tolerances, or manufacturer-recommended checks; do not contradict
-it, and prefer it over generic guesses):
+REAL MANUAL EXCERPT (prefer it over generic guesses, do not contradict):
 ---
 {manual_excerpt}
 ---
@@ -825,27 +885,17 @@ it, and prefer it over generic guesses):
 group/location TAB data type TAB tag name TAB comment. Names/comments may be
 in Chinese or English — understand them naturally regardless of language.
 
-An employee (often new, inexperienced) describes a problem they see on the
-equipment, in Uzbek, English, Chinese, or a mix. Give the most precise and
-COMPLETE analysis you can — do not give a superficial one-line guess.
+An employee describes a problem in Uzbek, English, Chinese, or a mix.
+Answer STRICTLY CONCISE and TECHNICAL — an expert talking to a technician,
+not a lecture. HARD LIMIT: ~90 words total. No filler, no disclaimers, no
+repeating the question, no generic advice.
 
-Your task:
-1. Find the matching PLC tag(s) from the list and state the exact address(es).
-2. Explain in simple terms what this signal physically represents and where
-   it sits in the equipment's logic (e.g. what it's interlocked with, what
-   depends on it).
-3. Give a THOROUGH list of possible root causes, ordered from most to least
-   likely, covering electrical (cable break, loose terminal, blown fuse,
-   sticking relay/contactor), mechanical (misalignment, obstruction, worn
-   part), and sensor-specific (dirty/misaligned sensor, wrong sensitivity,
-   wrong wiring polarity) causes as relevant to this signal's type.
-4. Give concrete, step-by-step troubleshooting instructions an inexperienced
-   technician could follow directly (what to check first, what tool/meter to
-   use, what a good vs. bad reading looks like, in what order).
-5. If multiple tags could match, list all of them and indicate which is most
-   likely and why.
-6. If nothing in the list matches, say so clearly and ask for more detail
-   (which station/robot, which indicator is lit, etc.) rather than guessing.
+Rules:
+1. Name the exact matching PLC tag address(es) — the single most likely one first.
+2. One short line: what this signal physically is.
+3. Max 4 most likely root causes, shortest first, a few words each.
+4. Max 4 concrete check steps in order (what tool, what reading is good/bad).
+5. If nothing matches: ONE short sentence asking which station/indicator — nothing else.
 {manual_block}
 LANGUAGE RULE (important): Your default reply language is {LANG_NAME.get(lang, "o'zbek")}.
 However, if the employee's message is clearly written in one of the other
@@ -857,8 +907,8 @@ Format your reply exactly like this (translate the bold labels into the
 reply's language; use these labels for {LANG_NAME.get(lang, "o'zbek")}):
 
 🔧 **{hl['address']}:** <address(es)>
-📍 **{hl['what']}:** <explanation>
-✅ **{hl['action']}:** <practical steps>
+📍 **{hl['what']}:** <1 short line>
+✅ **{hl['action']}:** <max 4 short numbered steps>
 
 TAG LIST:
 ---
@@ -881,9 +931,10 @@ KEYWORD_SYSTEM_PROMPT = (
 def general_ai_prompt(lang: str) -> str:
     default_lang_name = LANG_NAME.get(lang, LANG_NAME["uz"])
     return (
-        "You are a helpful, accurate, concise AI assistant used inside a factory "
-        "Telegram bot. The employee's question may or may not be related to PLC "
-        "or manufacturing equipment. Your default reply language is "
+        "You are a helpful, accurate AI assistant inside a factory Telegram bot. "
+        "ANSWER CONCISELY: max ~80 words unless the user explicitly asks for "
+        "detail or code. Be direct — no preamble, no filler, no closing remarks. "
+        "Your default reply language is "
         f"{default_lang_name}. However, if the employee's message is "
         "clearly written in one of the other two supported languages (Uzbek, "
         "English, or Chinese), reply in THAT language instead. Never mix "
@@ -998,18 +1049,17 @@ def language_keyboard() -> ReplyKeyboardMarkup:
 def machine_keyboard(user_id: int = None) -> ReplyKeyboardMarkup:
     """Asosiy menyu — aniq bo'limlar, admin uchun qo'shimcha tugma."""
     rows = [[line.label] for line in LINES.values()]
-    # Ikkinchi qator: yordamchi bo'limlar
-    util = [LIBRARY_MENU_LABEL]
+    # Yordamchi bo'limlar — 2 tadan qatorlarga bo'lish
+    util = [LIBRARY_MENU_LABEL, HELP_BTN_LABEL]
     if ESP32_STATUS_URL:
         util.append(ESP32_MENU_LABEL)
-    # 2 tadan qatorlarga bo'lish
     for i in range(0, len(util), 2):
         rows.append(util[i:i + 2])
     rows.append([AI_CHAT_LABEL])
     rows.append([LANG_CHANGE_LABEL, MACHINE_MENU_LABEL])
     if user_id and is_admin(user_id):
         rows.append([ADMIN_LIBRARY_LABEL])
-    return ReplyKeyboardMarkup(rows, resize_keyboard=True)
+    return ReplyKeyboardMarkup(rows, resize_keyboard=True, is_persistent=True)
 
 
 def kb_for(update: Update) -> ReplyKeyboardMarkup:
@@ -1091,7 +1141,7 @@ GLOSSARY = {
     "облой": ["flash", "deflash"],
     "авария": ["fault", "alarm", "error"], "ошибка": ["fault", "alarm", "error"],
     "не работает": ["fault", "alarm"], "стоит": ["stop", "fault"],
-    "нагрев": ["heat", "heater"], "температура": ["temperature", "heat"],
+    "температура": ["temperature", "heat"],
 }
 
 
@@ -1193,24 +1243,6 @@ async def send_manual_pages(update: Update, context: ContextTypes.DEFAULT_TYPE, 
 MAX_LIBRARY_RESULTS = int(os.getenv("MAX_LIBRARY_RESULTS", "3"))
 
 
-async def show_library_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    lang = get_lang(context)
-    ln = get_selected_line(context)
-
-    if ln is None:
-        await update.message.reply_text(t(lang, "library_select_machine_first"), reply_markup=kb_for(update))
-        return
-
-    if not ln.manual_pdf:
-        await update.message.reply_text(
-            t(lang, "library_no_manual_for_machine", machine=ln.label), reply_markup=kb_for(update)
-        )
-        return
-
-    context.user_data["mode"] = "library_wait"
-    await update.message.reply_text(t(lang, "library_ask_topic", machine=ln.label), reply_markup=kb_for(update))
-
-
 async def handle_library_query(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
     lang = get_lang(context)
     ln = get_selected_line(context)
@@ -1248,39 +1280,101 @@ async def handle_library_query(update: Update, context: ContextTypes.DEFAULT_TYP
 
 
 # ---------------------------------------------------------------------------
-# Kutubxona: foydalanuvchi ko'rish + admin yuklash/o'chirish
+# Kutubxona: foydalanuvchi ko'rish (inline menyu) + admin yuklash/o'chirish
+# Barcha turdagi kitob/qo'llanma fayllari qabul qilinadi; xavfli turlar
+# (dastur/skript) LIB_DENY_EXT orqali taqiqlangan.
 # ---------------------------------------------------------------------------
 
-ALLOWED_LIB_MIME = {
-    "application/pdf",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "text/plain",
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-}
-ALLOWED_LIB_EXT = {".pdf", ".doc", ".docx", ".txt", ".jpg", ".jpeg", ".png", ".webp"}
+LIB_PAGE_SIZE = 6
+
+
+def _lib_ext(doc: dict) -> str:
+    return os.path.splitext(doc.get("filename") or "")[1].lower()
+
+
+def _lib_button_label(doc: dict) -> str:
+    """Inline tugma matni: 📄 Sarlavha (EXT) — Telegram limiti 64 belgi."""
+    title = (doc.get("title") or "?")[:40]
+    ext = _lib_ext(doc).upper().lstrip(".")
+    label = f"📄 {title}"
+    if ext:
+        label += f" [{ext}]"
+    return label[:64]
+
+
+def build_library_keyboard(docs, page: int, lang: str, machine_label: str = None):
+    """Kutubxona inline klaviaturasi: hujjat tugmalari + sahifa navigatsiyasi
+    + (agar uskuna tanlangan bo'lsa) qo'llanma qidiruvi tugmasi."""
+    total_pages = max(1, (len(docs) + LIB_PAGE_SIZE - 1) // LIB_PAGE_SIZE)
+    page = max(0, min(page, total_pages - 1))
+    rows = []
+    for d in docs[page * LIB_PAGE_SIZE:(page + 1) * LIB_PAGE_SIZE]:
+        rows.append([InlineKeyboardButton(
+            _lib_button_label(d), callback_data=safe_callback_data("libget", d.get("id", ""))
+        )])
+    if total_pages > 1:
+        nav = []
+        if page > 0:
+            nav.append(InlineKeyboardButton("◀️", callback_data=f"libpg:{page - 1}"))
+        nav.append(InlineKeyboardButton(f"{page + 1}/{total_pages}", callback_data="libnoop"))
+        if page < total_pages - 1:
+            nav.append(InlineKeyboardButton("▶️", callback_data=f"libpg:{page + 1}"))
+        rows.append(nav)
+    if machine_label:
+        rows.append([InlineKeyboardButton(
+            t(lang, "lib_manual_search_btn", machine=machine_label)[:64], callback_data="libman:"
+        )])
+    return InlineKeyboardMarkup(rows), page
+
+
+async def _send_library_doc(context: ContextTypes.DEFAULT_TYPE, chat_id: int, doc: dict, lang: str) -> bool:
+    """Hujjatni chatga yuboradi. Avval file_id (Telegram'da tayyor nusxa),
+    u bo'lmasa/yaroqsiz bo'lsa lokal fayldan."""
+    file_id = doc.get("file_id")
+    local = doc.get("local_path")
+    caption = f"📄 {doc.get('title', '')}"[:1024]
+    if file_id:
+        try:
+            await context.bot.send_document(chat_id=chat_id, document=file_id, caption=caption)
+            return True
+        except Exception as e:
+            logger.warning("libget file_id yuborish xato (lokalga o'tamiz): %s", e)
+    if local and os.path.isfile(local):
+        # path traversal himoyasi
+        if not os.path.abspath(local).startswith(os.path.abspath(LIBRARY_FILES_DIR)):
+            return False
+        try:
+            with open(local, "rb") as f:
+                await context.bot.send_document(
+                    chat_id=chat_id, document=f,
+                    filename=sanitize_filename(doc.get("filename") or os.path.basename(local)),
+                    caption=caption,
+                )
+            return True
+        except Exception as e:
+            logger.warning("libget lokal fayl yuborish xato: %s", e)
+    return False
 
 
 async def show_user_library(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Ruxsatli foydalanuvchiga kutubxona ro'yxati."""
+    """Ruxsatli foydalanuvchiga kutubxona — inline menyu ko'rinishida."""
     lang = get_lang(context)
     if not is_authorized(update.effective_user.id):
         await update.message.reply_text(t(lang, "access_denied_detail"), parse_mode="Markdown")
         return
     docs = library_list_visible()
+    ln = get_selected_line(context)
+    machine_label = ln.label if (ln and ln.manual_pdf) else None
     if not docs:
-        await update.message.reply_text(t(lang, "lib_empty"), reply_markup=kb_for(update))
+        kb = None
+        if machine_label:
+            kb = InlineKeyboardMarkup([[InlineKeyboardButton(
+                t(lang, "lib_manual_search_btn", machine=machine_label)[:64], callback_data="libman:"
+            )]])
+        await update.message.reply_text(t(lang, "lib_empty"), reply_markup=kb or kb_for(update))
         return
-    lines = [t(lang, "lib_menu_title")]
-    for d in docs[:40]:
-        desc = (d.get("description") or d.get("category") or "")[:80]
-        lines.append(t(lang, "lib_item", title=d.get("title", "?"), desc=desc, id=d.get("id", "")))
-    lines.append("")
-    lines.append(t(lang, "lib_download_hint"))
-    text = "\n".join(lines)
-    await safe_reply_text(update, text, reply_markup=kb_for(update))
+    kb, _ = build_library_keyboard(docs, 0, lang, machine_label)
+    await safe_reply_text(update, t(lang, "lib_menu_title"), reply_markup=kb)
 
 
 async def show_admin_library_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1289,7 +1383,8 @@ async def show_admin_library_menu(update: Update, context: ContextTypes.DEFAULT_
         await update.message.reply_text(t(lang, "admin_only"), reply_markup=kb_for(update))
         return
     await update.message.reply_text(
-        t(lang, "lib_admin_menu"), parse_mode="Markdown", reply_markup=kb_for(update)
+        t(lang, "lib_admin_menu", mb=int(MAX_LIBRARY_FILE_MB)),
+        parse_mode="Markdown", reply_markup=kb_for(update)
     )
 
 
@@ -1302,8 +1397,11 @@ async def libadd_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not title:
         await update.message.reply_text(t(lang, "lib_add_usage"))
         return
-    # XSS/injection: sarlavhani soddalashtirish
-    title = re.sub(r"[\r\n`]", " ", title)[:200]
+    # Markdown/injection: sarlavhani soddalashtirish
+    title = re.sub(r"[\r\n`*_[\]]", " ", title)[:200].strip()
+    if not title:
+        await update.message.reply_text(t(lang, "lib_add_usage"))
+        return
     context.user_data["mode"] = "lib_admin_upload"
     context.user_data["lib_pending_title"] = title
     await update.message.reply_text(
@@ -1314,6 +1412,7 @@ async def libadd_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def liblist_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Admin ro'yxati — har bir hujjat yonida o'chirish va yuborish tugmasi."""
     lang = get_lang(context)
     if not is_admin(update.effective_user.id):
         await update.message.reply_text(t(lang, "admin_only"))
@@ -1322,10 +1421,27 @@ async def liblist_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(t(lang, "lib_empty"))
         return
     lines = [t(lang, "lib_list_admin", n=len(LIBRARY_DOCS))]
+    rows = []
     for d in LIBRARY_DOCS:
         vis = "✅" if d.get("visible", True) else "🙈"
-        lines.append(f"{vis} `{d.get('id')}` — *{d.get('title','?')}*")
-    await safe_reply_text(update, "\n".join(lines), reply_markup=kb_for(update))
+        lines.append(f"{vis} `{d.get('id')}` — *{(d.get('title') or '?')[:60]}*")
+        rows.append([
+            InlineKeyboardButton(f"🗑 {(d.get('title') or '?')[:30]}",
+                                 callback_data=safe_callback_data("libdelask", d.get("id", ""))),
+            InlineKeyboardButton("📥", callback_data=safe_callback_data("libget", d.get("id", ""))),
+        ])
+    await safe_reply_text(update, "\n".join(lines), reply_markup=InlineKeyboardMarkup(rows))
+
+
+def _delete_library_doc(doc: dict):
+    """Hujjatni ro'yxatdan va diskdan o'chiradi."""
+    local = doc.get("local_path")
+    if local and os.path.isfile(local) and os.path.abspath(local).startswith(os.path.abspath(LIBRARY_FILES_DIR)):
+        try:
+            os.remove(local)
+        except Exception as e:
+            logger.warning("library file delete: %s", e)
+    library_delete(doc.get("id"))
 
 
 async def libdel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1336,20 +1452,13 @@ async def libdel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
         await update.message.reply_text(t(lang, "lib_del_usage"))
         return
-    doc_id = context.args[0].strip()
+    doc_id = re.sub(r"[^a-f0-9]", "", context.args[0].strip().lower())[:16]
     doc = library_get(doc_id)
     if not doc:
         await update.message.reply_text(t(lang, "lib_del_fail"))
         return
-    # Local file cleanup
-    local = doc.get("local_path")
-    if local and os.path.isfile(local) and os.path.abspath(local).startswith(os.path.abspath(LIBRARY_FILES_DIR)):
-        try:
-            os.remove(local)
-        except Exception as e:
-            logger.warning("library file delete: %s", e)
     title = doc.get("title", doc_id)
-    library_delete(doc_id)
+    _delete_library_doc(doc)
     await update.message.reply_text(t(lang, "lib_del_done", title=title), reply_markup=kb_for(update))
 
 
@@ -1361,88 +1470,70 @@ async def libget_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
         await update.message.reply_text(t(lang, "lib_get_usage"))
         return
-    doc_id = context.args[0].strip()
+    doc_id = re.sub(r"[^a-f0-9]", "", context.args[0].strip().lower())[:16]
     doc = library_get(doc_id)
     if not doc or not doc.get("visible", True):
         await update.message.reply_text(t(lang, "lib_not_found"))
         return
-    # Prefer telegram file_id (no local disk needed after re-upload)
-    file_id = doc.get("file_id")
-    local = doc.get("local_path")
-    caption = f"📄 {doc.get('title', '')}"
-    try:
-        if file_id:
-            await context.bot.send_document(
-                chat_id=update.effective_chat.id,
-                document=file_id,
-                caption=caption,
-            )
-        elif local and os.path.isfile(local):
-            # path traversal check
-            if not os.path.abspath(local).startswith(os.path.abspath(LIBRARY_FILES_DIR)):
-                await update.message.reply_text(t(lang, "security_blocked"))
-                return
-            with open(local, "rb") as f:
-                await context.bot.send_document(
-                    chat_id=update.effective_chat.id,
-                    document=f,
-                    filename=sanitize_filename(doc.get("filename") or os.path.basename(local)),
-                    caption=caption,
-                )
-        else:
-            await update.message.reply_text(t(lang, "lib_not_found"))
-    except Exception as e:
-        logger.warning("libget yuborish xato: %s", e)
+    if not await _send_library_doc(context, update.effective_chat.id, doc, lang):
         await update.message.reply_text(t(lang, "lib_not_found"))
 
 
 async def handle_library_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Admin kutubxonaga fayl yuklaydi (mode=lib_admin_upload)."""
+    """Admin kutubxonaga fayl yuklaydi (mode=lib_admin_upload).
+    Istalgan turdagi hujjat/kitob qabul qilinadi; xavfli turlar rad etiladi.
+    Boshqa hollarda (begona yoki maqsadsiz fayl) jim o'tkazib yuboriladi."""
     lang = get_lang(context)
-    if not is_admin(update.effective_user.id):
-        await update.message.reply_text(t(lang, "admin_only"))
-        return
-    if context.user_data.get("mode") != "lib_admin_upload":
-        await update.message.reply_text(t(lang, "lib_add_usage"))
-        return
+    uid = update.effective_user.id
+    if not is_authorized(uid):
+        return  # begona foydalanuvchiga hech narsa ko'rsatmaymiz
+    if not is_admin(uid) or context.user_data.get("mode") != "lib_admin_upload":
+        return  # yuklash rejimida emas — xalaqit bermaymiz
+
     title = context.user_data.get("lib_pending_title") or "Document"
     doc = update.message.document
     if not doc:
         await update.message.reply_text(t(lang, "lib_add_bad_type"))
         return
-    # Size check
+
+    # Xavfsizlik: xavfli fayl turlari (dastur/skript) taqiqlangan
+    fname = sanitize_filename(doc.file_name or "file.bin")
+    ext = _lib_ext({"filename": fname})
+    if ext in LIB_DENY_EXT:
+        logger.warning("Xavfli fayl turi rad etildi (uid=%s, file=%s)", uid, fname)
+        await update.message.reply_text(t(lang, "lib_denied_type"))
+        return
+
+    # O'lcham tekshiruvi
     if doc.file_size and doc.file_size > MAX_LIBRARY_FILE_MB * 1024 * 1024:
         await update.message.reply_text(t(lang, "lib_add_too_big", mb=int(MAX_LIBRARY_FILE_MB)))
         return
-    fname = sanitize_filename(doc.file_name or "file.bin")
-    ext = os.path.splitext(fname)[1].lower()
-    mime = (doc.mime_type or "").lower()
-    if ext not in ALLOWED_LIB_EXT and mime not in ALLOWED_LIB_MIME:
-        await update.message.reply_text(t(lang, "lib_add_bad_type"))
-        return
-    # Download to library_files
+
     doc_id = uuid.uuid4().hex[:10]
-    local_name = f"{doc_id}_{fname}"
-    local_path = os.path.join(LIBRARY_FILES_DIR, local_name)
-    try:
-        tg_file = await context.bot.get_file(doc.file_id)
-        await tg_file.download_to_drive(local_path)
-    except Exception as e:
-        logger.warning("library download failed: %s", e)
-        await update.message.reply_text(t(lang, "lib_add_too_big", mb=int(MAX_LIBRARY_FILE_MB)))
-        return
+    local_path = None
+    # 20 MB gacha — diskka nusxa olamiz (file_id ishlamasa zaxira bo'ladi);
+    # kattaroq fayllar faqat Telegram file_id orqali saqlanadi.
+    if not doc.file_size or doc.file_size <= TG_DOWNLOAD_MAX_BYTES:
+        local_name = f"{doc_id}_{fname}"
+        candidate = os.path.join(LIBRARY_FILES_DIR, local_name)
+        try:
+            tg_file = await context.bot.get_file(doc.file_id)
+            await tg_file.download_to_drive(candidate)
+            local_path = candidate
+        except Exception as e:
+            logger.warning("library download failed: %s", e)
 
     entry = {
         "id": doc_id,
         "title": title,
-        "description": (update.message.caption or "")[:300],
+        "description": re.sub(r"[\r\n`*_[\]]", " ", (update.message.caption or ""))[:300],
         "category": "manual",
         "filename": fname,
         "file_id": doc.file_id,
         "local_path": local_path,
-        "mime": mime,
+        "mime": (doc.mime_type or "").lower(),
         "size": doc.file_size,
-        "added_by": update.effective_user.id,
+        "added_by": uid,
         "added_at": datetime.now().isoformat(),
         "visible": True,
     }
@@ -1489,6 +1580,10 @@ def check_rate_limit(user_id: int) -> bool:
     if is_admin(user_id):
         return True
     now = time.time()
+    # Xotira tozaligi: uzoq vaqt faol bo'lmagan foydalanuvchilarni o'chiramiz
+    if len(_user_request_times) > 2000:
+        for uid in [u for u, ts_list in _user_request_times.items() if not ts_list or now - ts_list[-1] > 86400]:
+            _user_request_times.pop(uid, None)
     all_hits = [ts for ts in _user_request_times.get(user_id, []) if now - ts < 86400]
     minute_hits = [ts for ts in all_hits if now - ts < RATE_LIMIT_WINDOW_SEC]
     if len(minute_hits) >= RATE_LIMIT_PER_MIN or len(all_hits) >= RATE_LIMIT_PER_DAY:
@@ -1521,7 +1616,11 @@ def _gemini_generate(system_prompt: str, user_text: str) -> str:
     resp = genai_client.models.generate_content(
         model=GEMINI_MODEL,
         contents=user_text,
-        config=genai_types.GenerateContentConfig(system_instruction=system_prompt),
+        config=genai_types.GenerateContentConfig(
+            system_instruction=system_prompt,
+            max_output_tokens=AI_MAX_OUTPUT_TOKENS,
+            temperature=0.3,
+        ),
     )
     return (resp.text or "").strip()
 
@@ -1535,6 +1634,8 @@ def _groq_generate(system_prompt: str, user_text: str) -> str:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_text},
         ],
+        max_tokens=AI_MAX_OUTPUT_TOKENS,
+        temperature=0.3,
     )
     return (resp.choices[0].message.content or "").strip()
 
@@ -1548,6 +1649,8 @@ def _openrouter_generate(system_prompt: str, user_text: str) -> str:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_text},
         ],
+        max_tokens=AI_MAX_OUTPUT_TOKENS,
+        temperature=0.3,
     )
     return (resp.choices[0].message.content or "").strip()
 
@@ -1619,6 +1722,8 @@ async def safe_reply_text(update: Update, text: str, reply_markup=None, prefer_m
 
 
 async def ask_ai(system_prompt: str, user_text: str, lang: str = None):
+    # Token abuse himoyasi: foydalanuvchi matni chegaradan uzun bo'lsa kesiladi
+    user_text = user_text[:AI_MAX_INPUT_CHARS]
     if lang:
         user_text = user_text + LANG_REMINDER.get(lang, LANG_REMINDER["uz"])
     return await asyncio.to_thread(_generate_sync, system_prompt, user_text)
@@ -1674,6 +1779,16 @@ def cache_get(scope: str, lang: str, text: str):
 
 def cache_set(scope: str, lang: str, text: str, answer: str):
     ANSWER_CACHE[_cache_key(scope, lang, text)] = [time.time(), answer]
+    # Kesh cheksiz o'smasligi uchun: avval muddati o'tganlarni, keyin eng
+    # eskilarini tozalaymiz.
+    if len(ANSWER_CACHE) > 800:
+        now = time.time()
+        ttl = CACHE_TTL_HOURS * 3600
+        for k in [k for k, v in ANSWER_CACHE.items() if now - v[0] > ttl]:
+            ANSWER_CACHE.pop(k, None)
+        while len(ANSWER_CACHE) > 800:
+            oldest = min(ANSWER_CACHE, key=lambda k: ANSWER_CACHE[k][0])
+            ANSWER_CACHE.pop(oldest, None)
     try:
         atomic_json_write(CACHE_PATH, ANSWER_CACHE)
     except Exception as e:
@@ -1724,20 +1839,128 @@ def log_feedback(answer_id: str, kind: str, value: str):
         logger.warning("Feedback logga yozishda xatolik: %s", e)
 
 
+async def handle_library_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    """Kutubxona inline tugmalari: fayl olish, sahifa, qo'llanma qidiruvi,
+    admin o'chirish (tasdiqlash bilan)."""
+    query = update.callback_query
+    lang = get_lang(context)
+    uid = update.effective_user.id
+    chat_id = query.message.chat_id if query and query.message else update.effective_chat.id
+
+    if data == "libnoop":
+        await query.answer()
+        return
+
+    if data.startswith("libget:"):
+        doc_id = re.sub(r"[^a-f0-9]", "", data.split(":", 1)[1])[:16]
+        doc = library_get(doc_id)
+        if not doc or not doc.get("visible", True):
+            await query.answer(text=t(lang, "lib_not_found"), show_alert=True)
+            return
+        await query.answer()
+        if not await _send_library_doc(context, chat_id, doc, lang):
+            try:
+                await context.bot.send_message(chat_id=chat_id, text=t(lang, "lib_not_found"))
+            except Exception:
+                pass
+        return
+
+    if data.startswith("libpg:") or data.startswith("libmenu:"):
+        try:
+            page = int(data.split(":", 1)[1])
+        except (ValueError, IndexError):
+            page = 0
+        docs = library_list_visible()
+        ln = get_selected_line(context)
+        machine_label = ln.label if (ln and ln.manual_pdf) else None
+        kb, _ = build_library_keyboard(docs, page, lang, machine_label)
+        await query.answer()
+        try:
+            await query.edit_message_reply_markup(reply_markup=kb)
+        except Exception:
+            pass
+        return
+
+    if data == "libman:":
+        ln = get_selected_line(context)
+        if ln is None or not ln.manual_pdf:
+            await query.answer(text=t(lang, "library_none_available"), show_alert=True)
+            return
+        await query.answer()
+        context.user_data["mode"] = "library_wait"
+        try:
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text=t(lang, "library_ask_topic", machine=ln.label),
+                reply_markup=kb_for(update),
+            )
+        except Exception:
+            pass
+        return
+
+    if data.startswith(("libdelask:", "libdelyes:", "libdelno:")):
+        if not is_admin(uid):
+            await query.answer(text=t(lang, "admin_only"), show_alert=True)
+            return
+        doc_id = re.sub(r"[^a-f0-9]", "", data.split(":", 1)[1])[:16]
+        doc = library_get(doc_id)
+        if not doc:
+            await query.answer(text=t(lang, "lib_del_fail"), show_alert=True)
+            return
+        title = (doc.get("title") or doc_id)[:60]
+        if data.startswith("libdelask:"):
+            kb = InlineKeyboardMarkup([[
+                InlineKeyboardButton(t(lang, "lib_yes"), callback_data=safe_callback_data("libdelyes", doc_id)),
+                InlineKeyboardButton(t(lang, "lib_no"), callback_data=safe_callback_data("libdelno", doc_id)),
+            ]])
+            await query.answer()
+            try:
+                await query.edit_message_text(
+                    t(lang, "lib_del_confirm", title=title), parse_mode="Markdown", reply_markup=kb
+                )
+            except Exception:
+                pass
+            return
+        if data.startswith("libdelno:"):
+            await query.answer()
+            try:
+                await query.edit_message_text("❌")
+            except Exception:
+                pass
+            return
+        await query.answer()
+        _delete_library_doc(doc)
+        try:
+            await query.edit_message_text(t(lang, "lib_del_done", title=title))
+        except Exception:
+            pass
+        return
+
+    await query.answer()
+
+
 async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    await query.answer()
     data = query.data or ""
+    lang = context.user_data.get("lang", "uz")
 
     # XAVFSIZLIK: har qanday tugma bosilishidan oldin ruxsatni tekshiramiz —
     # aks holda begona/ruxsatsiz shaxs (masalan bot tokeni sizib chiqqan bo'lsa)
     # o'zi uchun soxta tugma yaratib, ma'lumotlarni o'zgartira olishi mumkin edi.
     if not is_authorized(update.effective_user.id):
+        await query.answer(text=t(lang, "security_blocked"), show_alert=True)
         try:
             await query.edit_message_reply_markup(reply_markup=None)
         except Exception:
             pass
         return
+
+    # Kutubxona inline tugmalari
+    if data.startswith("lib"):
+        await handle_library_callback(update, context, data)
+        return
+
+    await query.answer()
 
     if data.startswith("reg:"):
         _, action, reg_id = data.split(":", 2)
@@ -1751,7 +1974,6 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
     if len(parts) != 3:
         return
     kind, value, answer_id = parts
-    lang = context.user_data.get("lang", "uz")
 
     if kind == "fb":
         log_feedback(answer_id, "feedback", value)
@@ -2265,13 +2487,19 @@ async def topfaults_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update.effective_user.id):
-        await update.message.reply_text(t(get_lang(context), "access_denied"))
+        if should_answer_denied(update.effective_user.id):
+            await update.message.reply_text(t(get_lang(context), "access_denied"))
         return
     if not context.user_data.get("lang"):
         await update.message.reply_text(TEXT["uz"]["choose_lang"], reply_markup=language_keyboard())
         return
 
     lang = get_lang(context)
+
+    # Rasm tahlili ham AI sarflaydi (Gemini vision) — limit tekshiruvi shart
+    if not check_rate_limit(update.effective_user.id):
+        await update.message.reply_text(t(lang, "rate_limited"), reply_markup=kb_for(update))
+        return
 
     await update.message.reply_text(t(lang, "photo_processing"))
 
@@ -2286,7 +2514,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mode = context.user_data.get("mode")
     if mode == "general":
         query_text = text_val or "Rasmda nima ko'rinyapti, tushuntirib ber."
-        await handle_general_ai(update, context, query_text)
+        await handle_general_ai(update, context, query_text, limit_checked=True)
         return
 
     ln = get_selected_line(context)
@@ -2373,13 +2601,25 @@ async def transcribe_voice(audio_bytes: bytes, lang_hint: str):
 
 async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update.effective_user.id):
-        await update.message.reply_text(t(get_lang(context), "access_denied"))
+        if should_answer_denied(update.effective_user.id):
+            await update.message.reply_text(t(get_lang(context), "access_denied"))
         return
     if not context.user_data.get("lang"):
         await update.message.reply_text(TEXT["uz"]["choose_lang"], reply_markup=language_keyboard())
         return
 
     lang = get_lang(context)
+
+    # Transkripsiya (Whisper) ham pullik resurs — avval limit tekshiruvi
+    if not check_rate_limit(update.effective_user.id):
+        await update.message.reply_text(t(lang, "rate_limited"), reply_markup=kb_for(update))
+        return
+
+    # Juda uzun ovozli xabarlar transkripsiya qilinmaydi (resurs tejash)
+    if update.message.voice and update.message.voice.duration and update.message.voice.duration > 120:
+        await update.message.reply_text(t(lang, "voice_too_long"), reply_markup=kb_for(update))
+        return
+
     await update.message.reply_text(t(lang, "voice_processing"))
 
     voice = update.message.voice
@@ -2396,7 +2636,7 @@ async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Endi xuddi yozma xabar kelgandek, mavjud yo'nalishlar bo'yicha davom etamiz.
     mode = context.user_data.get("mode")
     if mode == "general":
-        await handle_general_ai(update, context, text_val)
+        await handle_general_ai(update, context, text_val, limit_checked=True)
         return
     ln = get_selected_line(context)
     if ln is None:
@@ -2404,7 +2644,7 @@ async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             t(lang, "no_machine_selected", ai=AI_CHAT_LABEL), reply_markup=kb_for(update)
         )
         return
-    await handle_machine_query(update, context, ln, text_val)
+    await handle_machine_query(update, context, ln, text_val, limit_checked=True)
 
 
 async def tag_lookup(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -2461,16 +2701,15 @@ async def find_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(t(lang, "find_no_results", query=query_text))
         return
 
-    kind_labels = KIND_LABELS.get(lang, KIND_LABELS["uz"])
     lines = [t(lang, "find_results_header", query=query_text, count=len(results))]
     for tg in results:
         lines.append(
             f"📍 `{tg['address']}` — {tg.get('name') or ''} {tg.get('comment') or ''}".strip()
         )
-    await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+    await safe_reply_text(update, "\n".join(lines))
 
 
-async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str):
+async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, user_text: str, limit_checked: bool = False):
     lang = get_lang(context)
 
     cached = cache_get("general", lang, user_text)
@@ -2478,7 +2717,7 @@ async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, 
         await safe_reply_text(update, cached, reply_markup=kb_for(update))
         return
 
-    if not check_rate_limit(update.effective_user.id):
+    if not limit_checked and not check_rate_limit(update.effective_user.id):
         await update.message.reply_text(t(lang, "rate_limited"), reply_markup=kb_for(update))
         return
 
@@ -2497,7 +2736,7 @@ async def handle_general_ai(update: Update, context: ContextTypes.DEFAULT_TYPE, 
     cache_set("general", lang, user_text, answer)
 
 
-async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYPE, ln: MachineLine, user_text: str):
+async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYPE, ln: MachineLine, user_text: str, limit_checked: bool = False):
     lang = get_lang(context)
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
 
@@ -2506,7 +2745,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
         await safe_reply_text(update, cached, reply_markup=kb_for(update))
         return
 
-    if not check_rate_limit(update.effective_user.id):
+    if not limit_checked and not check_rate_limit(update.effective_user.id):
         await update.message.reply_text(t(lang, "rate_limited"), reply_markup=kb_for(update))
         return
 
@@ -2546,7 +2785,7 @@ async def handle_machine_query(update: Update, context: ContextTypes.DEFAULT_TYP
         m_results = ln.search_manual(local_keywords(user_text), limit=2)
         if m_results:
             manual_pages_used = [p for p, _ in m_results]
-            manual_excerpt = "\n\n".join(f"[page {p}]\n{txt[:1200]}" for p, txt in m_results)
+            manual_excerpt = "\n\n".join(f"[page {p}]\n{txt[:600]}" for p, txt in m_results)
 
     tag_block = build_tag_block(candidates)
     system_prompt = build_diagnosis_prompt(ln.label, tag_block, found_all, lang, manual_excerpt)
@@ -2585,10 +2824,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if user_text_check in LANG_BUTTON_TO_CODE or user_text_check.startswith("/register"):
             pass  # pastga tushadi
         else:
-            await update.message.reply_text(
-                t(get_lang(context), "access_denied_detail"),
-                parse_mode="Markdown",
-            )
+            # Spam/probing himoyasi: ko'p marta rad javobini olgan begona
+            # foydalanuvchiga endi jim e'tibor berilmaydi.
+            if should_answer_denied(update.effective_user.id):
+                await update.message.reply_text(
+                    t(get_lang(context), "access_denied_detail"),
+                    parse_mode="Markdown",
+                )
             return
 
     # Til tanlash tugmasi bosilganmi?
@@ -2651,6 +2893,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if user_text == MACHINE_MENU_LABEL:
         await choose_machine(update, context)
+        return
+
+    if user_text == HELP_BTN_LABEL:
+        await help_cmd(update, context)
         return
 
     mode = context.user_data.get("mode")

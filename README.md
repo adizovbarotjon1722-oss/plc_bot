@@ -23,8 +23,12 @@ kerakligini tushuntirib beruvchi bot.
 - **🎤 Ovozli xabar:** Groq Whisper orqali matnga aylantiriladi.
 - **🔌 Elektr sxemasi:** haqiqiy PDF sxemangizdan tegishli sahifani
   avtomatik topib, rasm qilib yuboradi (AI hech narsa "chizmaydi").
-- **📚 Kutubxona/Qo'llanma:** uskuna qo'llanmasi PDF'idan mavzu bo'yicha
-  qidiruv, va tashxis javobini qo'llanma matni bilan chuqurlashtirish.
+- **📚 Kutubxona/Qo'llanma:** istalgan turdagi kitob/qo'llanma fayllari
+  (PDF, DOC, EPUB, XLSX, TXT, rasm… — xavfli dastur fayllaridan tashqari)
+  inline menyu orqali; uskuna qo'llanmasi PDF'idan mavzu bo'yicha qidiruv,
+  va tashxis javobini qo'llanma matni bilan chuqurlashtirish.
+- **Qisqa va aniq AI javoblari:** diagnostika javobi ~90 so'z bilan
+  cheklangan (texnik, lo'nda), `max_output_tokens` orqali token sarfi nazorat qilinadi.
 - **3 ta bepul AI provayder, avtomatik almashinuv:** Gemini → Groq →
   OpenRouter, biri limitga uchrasa vaqtincha "dam oladi".
 - **Hech qachon butunlay to'xtamaydi:** barcha AI'lar band bo'lsa, bazadan
