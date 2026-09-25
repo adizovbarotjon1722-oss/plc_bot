@@ -1,0 +1,268 @@
+{
+  "lessons": [
+    {
+      "id": "l1",
+      "title_uz": "Salomlashish va tanishuv",
+      "title_en": "Greetings and Introductions",
+      "words": [
+        {"en": "Hello", "uz": "Salom", "zh": "你好"},
+        {"en": "Good morning", "uz": "Xayrli tong", "zh": "早上好"},
+        {"en": "Goodbye", "uz": "Xayr", "zh": "再见"},
+        {"en": "Please", "uz": "Iltimos", "zh": "请"},
+        {"en": "Thank you", "uz": "Rahmat", "zh": "谢谢"},
+        {"en": "Sorry", "uz": "Kechirasiz", "zh": "对不起"}
+      ],
+      "sentences": [
+        {"en": "Good morning, how are you?", "uz": "Xayrli tong, qalaysiz?"},
+        {"en": "Nice to meet you.", "uz": "Tanishganimdan xursandman."}
+      ],
+      "quiz": [
+        {"q": "«Thank you» — ?", "options": ["Rahmat", "Kechirasiz", "Xayr"], "correct": 0},
+        {"q": "«Good morning» — ?", "options": ["Xayrli kech", "Xayrli tong", "Lekin"], "correct": 1},
+        {"q": "«Please» — ?", "options": ["Salom", "Kechirasiz", "Iltimos"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l2",
+      "title_uz": "Raqamlar va vaqt",
+      "title_en": "Numbers and Time",
+      "words": [
+        {"en": "One, two, three", "uz": "Bir, ikki, uch", "zh": "一，二，三"},
+        {"en": "Ten", "uz": "O'n", "zh": "十"},
+        {"en": "Hundred", "uz": "Yuz", "zh": "百"},
+        {"en": "Hour", "uz": "Soat", "zh": "小时"},
+        {"en": "Minute", "uz": "Daqiqa", "zh": "分钟"},
+        {"en": "Today", "uz": "Bugun", "zh": "今天"}
+      ],
+      "sentences": [
+        {"en": "What time is it?", "uz": "Soat necha?"},
+        {"en": "The shift starts at eight.", "uz": "Smena soat sakkizda boshlanadi."}
+      ],
+      "quiz": [
+        {"q": "«Minute» — ?", "options": ["Soat", "Daqiqa", "Bugun"], "correct": 1},
+        {"q": "«Ten» — ?", "options": ["Yuz", "Bir", "O'n"], "correct": 2},
+        {"q": "«Today» — ?", "options": ["Bugun", "Ertaga", "Kecha"], "correct": 0}
+      ]
+    },
+    {
+      "id": "l3",
+      "title_uz": "Zavodda joylar",
+      "title_en": "Places in the Factory",
+      "words": [
+        {"en": "Factory", "uz": "Zavod", "zh": "工厂"},
+        {"en": "Workshop", "uz": "Sex (ustaxona)", "zh": "车间"},
+        {"en": "Warehouse", "uz": "Ombor", "zh": "仓库"},
+        {"en": "Office", "uz": "Idora", "zh": "办公室"},
+        {"en": "Entrance", "uz": "Kirish joyi", "zh": "入口"},
+        {"en": "Exit", "uz": "Chiqish joyi", "zh": "出口"}
+      ],
+      "sentences": [
+        {"en": "Where is the warehouse?", "uz": "Ombor qayerda?"},
+        {"en": "The meeting is in the office.", "uz": "Yig'ilish idorada."}
+      ],
+      "quiz": [
+        {"q": "«Warehouse» — ?", "options": ["Sex", "Ombor", "Idora"], "correct": 1},
+        {"q": "«Entrance» — ?", "options": ["Kirish joyi", "Chiqish joyi", "Zavod"], "correct": 0},
+        {"q": "«Workshop» — ?", "options": ["Ofis", "Ombor", "Sex (ustaxona)"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l4",
+      "title_uz": "Asboblar",
+      "title_en": "Tools",
+      "words": [
+        {"en": "Wrench", "uz": "Gaika kalit", "zh": "扳手"},
+        {"en": "Screwdriver", "uz": "Otvyortka", "zh": "螺丝刀"},
+        {"en": "Multimeter", "uz": "Multimetr", "zh": "万用表"},
+        {"en": "Pliers", "uz": "Omburra", "zh": "钳子"},
+        {"en": "Hammer", "uz": "Bolg'a", "zh": "锤子"},
+        {"en": "Drill", "uz": "Teshigich (drel)", "zh": "电钻"}
+      ],
+      "sentences": [
+        {"en": "Give me the wrench, please.", "uz": "Menga gaika kalitni bering, iltimos."},
+        {"en": "I need a multimeter.", "uz": "Menga multimetr kerak."}
+      ],
+      "quiz": [
+        {"q": "«Hammer» — ?", "options": ["Omburra", "Bolg'a", "Drel"], "correct": 1},
+        {"q": "«Screwdriver» — ?", "options": ["Otvyortka", "Gaika kalit", "Multimetr"], "correct": 0},
+        {"q": "«Pliers» — ?", "options": ["Bolg'a", "Drel", "Omburra"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l5",
+      "title_uz": "Elektr va PLC terminlari",
+      "title_en": "Electrical and PLC Terms",
+      "words": [
+        {"en": "Voltage", "uz": "Kuchlanish", "zh": "电压"},
+        {"en": "Current", "uz": "Tok", "zh": "电流"},
+        {"en": "Sensor", "uz": "Datchik (sezgir element)", "zh": "传感器"},
+        {"en": "Relay", "uz": "Rele", "zh": "继电器"},
+        {"en": "Cable", "uz": "Kabel", "zh": "电缆"},
+        {"en": "Power supply", "uz": "Quvvat manbai", "zh": "电源"}
+      ],
+      "sentences": [
+        {"en": "Check the voltage with a multimeter.", "uz": "Multimetr bilan kuchlanishni tekshiring."},
+        {"en": "The sensor cable is damaged.", "uz": "Datchik kabeli shikastlangan."}
+      ],
+      "quiz": [
+        {"q": "«Voltage» — ?", "options": ["Tok", "Kuchlanish", "Rele"], "correct": 1},
+        {"q": "«Power supply» — ?", "options": ["Quvvat manbai", "Kabel", "Datchik"], "correct": 0},
+        {"q": "«Relay» — ?", "options": ["Kabel", "Tok", "Rele"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l6",
+      "title_uz": "Uskunalar va mashinalar",
+      "title_en": "Machines and Equipment",
+      "words": [
+        {"en": "Conveyor", "uz": "Konveyer", "zh": "输送带"},
+        {"en": "Motor", "uz": "Motor (dvigatel)", "zh": "电机"},
+        {"en": "Robot", "uz": "Robot", "zh": "机器人"},
+        {"en": "Valve", "uz": "Klapan (ventil)", "zh": "阀门"},
+        {"en": "Pump", "uz": "Nasos", "zh": "泵"},
+        {"en": "Cylinder", "uz": "Silindr", "zh": "气缸"}
+      ],
+      "sentences": [
+        {"en": "The conveyor is stopped.", "uz": "Konveyer to'xtagan."},
+        {"en": "The robot needs maintenance.", "uz": "Robotga texnik xizmat kerak."}
+      ],
+      "quiz": [
+        {"q": "«Pump» — ?", "options": ["Nasos", "Motor", "Klapan"], "correct": 0},
+        {"q": "«Conveyor» — ?", "options": ["Silindr", "Konveyer", "Robot"], "correct": 1},
+        {"q": "«Valve» — ?", "options": ["Nasos", "Konveyer", "Klapan"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l7",
+      "title_uz": "Xavfsizlik",
+      "title_en": "Safety",
+      "words": [
+        {"en": "Safety", "uz": "Xavfsizlik", "zh": "安全"},
+        {"en": "Helmet", "uz": "Kaska", "zh": "安全帽"},
+        {"en": "Gloves", "uz": "Qo'lqop", "zh": "手套"},
+        {"en": "Danger", "uz": "Xavf", "zh": "危险"},
+        {"en": "Warning", "uz": "Ogohlantirish", "zh": "警告"},
+        {"en": "Stop", "uz": "To'xta(ting)", "zh": "停"}
+      ],
+      "sentences": [
+        {"en": "Wear your helmet and gloves.", "uz": "Kaska va qo'lqop kiying."},
+        {"en": "Danger! Do not touch.", "uz": "Xavf! Tegmang."}
+      ],
+      "quiz": [
+        {"q": "«Danger» — ?", "options": ["Xavf", "Xavfsizlik", "Ogohlantirish"], "correct": 0},
+        {"q": "«Gloves» — ?", "options": ["Kaska", "Qo'lqop", "To'xta"], "correct": 1},
+        {"q": "«Helmet» — ?", "options": ["Qo'lqop", "Xavf", "Kaska"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l8",
+      "title_uz": "Muammolarni xabar qilish",
+      "title_en": "Reporting Problems",
+      "words": [
+        {"en": "Problem", "uz": "Muammo", "zh": "问题"},
+        {"en": "Broken", "uz": "Buzilgan", "zh": "坏了"},
+        {"en": "Not working", "uz": "Ishlamayapti", "zh": "不工作"},
+        {"en": "Leak", "uz": "Sizib chiqish", "zh": "泄漏"},
+        {"en": "Noise", "uz": "Shovqin", "zh": "噪音"},
+        {"en": "Report", "uz": "Xabar berish", "zh": "报告"}
+      ],
+      "sentences": [
+        {"en": "The motor is not working.", "uz": "Motor ishlamayapti."},
+        {"en": "There is a strange noise.", "uz": "G'alati shovqin bor."}
+      ],
+      "quiz": [
+        {"q": "«Leak» — ?", "options": ["Shovqin", "Sizib chiqish", "Muammo"], "correct": 1},
+        {"q": "«Broken» — ?", "options": ["Buzilgan", "Ishlamayapti", "Xabar"], "correct": 0},
+        {"q": "«Noise» — ?", "options": ["Muammo", "Sizib chiqish", "Shovqin"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l9",
+      "title_uz": "Sifat va o'lchov",
+      "title_en": "Quality and Measurement",
+      "words": [
+        {"en": "Quality", "uz": "Sifat", "zh": "质量"},
+        {"en": "Measurement", "uz": "O'lchov", "zh": "测量"},
+        {"en": "Temperature", "uz": "Harorat", "zh": "温度"},
+        {"en": "Pressure", "uz": "Bosim", "zh": "压力"},
+        {"en": "Check", "uz": "Tekshirish", "zh": "检查"},
+        {"en": "Defect", "uz": "Nuqson (brak)", "zh": "缺陷"}
+      ],
+      "sentences": [
+        {"en": "Check the water pressure.", "uz": "Suv bosimini tekshiring."},
+        {"en": "This part has a defect.", "uz": "Bu qismda nuqson bor."}
+      ],
+      "quiz": [
+        {"q": "«Pressure» — ?", "options": ["Harorat", "Bosim", "Sifat"], "correct": 1},
+        {"q": "«Quality» — ?", "options": ["Sifat", "O'lchov", "Nuqson"], "correct": 0},
+        {"q": "«Defect» — ?", "options": ["Tekshirish", "Harorat", "Nuqson"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l10",
+      "title_uz": "Kundalik ish muloqoti",
+      "title_en": "Daily Work Talk",
+      "words": [
+        {"en": "Shift", "uz": "Smena", "zh": "班次"},
+        {"en": "Break", "uz": "Tanaffus", "zh": "休息"},
+        {"en": "Meeting", "uz": "Yig'ilish", "zh": "会议"},
+        {"en": "Task", "uz": "Vazifa", "zh": "任务"},
+        {"en": "Start", "uz": "Boshlash", "zh": "开始"},
+        {"en": "Finish", "uz": "Tugatish", "zh": "完成"}
+      ],
+      "sentences": [
+        {"en": "My shift starts at seven.", "uz": "Mening smenam soat yettida boshlanadi."},
+        {"en": "I finished the task.", "uz": "Men vazifani tugatdim."}
+      ],
+      "quiz": [
+        {"q": "«Meeting» — ?", "options": ["Yig'ilish", "Tanaffus", "Vazifa"], "correct": 0},
+        {"q": "«Break» — ?", "options": ["Smena", "Tanaffus", "Boshlash"], "correct": 1},
+        {"q": "«Task» — ?", "options": ["Smena", "Yig'ilish", "Vazifa"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l11",
+      "title_uz": "Ta'minot va ombor",
+      "title_en": "Supply and Warehouse",
+      "words": [
+        {"en": "Parts", "uz": "Ehtiyot qismlar", "zh": "零件"},
+        {"en": "Delivery", "uz": "Yetkazib berish", "zh": "交付"},
+        {"en": "Order", "uz": "Buyurtma", "zh": "订单"},
+        {"en": "In stock", "uz": "Mavjud (omborda bor)", "zh": "有库存"},
+        {"en": "Missing", "uz": "Yo'qolgan (yetishmaydi)", "zh": "缺少"},
+        {"en": "Receive", "uz": "Qabul qilish", "zh": "收到"}
+      ],
+      "sentences": [
+        {"en": "Do we have this part in stock?", "uz": "Bu ehtiyot qism omborda bormi?"},
+        {"en": "The delivery arrived today.", "uz": "Yetkazib berish bugun keldi."}
+      ],
+      "quiz": [
+        {"q": "«Order» — ?", "options": ["Yetkazib berish", "Buyurtma", "Qabul qilish"], "correct": 1},
+        {"q": "«In stock» — ?", "options": ["Mavjud", "Yo'qolgan", "Buyurtma"], "correct": 0},
+        {"q": "«Missing» — ?", "options": ["Qabul qilish", "Mavjud", "Yo'qolgan"], "correct": 2}
+      ]
+    },
+    {
+      "id": "l12",
+      "title_uz": "Favqulodda holatlar",
+      "title_en": "Emergencies",
+      "words": [
+        {"en": "Emergency", "uz": "Favqulodda holat", "zh": "紧急"},
+        {"en": "Fire", "uz": "Yong'in", "zh": "火灾"},
+        {"en": "Ambulance", "uz": "Tez yordam", "zh": "救护车"},
+        {"en": "Evacuate", "uz": "Evakuatsiya qilish", "zh": "撤离"},
+        {"en": "Alarm", "uz": "Signalizatsiya (xavf signali)", "zh": "警报"},
+        {"en": "Injury", "uz": "Jarohat", "zh": "受伤"}
+      ],
+      "sentences": [
+        {"en": "Call an ambulance!", "uz": "Tez yordam chaqiring!"},
+        {"en": "The alarm is ringing — evacuate!", "uz": "Signalizatsiya chalyapti — evakuatsiya!"}
+      ],
+      "quiz": [
+        {"q": "«Fire» — ?", "options": ["Yong'in", "Jarohat", "Signalizatsiya"], "correct": 0},
+        {"q": "«Ambulance» — ?", "options": ["Evakuatsiya", "Tez yordam", "Favqulodda"], "correct": 1},
+        {"q": "«Injury» — ?", "options": ["Yong'in", "Tez yordam", "Jarohat"], "correct": 2}
+      ]
+    }
+  ]
+}

@@ -29,6 +29,10 @@ kerakligini tushuntirib beruvchi bot.
   va tashxis javobini qo'llanma matni bilan chuqurlashtirish.
 - **Qisqa va aniq AI javoblari:** diagnostika javobi ~90 so'z bilan
   cheklangan (texnik, lo'nda), `max_output_tokens` orqali token sarfi nazorat qilinadi.
+- **🇬🇧 Ingliz tili kursi:** yangi xodimlar uchun 12 ta dars (zavod
+  atamalari, xavfsizlik, kundalik ish muloqoti) — so'zlar, jumlalar va
+  testlar; progress har bir xodim uchun saqlanadi. Darslar
+  `english_course.json` faylida, admin o'zi ham qo'sha oladi.
 - **3 ta bepul AI provayder, avtomatik almashinuv:** Gemini → Groq →
   OpenRouter, biri limitga uchrasa vaqtincha "dam oladi".
 - **Hech qachon butunlay to'xtamaydi:** barcha AI'lar band bo'lsa, bazadan

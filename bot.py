@@ -230,6 +230,18 @@ try:
 except (FileNotFoundError, json.JSONDecodeError):
     LIBRARY_DOCS = []
 
+# --- Ingliz tili kursi (yangi xodimlarning til malakasini oshirish uchun) ---
+ENG_COURSE_PATH = os.getenv("ENG_COURSE_PATH", "english_course.json")
+ENG_QUIZ_PASS = float(os.getenv("ENG_QUIZ_PASS", "0.6"))
+try:
+    with open(ENG_COURSE_PATH, "r", encoding="utf-8") as f:
+        _course_raw = json.load(f)
+    ENG_COURSE = _course_raw.get("lessons", []) if isinstance(_course_raw, dict) else (
+        _course_raw if isinstance(_course_raw, list) else []
+    )
+except (FileNotFoundError, json.JSONDecodeError):
+    ENG_COURSE = []
+
 _reg_request_times = {}  # uid -> [timestamps] spam himoyasi
 
 
@@ -436,6 +448,7 @@ TEXT = {
             "manzilni yozing (masalan I0.1).\n"
             "📷 Rasm (HMI ekrani/indikator) va 🎤 ovozli xabar ham qabul qilinadi.\n\n"
             "📚 *Kutubxona* — kitob/qo'llanmalar va qo'llanma bo'yicha qidiruv.\n"
+            "🇬🇧 *Ingliz tili kursi* — yangi xodimlar uchun texnik ingliz tili darslari.\n"
             "🤖 *Sun'iy intellekt* — PLC'ga bog'liq bo'lmagan savollar.\n"
             "🏭 *Zavod monitoring* — kompressor/chiller holati.\n"
             "🌐 *Til* — istalgan vaqtda tilni almashtirish.\n"
@@ -487,10 +500,26 @@ TEXT = {
         "lib_add_too_big": "Fayl juda katta (max {mb} MB).",
         "lib_add_bad_type": "Fayl yuklanmadi. Iltimos, hujjat/kitob faylini yuboring.",
         "lib_denied_type": "⛔ Xavfsizlik: dastur/skript fayllarini yuklash taqiqlangan. Faqat hujjat/kitob fayllari (PDF, DOC, EPUB, rasm…).",
+        "lib_upload_admin_only": "📚 Kutubxonaga faqat administrator fayl yuklay oladi. Yuklatmoqchi bo'lsangiz, adminga murojaat qiling.",
         "lib_del_usage": "Foydalanish: /libdel <hujjat_id>",
         "lib_del_done": "🗑 O'chirildi: {title}",
         "lib_del_fail": "O'chirib bo'lmadi — ID topilmadi.",
         "lib_list_admin": "📋 *Kutubxona (admin)* — jami {n} ta:",
+        "eng_menu_title": "🇬🇧 *Ingliz tili kursi*\n\nYangi xodimlar uchun texnik ingliz tili: zavod atamalari, xavfsizlik va kundalik ish muloqoti.\n\nBajarilgan darslar: {done}/{total}\n\nDarsni tanlang:",
+        "eng_lesson_header": "📘 *{n}-dars: {title}*\n_{title_en}_",
+        "eng_words_header": "📌 *Yangi so'zlar:*",
+        "eng_sentences_header": "💬 *Jumlalar:*",
+        "eng_quiz_btn": "📝 Testni boshlash",
+        "eng_back_btn": "⬅️ Orqaga",
+        "eng_retry_btn": "🔄 Testni qayta topshirish",
+        "eng_quiz_q": "❓ *{q}*",
+        "eng_quiz_correct": "✅ To'g'ri!",
+        "eng_quiz_wrong": "❌ Noto'g'ri. To'g'ri javob: *{a}*",
+        "eng_quiz_next": "Keyingi savol ▶️",
+        "eng_quiz_result": "🏁 *Natija: {score}/{total}*\n{verdict}",
+        "eng_verdict_pass": "A'lo! Dars yakunlandi ✅",
+        "eng_verdict_fail": "Kamida 60% to'g'ri javob kerak — darsni qayta ko'rib, testni yana sinab ko'ring.",
+        "eng_course_empty": "Ingliz tili kursi hozircha mavjud emas.",
         "access_denied_detail": "⛔ *Kirish taqiqlangan*\n\nBu bot faqat zavod xodimlari uchun.\nFoydalanish uchun admin ruxsati shart.\n\nRo'yxatdan o'tish:\n`/register Ism Familiya +998901234567`\n\nAdmin tasdiqlagach bot ochiladi.",
         "reg_rate_limited": "⏳ Juda ko'p so'rov yubordingiz. 1 soatdan keyin qayta urinib ko'ring.",
         "security_blocked": "⛔ Xavfsizlik: so'rov rad etildi.",
@@ -595,6 +624,7 @@ TEXT = {
             "an address (e.g. I0.1).\n"
             "📷 Photos (HMI screen/indicator) and 🎤 voice messages are supported.\n\n"
             "📚 *Library* — books/manuals and manual search by topic.\n"
+            "🇬🇧 *English Course* — technical English lessons for new employees.\n"
             "🤖 *AI Assistant* — for questions unrelated to PLC.\n"
             "🏭 *Factory monitoring* — compressor/chiller status.\n"
             "🌐 *Language* — switch language anytime.\n"
@@ -646,10 +676,26 @@ TEXT = {
         "lib_add_too_big": "File too large (max {mb} MB).",
         "lib_add_bad_type": "File was not added. Please send a document/book file.",
         "lib_denied_type": "⛔ Security: executable/script files are forbidden. Only document/book files (PDF, DOC, EPUB, image…).",
+        "lib_upload_admin_only": "📚 Only the administrator can upload files to the library. Contact the admin if you want a file added.",
         "lib_del_usage": "Usage: /libdel <doc_id>",
         "lib_del_done": "🗑 Deleted: {title}",
         "lib_del_fail": "Could not delete — ID not found.",
         "lib_list_admin": "📋 *Library (admin)* — {n} total:",
+        "eng_menu_title": "🇬🇧 *English Course*\n\nTechnical English for new employees: factory terms, safety and daily work communication.\n\nCompleted lessons: {done}/{total}\n\nChoose a lesson:",
+        "eng_lesson_header": "📘 *Lesson {n}: {title}*\n_{title_en}_",
+        "eng_words_header": "📌 *New words:*",
+        "eng_sentences_header": "💬 *Sentences:*",
+        "eng_quiz_btn": "📝 Start quiz",
+        "eng_back_btn": "⬅️ Back",
+        "eng_retry_btn": "🔄 Retake quiz",
+        "eng_quiz_q": "❓ *{q}*",
+        "eng_quiz_correct": "✅ Correct!",
+        "eng_quiz_wrong": "❌ Wrong. Correct answer: *{a}*",
+        "eng_quiz_next": "Next question ▶️",
+        "eng_quiz_result": "🏁 *Result: {score}/{total}*\n{verdict}",
+        "eng_verdict_pass": "Great! Lesson completed ✅",
+        "eng_verdict_fail": "You need at least 60% correct — review the lesson and try the quiz again.",
+        "eng_course_empty": "The English course is not available yet.",
         "access_denied_detail": "⛔ *Access denied*\n\nThis bot is for factory staff only.\nAdmin approval is required.\n\nRegister:\n`/register Full Name +998901234567`\n\nThe bot opens after admin approval.",
         "reg_rate_limited": "⏳ Too many requests. Try again in 1 hour.",
         "security_blocked": "⛔ Security: request rejected.",
@@ -748,6 +794,7 @@ TEXT = {
             "2️⃣ 描述问题（例如\"输送带不动\"），或输入地址（例如 I0.1）。\n"
             "📷 支持照片（HMI屏幕/指示灯）和 🎤 语音消息。\n\n"
             "📚 *资料库* — 书籍/手册及按主题搜索手册。\n"
+            "🇬🇧 *英语课程* — 为新员工开设的技术英语课程。\n"
             "🤖 *人工智能* — 与PLC无关的问题。\n"
             "🏭 *工厂监控* — 压缩机/冷水机状态。\n"
             "🌐 *语言* — 随时切换语言。\n"
@@ -792,10 +839,26 @@ TEXT = {
         "lib_add_too_big": "文件过大（最大 {mb} MB）。",
         "lib_add_bad_type": "文件未添加。请发送文档/书籍文件。",
         "lib_denied_type": "⛔ 安全：禁止上传可执行程序/脚本文件。仅允许文档/书籍文件（PDF、DOC、EPUB、图片等）。",
+        "lib_upload_admin_only": "📚 只有管理员可以上传文件到资料库。如需添加文件，请联系管理员。",
         "lib_del_usage": "用法：/libdel <文档ID>",
         "lib_del_done": "🗑 已删除：{title}",
         "lib_del_fail": "无法删除 — 未找到ID。",
         "lib_list_admin": "📋 *资料库（管理员）* — 共 {n} 个：",
+        "eng_menu_title": "🇬🇧 *英语课程*\n\n面向新员工的技术英语：工厂术语、安全和日常工作交流。\n\n已完成课程：{done}/{total}\n\n请选择课程：",
+        "eng_lesson_header": "📘 *第{n}课：{title}*\n_{title_en}_",
+        "eng_words_header": "📌 *生词：*",
+        "eng_sentences_header": "💬 *句子：*",
+        "eng_quiz_btn": "📝 开始测验",
+        "eng_back_btn": "⬅️ 返回",
+        "eng_retry_btn": "🔄 重新测验",
+        "eng_quiz_q": "❓ *{q}*",
+        "eng_quiz_correct": "✅ 正确！",
+        "eng_quiz_wrong": "❌ 错误。正确答案：*{a}*",
+        "eng_quiz_next": "下一题 ▶️",
+        "eng_quiz_result": "🏁 *成绩：{score}/{total}*\n{verdict}",
+        "eng_verdict_pass": "很好！课程完成 ✅",
+        "eng_verdict_fail": "至少需要60%正确——请复习课程后再测验。",
+        "eng_course_empty": "英语课程暂不可用。",
         "access_denied_detail": "⛔ *禁止访问*\n\n本机器人仅供工厂员工使用。\n需要管理员批准。\n\n注册：\n`/register 姓名 +998901234567`",
         "reg_rate_limited": "⏳ 请求过多。请1小时后再试。",
         "security_blocked": "⛔ 安全：请求被拒绝。",
@@ -840,6 +903,7 @@ ESP32_MENU_LABEL = "🏭 Zavod monitoring (kompressor/chiller)"
 LIBRARY_MENU_LABEL = "📚 Kutubxona / Library / 资料库"
 ADMIN_LIBRARY_LABEL = "🔐 Admin: Kutubxona boshqaruvi"
 HELP_BTN_LABEL = "ℹ️ Yordam / Help / 帮助"
+ENG_COURSE_LABEL = "🇬🇧 Ingliz tili kursi / English Course / 英语课程"
 
 # ---------------------------------------------------------------------------
 # Uskunalar (liniyalar) konfiguratsiyasini yuklash
@@ -1050,7 +1114,7 @@ def machine_keyboard(user_id: int = None) -> ReplyKeyboardMarkup:
     """Asosiy menyu — aniq bo'limlar, admin uchun qo'shimcha tugma."""
     rows = [[line.label] for line in LINES.values()]
     # Yordamchi bo'limlar — 2 tadan qatorlarga bo'lish
-    util = [LIBRARY_MENU_LABEL, HELP_BTN_LABEL]
+    util = [LIBRARY_MENU_LABEL, ENG_COURSE_LABEL, HELP_BTN_LABEL]
     if ESP32_STATUS_URL:
         util.append(ESP32_MENU_LABEL)
     for i in range(0, len(util), 2):
@@ -1480,25 +1544,33 @@ async def libget_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def handle_library_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Admin kutubxonaga fayl yuklaydi (mode=lib_admin_upload).
-    Istalgan turdagi hujjat/kitob qabul qilinadi; xavfli turlar rad etiladi.
-    Boshqa hollarda (begona yoki maqsadsiz fayl) jim o'tkazib yuboriladi."""
+    """Kutubxonaga hujjat yuklash. Ishonchli oqim:
+    - /libadd <sarlavha> qilingan bo'lsa — shu sarlavha bilan qo'shiladi;
+    - AKS HOLDA admin yuborgan istalgan hujjat ham avtomatik qo'shiladi
+      (sarlavha = caption yoki fayl nomi) — fayl "yo'qolib qolmaydi".
+    Begona foydalanuvchi jim o'tkaziladi, oddiy xodimga tushuntirish beriladi."""
     lang = get_lang(context)
     uid = update.effective_user.id
     if not is_authorized(uid):
-        return  # begona foydalanuvchiga hech narsa ko'rsatmaymiz
-    if not is_admin(uid) or context.user_data.get("mode") != "lib_admin_upload":
-        return  # yuklash rejimida emas — xalaqit bermaymiz
-
-    title = context.user_data.get("lib_pending_title") or "Document"
-    doc = update.message.document
-    if not doc:
-        await update.message.reply_text(t(lang, "lib_add_bad_type"))
+        return
+    if not is_admin(uid):
+        await update.message.reply_text(t(lang, "lib_upload_admin_only"))
         return
 
+    doc = update.message.document
+    if not doc:
+        return
+
+    fname = sanitize_filename(doc.file_name or "file")
+    title = None
+    if context.user_data.get("mode") == "lib_admin_upload":
+        title = context.user_data.get("lib_pending_title")
+    if not title:
+        cap = re.sub(r"[\r\n`*_[\]]", " ", (update.message.caption or "").strip())
+        title = (cap or os.path.splitext(fname)[0] or fname)[:200]
+
     # Xavfsizlik: xavfli fayl turlari (dastur/skript) taqiqlangan
-    fname = sanitize_filename(doc.file_name or "file.bin")
-    ext = _lib_ext({"filename": fname})
+    ext = os.path.splitext(fname)[1].lower()
     if ext in LIB_DENY_EXT:
         logger.warning("Xavfli fayl turi rad etildi (uid=%s, file=%s)", uid, fname)
         await update.message.reply_text(t(lang, "lib_denied_type"))
@@ -1545,6 +1617,223 @@ async def handle_library_document(update: Update, context: ContextTypes.DEFAULT_
         parse_mode="Markdown",
         reply_markup=kb_for(update),
     )
+
+
+async def handle_library_photo_upload(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """/libadd rejimida admin rasm yuborsa — uni ham kutubxonaga qo'shamiz
+    (aks holda rasm diagnostikaga tushib ketardi)."""
+    lang = get_lang(context)
+    title = (context.user_data.get("lib_pending_title") or "Photo")[:200]
+    photo = update.message.photo[-1]
+    if photo.file_size and photo.file_size > MAX_LIBRARY_FILE_MB * 1024 * 1024:
+        await update.message.reply_text(t(lang, "lib_add_too_big", mb=int(MAX_LIBRARY_FILE_MB)))
+        return
+    doc_id = uuid.uuid4().hex[:10]
+    fname = f"{doc_id}_photo.jpg"
+    local_path = os.path.join(LIBRARY_FILES_DIR, fname)
+    try:
+        tg_file = await photo.get_file()
+        await tg_file.download_to_drive(local_path)
+    except Exception as e:
+        logger.warning("library photo download failed: %s", e)
+        local_path = None
+
+    entry = {
+        "id": doc_id,
+        "title": title,
+        "description": "",
+        "category": "manual",
+        "filename": fname,
+        "file_id": photo.file_id,
+        "local_path": local_path,
+        "mime": "image/jpeg",
+        "size": photo.file_size,
+        "added_by": update.effective_user.id,
+        "added_at": datetime.now().isoformat(),
+        "visible": True,
+    }
+    library_add(entry)
+    context.user_data["mode"] = None
+    context.user_data.pop("lib_pending_title", None)
+    await update.message.reply_text(
+        t(lang, "lib_add_done", title=title, id=doc_id),
+        parse_mode="Markdown",
+        reply_markup=kb_for(update),
+    )
+
+
+# ---------------------------------------------------------------------------
+# 🇬🇧 Ingliz tili kursi: darslar (so'zlar + jumlalar) va testlar.
+# Ma'lumot english_course.json'dan yuklanadi; progress user_data'da saqlanadi
+# (PicklePersistence tufayli bot qayta ishga tushsa ham yo'qolmaydi).
+# ---------------------------------------------------------------------------
+
+def _eng_done_list(context) -> list:
+    return context.user_data.setdefault("eng_done", [])
+
+
+def _eng_lesson_by_id(lesson_id: str):
+    for i, lesson in enumerate(ENG_COURSE):
+        if lesson.get("id") == lesson_id:
+            return i, lesson
+    return None, None
+
+
+def build_eng_lesson_text(lesson: dict, idx: int, lang: str) -> str:
+    lines = [t(lang, "eng_lesson_header", n=idx + 1,
+               title=lesson.get("title_uz", ""), title_en=lesson.get("title_en", ""))]
+    lines.append("")
+    lines.append(t(lang, "eng_words_header"))
+    for w in lesson.get("words", []):
+        lines.append(f"• *{w.get('en', '')}* — {w.get('uz', '')} / {w.get('zh', '')}")
+    if lesson.get("sentences"):
+        lines.append("")
+        lines.append(t(lang, "eng_sentences_header"))
+        for s in lesson["sentences"]:
+            lines.append(f"• _{s.get('en', '')}_\n  {s.get('uz', '')}")
+    return "\n".join(lines)
+
+
+def build_eng_menu_keyboard(context) -> InlineKeyboardMarkup:
+    done = set(_eng_done_list(context))
+    rows = []
+    for i, lesson in enumerate(ENG_COURSE):
+        mark = " ✅" if lesson.get("id") in done else ""
+        label = f"{i + 1}. {lesson.get('title_uz', lesson.get('title_en', ''))[:44]}{mark}"
+        rows.append([InlineKeyboardButton(label[:64], callback_data=safe_callback_data("eng:l", lesson.get("id", "")))])
+    return InlineKeyboardMarkup(rows)
+
+
+def _eng_menu_text(context, lang: str) -> str:
+    done = set(_eng_done_list(context)) & {l.get("id") for l in ENG_COURSE}
+    return t(lang, "eng_menu_title", done=len(done), total=len(ENG_COURSE))
+
+
+async def show_eng_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = get_lang(context)
+    if not ENG_COURSE:
+        await update.message.reply_text(t(lang, "eng_course_empty"), reply_markup=kb_for(update))
+        return
+    await safe_reply_text(
+        update, _eng_menu_text(context, lang),
+        reply_markup=build_eng_menu_keyboard(context),
+    )
+
+
+async def _eng_show_result(query, context, lang: str, lesson_id: str, quiz: list):
+    total = len(quiz)
+    score = int(context.user_data.get("eng_score", 0))
+    passed = total > 0 and score / total >= ENG_QUIZ_PASS
+    if passed:
+        done = _eng_done_list(context)
+        if lesson_id not in done:
+            done.append(lesson_id)
+        context.user_data["eng_score"] = 0
+    verdict = t(lang, "eng_verdict_pass") if passed else t(lang, "eng_verdict_fail")
+    text = t(lang, "eng_quiz_result", score=score, total=total, verdict=verdict)
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton(t(lang, "eng_retry_btn"), callback_data=f"eng:q:{lesson_id}:0")],
+        [InlineKeyboardButton(t(lang, "eng_back_btn"), callback_data=f"eng:l:{lesson_id}")],
+    ])
+    try:
+        await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+    except Exception:
+        pass
+
+
+async def handle_english_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    """Kurs inline callbacklari:
+    eng:menu | eng:l:<id> | eng:q:<id>:<n> | eng:a:<id>:<n>:<k>"""
+    query = update.callback_query
+    lang = get_lang(context)
+    if not ENG_COURSE:
+        await query.answer(text=t(lang, "eng_course_empty"), show_alert=True)
+        return
+
+    parts = data.split(":")
+
+    if parts[1] == "menu":
+        await query.answer()
+        try:
+            await query.edit_message_text(
+                _eng_menu_text(context, lang), parse_mode="Markdown",
+                reply_markup=build_eng_menu_keyboard(context), disable_web_page_preview=True,
+            )
+        except Exception:
+            pass
+        return
+
+    lesson_id = parts[2]
+    idx, lesson = _eng_lesson_by_id(lesson_id)
+    if lesson is None:
+        await query.answer(text=t(lang, "eng_course_empty"), show_alert=True)
+        return
+
+    if parts[1] == "l":
+        await query.answer()
+        text = build_eng_lesson_text(lesson, idx, lang)
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton(t(lang, "eng_quiz_btn"), callback_data=f"eng:q:{lesson_id}:0")],
+            [InlineKeyboardButton(t(lang, "eng_back_btn"), callback_data="eng:menu")],
+        ])
+        try:
+            await query.edit_message_text(
+                text, parse_mode="Markdown", reply_markup=kb, disable_web_page_preview=True
+            )
+        except Exception:
+            try:
+                await query.message.reply_text(text, parse_mode="Markdown", reply_markup=kb)
+            except Exception:
+                pass
+        return
+
+    quiz = lesson.get("quiz", [])
+
+    if parts[1] == "q":
+        n = int(parts[3])
+        if n == 0:
+            context.user_data["eng_score"] = 0
+        if n >= len(quiz):
+            await _eng_show_result(query, context, lang, lesson_id, quiz)
+            return
+        q = quiz[n]
+        rows = [[InlineKeyboardButton(str(opt)[:60], callback_data=f"eng:a:{lesson_id}:{n}:{k}")]
+                for k, opt in enumerate(q.get("options", []))]
+        rows.append([InlineKeyboardButton(t(lang, "eng_back_btn"), callback_data=f"eng:l:{lesson_id}")])
+        text = t(lang, "eng_quiz_q", q=q.get("q", "")) + f"\n\n({n + 1}/{len(quiz)})"
+        await query.answer()
+        try:
+            await query.edit_message_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(rows))
+        except Exception:
+            pass
+        return
+
+    if parts[1] == "a":
+        n = int(parts[3])
+        k = int(parts[4])
+        if n >= len(quiz):
+            await query.answer()
+            return
+        q = quiz[n]
+        correct_idx = int(q.get("correct", 0))
+        is_correct = (k == correct_idx)
+        if is_correct:
+            context.user_data["eng_score"] = int(context.user_data.get("eng_score", 0)) + 1
+        await query.answer()
+        msg = t(lang, "eng_quiz_correct") if is_correct else t(lang, "eng_quiz_wrong", a=q["options"][correct_idx])
+        if n + 1 < len(quiz):
+            kb = InlineKeyboardMarkup([[InlineKeyboardButton(
+                t(lang, "eng_quiz_next"), callback_data=f"eng:q:{lesson_id}:{n + 1}"
+            )]])
+            try:
+                await query.edit_message_text(msg, parse_mode="Markdown", reply_markup=kb)
+            except Exception:
+                pass
+        else:
+            await _eng_show_result(query, context, lang, lesson_id, quiz)
+        return
+
+    await query.answer()
 
 
 def format_raw_tags(tags, machine_label: str, lang: str) -> str:
@@ -1958,6 +2247,11 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
     # Kutubxona inline tugmalari
     if data.startswith("lib"):
         await handle_library_callback(update, context, data)
+        return
+
+    # Ingliz tili kursi inline tugmalari
+    if data.startswith("eng:"):
+        await handle_english_callback(update, context, data)
         return
 
     await query.answer()
@@ -2496,6 +2790,11 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     lang = get_lang(context)
 
+    # /libadd rejimida admin rasm yuborsa — diagnostika emas, kutubxonaga tushadi
+    if is_admin(update.effective_user.id) and context.user_data.get("mode") == "lib_admin_upload":
+        await handle_library_photo_upload(update, context)
+        return
+
     # Rasm tahlili ham AI sarflaydi (Gemini vision) — limit tekshiruvi shart
     if not check_rate_limit(update.effective_user.id):
         await update.message.reply_text(t(lang, "rate_limited"), reply_markup=kb_for(update))
@@ -2885,6 +3184,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_text == LIBRARY_MENU_LABEL:
         context.user_data["mode"] = None
         await show_user_library(update, context)
+        return
+
+    if user_text == ENG_COURSE_LABEL:
+        context.user_data["mode"] = None
+        await show_eng_menu(update, context)
         return
 
     if user_text == ADMIN_LIBRARY_LABEL:
