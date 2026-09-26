@@ -22,6 +22,8 @@ bo'lmagan har qanday savolga ham javob beradi.
 """
 
 import os
+import sys
+import atexit
 import re
 import json
 import time
@@ -4299,7 +4301,66 @@ async def log_rotation_job(context: ContextTypes.DEFAULT_TYPE):
 # Ishga tushirish
 # ---------------------------------------------------------------------------
 
+# YANGI: bitta nusxa qulfi (single-instance lock) — bot ikki marta (masalan
+# Spyder'da ham, CMD'da ham) tasodifan ishga tushirilsa, Telegramda bitta
+# tokenga ikkita getUpdates so'rovi to'qnashib, "Conflict: terminated by
+# other getUpdates request" xatosi bilan botning javob berishi to'xtab
+# qolishining oldini oladi. Ikkinchi nusxa aniq xabar bilan darhol to'xtaydi,
+# birinchisiga tegmaydi.
+LOCK_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bot.lock")
+
+
+def _pid_is_running(pid: int) -> bool:
+    if os.name == "nt":
+        try:
+            out = os.popen(f'tasklist /FI "PID eq {pid}"').read()
+            return str(pid) in out
+        except Exception:
+            return True  # aniqlay olmasak, xavfsizroq tomonni tanlaymiz
+    else:
+        try:
+            os.kill(pid, 0)
+            return True
+        except OSError:
+            return False
+        except Exception:
+            return True
+
+
+def _ensure_single_instance():
+    try:
+        if os.path.exists(LOCK_FILE_PATH):
+            with open(LOCK_FILE_PATH, "r") as f:
+                old_pid_str = f.read().strip()
+            old_pid = int(old_pid_str) if old_pid_str.isdigit() else None
+            if old_pid and old_pid != os.getpid() and _pid_is_running(old_pid):
+                print(
+                    f"\n❌ Bot allaqachon ishlab turibdi (PID {old_pid}).\n"
+                    f"   Avval o'sha jarayonni to'xtating:  taskkill /F /PID {old_pid}\n"
+                    f"   so'ngra botni qayta ishga tushiring.\n"
+                )
+                sys.exit(1)
+        with open(LOCK_FILE_PATH, "w") as f:
+            f.write(str(os.getpid()))
+
+        def _release_lock():
+            try:
+                if os.path.exists(LOCK_FILE_PATH):
+                    with open(LOCK_FILE_PATH, "r") as f:
+                        if f.read().strip() == str(os.getpid()):
+                            os.remove(LOCK_FILE_PATH)
+            except Exception:
+                pass
+
+        atexit.register(_release_lock)
+    except SystemExit:
+        raise
+    except Exception as e:
+        logger.warning("Bitta-nusxa qulfini tekshirishda xatolik (davom etiladi): %s", e)
+
+
 def main():
+    _ensure_single_instance()
     try:
         asyncio.get_event_loop()
     except RuntimeError:
