@@ -30,6 +30,7 @@ import asyncio
 import logging
 import traceback
 import urllib.request
+import urllib.parse
 from datetime import datetime, timedelta
 from collections import Counter
 
@@ -59,11 +60,6 @@ try:
 except ImportError:
     Groq = None
 
-try:
-    from openai import OpenAI
-except ImportError:
-    OpenAI = None
-
 # ---------------------------------------------------------------------------
 # Sozlamalar
 # ---------------------------------------------------------------------------
@@ -78,6 +74,27 @@ GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 GROQ_WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "openrouter/free")
+# --- Qo'shimcha AI'lar (OpenAI, Claude, DeepSeek, Mistral, Cerebras, Together, xAI, Cohere) ---
+# Har bir provayder FAQAT .env'da API kaliti bo'lsa faollashadi. Biri chetlasa,
+# keyingisi avomatik ishga tushadi (failover). Kalit yo'q bo'lsa — umuman qo'shilmaydi.
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-3-5-haiku-20241022")
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
+MISTRAL_MODEL = os.getenv("MISTRAL_MODEL", "mistral-small-latest")
+CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY")
+CEREBRAS_MODEL = os.getenv("CEREBRAS_MODEL", "llama-3.3-70b")
+TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
+TOGETHER_MODEL = os.getenv("TOGETHER_MODEL", "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free")
+XAI_API_KEY = os.getenv("XAI_API_KEY")
+XAI_MODEL = os.getenv("XAI_MODEL", "grok-2-latest")
+COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+COHERE_MODEL = os.getenv("COHERE_MODEL", "command-r-08-2024")
+# AI HTTP so'rovi uchun kutish vaqti (soniya)
+AI_HTTP_TIMEOUT = int(os.getenv("AI_HTTP_TIMEOUT", "30"))
 LINES_CONFIG_PATH = os.getenv("LINES_CONFIG_PATH", "lines.json")
 PERSISTENCE_PATH = os.getenv("PERSISTENCE_PATH", "bot_state.pickle")
 MAX_CANDIDATE_TAGS = int(os.getenv("MAX_CANDIDATE_TAGS", "25"))
@@ -135,6 +152,23 @@ ESP32_TIMEOUT_SEC = int(os.getenv("ESP32_TIMEOUT_SEC", "5"))
 if ESP32_STATUS_URL and not ESP32_STATUS_URL.startswith(("http://", "https://")):
     ESP32_STATUS_URL = ""
 
+# --- BITTA TELEGRAM BOT REJIMI (ESP32 relay) ---
+# Xabarlarni faqat shu Python bot qabul qiladi. ESP32'ga tegishli buyruq/tugmalar
+# ESP32'dagi /tg endpoint'iga maxfiy kalit bilan yetkaziladi (relay). Kalit
+# ESP32 sketch'dagi TG_RELAY_KEY bilan bir xil bo'lishi kerak.
+ESP32_CMD_KEY = os.getenv("ESP32_CMD_KEY", "plc-esp32-relay-2026").strip()
+# /tg manzili ESP32_STATUS_URL'dan olinadi (masalan .../status -> .../tg)
+ESP32_CMD_URL = ""
+if ESP32_STATUS_URL and ESP32_CMD_KEY:
+    ESP32_CMD_URL = ESP32_STATUS_URL.rsplit("/", 1)[0] + "/tg"
+# ESP32'ning Telegram tugma/buyruqlari (relay qilinadi) — sketch'dagi matnlar bilan bir xil
+ESP32_TEXT_COMMANDS = {
+    "📊 Holat", "🛠️ Sozlamalar", "🚀 Start", "⏸️ Stop", "👥 Xodimlar",
+    "🔑 Adminlar", "🌐 1-Rejim", "💨 2-Rejim", "📶 Wi-Fi", "🔓 Ruxsat so'rash",
+    "/status", "/control", "/staff", "/admins", "/wifi", "/wifireset", "/menu",
+    "/stop", "/mode1", "/mode2",
+}
+
 if not TELEGRAM_BOT_TOKEN:
     raise RuntimeError("TELEGRAM_BOT_TOKEN topilmadi. .env faylni tekshiring.")
 if not GEMINI_API_KEY:
@@ -168,15 +202,10 @@ genai_client = genai.Client(api_key=GEMINI_API_KEY)
 
 groq_client = Groq(api_key=GROQ_API_KEY) if (GROQ_API_KEY and Groq) else None
 if GROQ_API_KEY and not Groq:
-    logger.warning("GROQ_API_KEY berilgan, lekin 'groq' kutubxonasi o'rnatilmagan.")
+    logger.warning("GROQ_API_KEY berilgan, lekin 'groq' kutubxonasi o'rnatilmagan (faqat ovoz transkripsiya uchun kerak; matnli AI urllib orqali ishlaydi).")
 
-openrouter_client = (
-    OpenAI(api_key=OPENROUTER_API_KEY, base_url="https://openrouter.ai/api/v1")
-    if (OPENROUTER_API_KEY and OpenAI)
-    else None
-)
-if OPENROUTER_API_KEY and not OpenAI:
-    logger.warning("OPENROUTER_API_KEY berilgan, lekin 'openai' kutubxonasi o'rnatilmagan.")
+# Eslatma: matnli AI generatsiyasi endi SDK'siz, urllib orqali bajariladi
+# (quyidagi _openai_compatible_chat). OpenRouter uchun alohida openai klienti shart emas.
 
 # ---------------------------------------------------------------------------
 # Kirishni cheklash: agar ADMIN_USER_IDS bo'sh bo'lsa, bot hammaga ochiq
@@ -419,6 +448,16 @@ TEXT = {
         "user_removed": "✅ Foydalanuvchi {uid} ro'yxatdan o'chirildi.",
         "admin_only": "Bu buyruq faqat administrator uchun.",
         "adduser_usage": "Foydalanish: /adduser <telegram_id> <ism (ixtiyoriy)>",
+        "users_panel_title": "👥 Foydalanuvchilar boshqaruvi\nRo'yxatdan o'tganlar: {count} ta. O'chirish uchun 🗑 bosing.",
+        "users_panel_admins": "👑 Adminlar: {admins}",
+        "users_panel_pending": "⏳ Tasdiq kutayotgan so'rovlar: {count}",
+        "users_panel_empty": "Hozircha ro'yxatdan o'tgan foydalanuvchi yo'q.",
+        "users_del_confirm": "🗑 {name} ({uid}) o'chirilsinmi?",
+        "users_yes": "✅ Ha, o'chirish",
+        "users_no": "↩️ Orqaga",
+        "users_deleted": "🗑 Foydalanuvchi o'chirildi: {uid}",
+        "users_close": "✖️ Yopish",
+        "users_page": "{page}/{total}",
         "feedback_prompt": "💬 Bu javob foydali bo'ldimi?",
         "feedback_thanks_up": "Rahmat! ✅",
         "feedback_thanks_down": "Xabar uchun rahmat, buni yaxshilashga harakat qilamiz. 🙏",
@@ -541,6 +580,43 @@ TEXT = {
         "setphone_usage": "Foydalanish: /setphone <telegram_id> <telefon_raqam>",
         "phone_updated": "✅ {uid} uchun telefon raqami yangilandi: {phone}",
         "user_not_found": "Bunday ID ro'yxatda topilmadi.",
+
+        # --- Yangi modullar: Ruxsat, ESP32 boshqaruv, Ingliz tili va Admin panel ---
+        "req_access_btn": "Ruxsat so'rash (Ro'yxatdan o'tish)",
+        "req_prompt": "📝 *Botdan foydalanish uchun ruxsat so'rash*\n\nIltimos, Ism va Familiyangiz hamda telefon raqamingizni yuboring.\nFormat: `/register Ism Familiya +998901234567`\nMasalan:\n`/register Aziz Karimov +998901234567`\n\nAdmin tasdiqlashi bilan barcha imkoniyatlar ochiladi.",
+        "esp_refresh": "Yangilash",
+        "esp_start": "Start (Yoqish)",
+        "esp_stop": "Stop (To'xtatish)",
+        "esp_mode1": "1-Rejim (Havo+Suv+Temp)",
+        "esp_mode2": "2-Rejim (Faqat Havo)",
+        "esp_reset_alarm": "Sirenani o'chirish",
+        "esp_limits": "Limitlar",
+        "esp_cmd_sent": "✅ Buyruq ESP32'ga yuborildi.",
+        "esp_cmd_fail": "❌ ESP32 bilan aloqa o'rnatilmadi.",
+        "eng_flashcards_btn": "🗂 Lug'at kartochkalari",
+        "eng_ai_tutor_btn": "🤖 AI bilan inglizcha suhbatlashish",
+        "eng_stats_btn": "📊 Mening natijalarim",
+        "eng_fc_card": "🗂 *So'z kartochkasi* — {title}\n\n🇬🇧 *{en}*\n🇺🇿 {uz}\n🇨🇳 {zh}\n\n({cur}/{total})",
+        "eng_fc_prev": "⬅️ Oldingisi",
+        "eng_fc_next": "Keyingisi ➡️",
+        "eng_stats_text": "📊 *Sizning Ingliz tili kursidagi natijalaringiz:*\n\n✅ Bajarilgan darslar: *{done}/{total}* ({pct}%)\n{badge}",
+        "eng_tutor_intro": "🤖 *AI Ingliz tili murabbiyi (English Tutor)*\n\nMen bilan ingliz tilida erkin suhbatlashing yoki zavod atamalari bo'yicha savol bering. Xatolaringiz bo'lsa, xushmuomalalik bilan to'g'irlab boraman.\n\nSuhbatdan chiqish uchun /exit yoki pastdagi menyu tugmasini bosing.\n\n_Start typing in English: (masalan: Hello, what does 'solenoid valve' mean?)_",
+        "eng_tutor_exit": "English Tutor rejimidan chiqildi. Asosiy menyudasiz.",
+        "admin_panel_title": "⚙️ *Boshqaruv Paneli (Admin Hub)*\n━━━━━━━━━━━━━━━━━━━━\n👑 Adminlar: *{admins}*\n👥 Xodimlar: *{users}* ta\n⏳ Kutilayotgan arizalar: *{pending}* ta\n📚 Kutubxona: *{docs}* ta\n🏭 ESP32: *{esp32}*\n━━━━━━━━━━━━━━━━━━━━",
+        "admin_btn_users": "👥 Xodimlar ro'yxati",
+        "admin_btn_pending": "⏳ Kutilayotgan arizalar",
+        "admin_btn_ai": "🤖 AI tizimlar holati",
+        "admin_btn_esp32": "🏭 ESP32 Zavod boshqaruvi",
+        "admin_btn_stats": "📊 Tizim statistikasi",
+        "admin_btn_adduser": "➕ Yangi xodim qo'shish",
+        "admin_uview_text": "👤 *Xodim ma'lumotlari:*\n\n• Ism: *{name}*\n• Telegram ID: `{uid}`\n• Telefon: `{phone}`\n• Qo'shilgan: `{added}`",
+        "admin_udel_btn": "🗑 Xodimni o'chirish",
+        "admin_back_btn": "⬅️ Orqaga",
+        "admin_udel_confirm": "⚠️ Rostdan ham *{name}* (`{uid}`) ro'yxatdan o'chirilsinmi?",
+        "admin_udel_yes": "✅ Ha, o'chirish",
+        "admin_udel_no": "❌ Bekor qilish",
+        "admin_pending_empty": "⏳ Hozircha kutilayotgan yangi arizalar yo'q.",
+        "admin_pending_item": "🆕 *Ariza:*\n👤 Ism: *{name}*\n📞 Tel: `{phone}`\n🆔 ID: `{uid}`\n📅 Sana: `{date}`",
     },
     "en": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -595,6 +671,16 @@ TEXT = {
         "user_removed": "✅ User {uid} removed.",
         "admin_only": "This command is for administrators only.",
         "adduser_usage": "Usage: /adduser <telegram_id> <name (optional)>",
+        "users_panel_title": "👥 User Management\nRegistered: {count}. Tap 🗑 to remove.",
+        "users_panel_admins": "👑 Admins: {admins}",
+        "users_panel_pending": "⏳ Pending requests: {count}",
+        "users_panel_empty": "No registered users yet.",
+        "users_del_confirm": "Remove {name} ({uid})?",
+        "users_yes": "✅ Yes, remove",
+        "users_no": "↩️ Back",
+        "users_deleted": "🗑 User removed: {uid}",
+        "users_close": "✖️ Close",
+        "users_page": "{page}/{total}",
         "feedback_prompt": "💬 Was this answer helpful?",
         "feedback_thanks_up": "Thanks! ✅",
         "feedback_thanks_down": "Thanks for the feedback, we'll try to improve. 🙏",
@@ -717,6 +803,43 @@ TEXT = {
         "setphone_usage": "Usage: /setphone <telegram_id> <phone_number>",
         "phone_updated": "✅ Phone number updated for {uid}: {phone}",
         "user_not_found": "No such ID found in the list.",
+
+        # --- New modules: Access, ESP32 control, English course, Admin panel ---
+        "req_access_btn": "Request Access (Registration)",
+        "req_prompt": "📝 *Request Bot Access*\n\nPlease send your full name and phone number.\nFormat: `/register Full Name +998901234567`\nExample:\n`/register John Smith +998901234567`\n\nThe bot will be unlocked once approved by an administrator.",
+        "esp_refresh": "Refresh",
+        "esp_start": "Start",
+        "esp_stop": "Stop",
+        "esp_mode1": "Mode 1 (Air+Water+Temp)",
+        "esp_mode2": "Mode 2 (Air Only)",
+        "esp_reset_alarm": "Reset Alarm/Siren",
+        "esp_limits": "Limits",
+        "esp_cmd_sent": "✅ Command sent to ESP32.",
+        "esp_cmd_fail": "❌ Could not reach ESP32 device.",
+        "eng_flashcards_btn": "🗂 Flashcards",
+        "eng_ai_tutor_btn": "🤖 Practice English with AI",
+        "eng_stats_btn": "📊 My Progress",
+        "eng_fc_card": "🗂 *Vocabulary Flashcard* — {title}\n\n🇬🇧 *{en}*\n🇺🇿 {uz}\n🇨🇳 {zh}\n\n({cur}/{total})",
+        "eng_fc_prev": "⬅️ Previous",
+        "eng_fc_next": "Next ➡️",
+        "eng_stats_text": "📊 *Your English Course Progress:*\n\n✅ Completed Lessons: *{done}/{total}* ({pct}%)\n{badge}",
+        "eng_tutor_intro": "🤖 *AI English Language Tutor*\n\nPractice your technical or conversational English here! Ask questions about vocabulary or practice speaking. I will kindly correct mistakes.\n\nType /exit or tap any menu button to exit tutor mode.\n\n_Start typing in English: (e.g., Hello, how are you today?)_",
+        "eng_tutor_exit": "Exited English Tutor mode. Back to main menu.",
+        "admin_panel_title": "⚙️ *Admin Hub*\n━━━━━━━━━━━━━━━━━━━━\n👑 Admins: *{admins}*\n👥 Staff: *{users}*\n⏳ Pending Requests: *{pending}*\n📚 Library Files: *{docs}*\n🏭 ESP32: *{esp32}*\n━━━━━━━━━━━━━━━━━━━━",
+        "admin_btn_users": "👥 Staff List",
+        "admin_btn_pending": "⏳ Pending Requests",
+        "admin_btn_ai": "🤖 AI Providers Status",
+        "admin_btn_esp32": "🏭 ESP32 Factory Hub",
+        "admin_btn_stats": "📊 System Statistics",
+        "admin_btn_adduser": "➕ Add User Manually",
+        "admin_uview_text": "👤 *Staff Details:*\n\n• Name: *{name}*\n• Telegram ID: `{uid}`\n• Phone: `{phone}`\n• Added: `{added}`",
+        "admin_udel_btn": "🗑 Remove Staff",
+        "admin_back_btn": "⬅️ Back",
+        "admin_udel_confirm": "⚠️ Are you sure you want to remove *{name}* (`{uid}`)?",
+        "admin_udel_yes": "✅ Yes, remove",
+        "admin_udel_no": "❌ Cancel",
+        "admin_pending_empty": "⏳ No pending requests right now.",
+        "admin_pending_item": "🆕 *Request:*\n👤 Name: *{name}*\n📞 Phone: `{phone}`\n🆔 ID: `{uid}`\n📅 Date: `{date}`",
     },
     "zh": {
         "choose_lang": "Tilni tanlang / Please choose language / 请选择语言:",
@@ -766,6 +889,16 @@ TEXT = {
         "user_removed": "✅ 已移除用户 {uid}。",
         "admin_only": "此命令仅限管理员使用。",
         "adduser_usage": "用法：/adduser <telegram_id> <姓名（可选）>",
+        "users_panel_title": "👥 用户管理\n已注册：{count}。点击 🗑 删除。",
+        "users_panel_admins": "👑 管理员：{admins}",
+        "users_panel_pending": "⏳ 待处理请求：{count}",
+        "users_panel_empty": "暂无注册用户。",
+        "users_del_confirm": "删除 {name}（{uid}）？",
+        "users_yes": "✅ 是，删除",
+        "users_no": "↩️ 返回",
+        "users_deleted": "🗑 已删除用户：{uid}",
+        "users_close": "✖️ 关闭",
+        "users_page": "{page}/{total}",
         "feedback_prompt": "💬 这个回答有帮助吗？",
         "feedback_thanks_up": "谢谢！✅",
         "feedback_thanks_down": "感谢反馈，我们会努力改进。🙏",
@@ -880,6 +1013,43 @@ TEXT = {
         "setphone_usage": "用法：/setphone <telegram_id> <电话号码>",
         "phone_updated": "✅ 已更新{uid}的电话号码：{phone}",
         "user_not_found": "未在列表中找到该ID。",
+
+        # --- 新功能模块：权限、ESP32控制、英语学习与管理员面板 ---
+        "req_access_btn": "申请权限（注册）",
+        "req_prompt": "📝 *申请机器人使用权限*\n\n请发送您的姓名和电话号码。\n格式：`/register 姓名 +998901234567`\n例如：\n`/register 张三 +998901234567`\n\n管理员批准后将自动开通使用权限。",
+        "esp_refresh": "刷新状态",
+        "esp_start": "启动 (Start)",
+        "esp_stop": "停止 (Stop)",
+        "esp_mode1": "模式1 (气压+水压+温度)",
+        "esp_mode2": "模式2 (仅气压)",
+        "esp_reset_alarm": "消除警报/警笛",
+        "esp_limits": "阈值设置",
+        "esp_cmd_sent": "✅ 命令已发送给ESP32。",
+        "esp_cmd_fail": "❌ 无法连接到ESP32设备。",
+        "eng_flashcards_btn": "🗂 生词卡片",
+        "eng_ai_tutor_btn": "🤖 与AI练习英语对话",
+        "eng_stats_btn": "📊 我的学习进度",
+        "eng_fc_card": "🗂 *生词卡片* — {title}\n\n🇬🇧 *{en}*\n🇺🇿 {uz}\n🇨🇳 {zh}\n\n({cur}/{total})",
+        "eng_fc_prev": "⬅️ 上一个",
+        "eng_fc_next": "下一个 ➡️",
+        "eng_stats_text": "📊 *您的英语学习进度：*\n\n✅ 已完成课程：*{done}/{total}* ({pct}%)\n{badge}",
+        "eng_tutor_intro": "🤖 *AI 英语辅导老师*\n\n在这里练习您的技术或日常英语！您可以提问词汇或直接对话，我会耐心纠正语法错误。\n\n输入 /exit 或点击底部菜单按钮可随时退出。\n\n_Start typing in English: (例如：Hello, how do I check the water pressure?)_",
+        "eng_tutor_exit": "已退出英语辅导模式，返回主菜单。",
+        "admin_panel_title": "⚙️ *管理员控制台 (Admin Hub)*\n━━━━━━━━━━━━━━━━━━━━\n👑 管理员：*{admins}*\n👥 员工：*{users}* 人\n⏳ 待审核申请：*{pending}* 个\n📚 资料库文档：*{docs}* 份\n🏭 ESP32状态：*{esp32}*\n━━━━━━━━━━━━━━━━━━━━",
+        "admin_btn_users": "👥 员工列表",
+        "admin_btn_pending": "⏳ 待审核申请",
+        "admin_btn_ai": "🤖 AI系统状态",
+        "admin_btn_esp32": "🏭 ESP32工厂控制",
+        "admin_btn_stats": "📊 系统运行统计",
+        "admin_btn_adduser": "➕ 手动添加员工",
+        "admin_uview_text": "👤 *员工详细信息：*\n\n• 姓名：*{name}*\n• Telegram ID：`{uid}`\n• 电话：`{phone}`\n• 注册时间：`{added}`",
+        "admin_udel_btn": "🗑 删除员工",
+        "admin_back_btn": "⬅️ 返回",
+        "admin_udel_confirm": "⚠️ 确定要删除员工 *{name}* (`{uid}`) 吗？",
+        "admin_udel_yes": "✅ 确定删除",
+        "admin_udel_no": "❌ 取消",
+        "admin_pending_empty": "⏳ 当前暂无待审核的申请。",
+        "admin_pending_item": "🆕 *新申请：*\n👤 姓名：*{name}*\n📞 电话：`{phone}`\n🆔 ID：`{uid}`\n📅 时间：`{date}`",
     },
 }
 
@@ -901,6 +1071,7 @@ MACHINE_MENU_LABEL = "🔀 Uskunani tanlash/almashtirish"
 AI_CHAT_LABEL = "🤖 Sun'iy intellekt (erkin savol) / AI Assistant / 人工智能"
 ESP32_MENU_LABEL = "🏭 Zavod monitoring (kompressor/chiller)"
 LIBRARY_MENU_LABEL = "📚 Kutubxona / Library / 资料库"
+ADMIN_PANEL_LABEL = "⚙️ Admin Panel / 管理员面板"
 ADMIN_LIBRARY_LABEL = "🔐 Admin: Kutubxona boshqaruvi"
 HELP_BTN_LABEL = "ℹ️ Yordam / Help / 帮助"
 ENG_COURSE_LABEL = "🇬🇧 Ingliz tili kursi / English Course / 英语课程"
@@ -1111,7 +1282,7 @@ def language_keyboard() -> ReplyKeyboardMarkup:
 
 
 def machine_keyboard(user_id: int = None) -> ReplyKeyboardMarkup:
-    """Asosiy menyu — aniq bo'limlar, admin uchun qo'shimcha tugma."""
+    """Asosiy menyu — aniq bo'limlar, admin uchun qo'shimcha tugmalar."""
     rows = [[line.label] for line in LINES.values()]
     # Yordamchi bo'limlar — 2 tadan qatorlarga bo'lish
     util = [LIBRARY_MENU_LABEL, ENG_COURSE_LABEL, HELP_BTN_LABEL]
@@ -1122,8 +1293,16 @@ def machine_keyboard(user_id: int = None) -> ReplyKeyboardMarkup:
     rows.append([AI_CHAT_LABEL])
     rows.append([LANG_CHANGE_LABEL, MACHINE_MENU_LABEL])
     if user_id and is_admin(user_id):
-        rows.append([ADMIN_LIBRARY_LABEL])
+        rows.append([ADMIN_PANEL_LABEL, ADMIN_LIBRARY_LABEL])
     return ReplyKeyboardMarkup(rows, resize_keyboard=True, is_persistent=True)
+
+
+def unauthorized_keyboard(lang: str = "uz") -> InlineKeyboardMarkup:
+    """Ruxsatsiz foydalanuvchilar uchun qulay tugmalar."""
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("📝 " + t(lang, "req_access_btn"), callback_data="req:start")],
+        [InlineKeyboardButton("🌐 " + LANG_CHANGE_LABEL, callback_data="req:lang")],
+    ])
 
 
 def kb_for(update: Update) -> ReplyKeyboardMarkup:
@@ -1694,12 +1873,17 @@ def build_eng_lesson_text(lesson: dict, idx: int, lang: str) -> str:
     return "\n".join(lines)
 
 
-def build_eng_menu_keyboard(context) -> InlineKeyboardMarkup:
+def build_eng_menu_keyboard(context, lang: str = "uz") -> InlineKeyboardMarkup:
     done = set(_eng_done_list(context))
-    rows = []
+    rows = [
+        [
+            InlineKeyboardButton(t(lang, "eng_stats_btn"), callback_data="eng:stats"),
+            InlineKeyboardButton(t(lang, "eng_ai_tutor_btn"), callback_data="eng:tutor"),
+        ]
+    ]
     for i, lesson in enumerate(ENG_COURSE):
         mark = " ✅" if lesson.get("id") in done else ""
-        label = f"{i + 1}. {lesson.get('title_uz', lesson.get('title_en', ''))[:44]}{mark}"
+        label = f"{i + 1}. {lesson.get('title_uz', lesson.get('title_en', ''))[:40]}{mark}"
         rows.append([InlineKeyboardButton(label[:64], callback_data=safe_callback_data("eng:l", lesson.get("id", "")))])
     return InlineKeyboardMarkup(rows)
 
@@ -1716,7 +1900,7 @@ async def show_eng_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     await safe_reply_text(
         update, _eng_menu_text(context, lang),
-        reply_markup=build_eng_menu_keyboard(context),
+        reply_markup=build_eng_menu_keyboard(context, lang),
     )
 
 
@@ -1741,9 +1925,20 @@ async def _eng_show_result(query, context, lang: str, lesson_id: str, quiz: list
         pass
 
 
+ENGLISH_TUTOR_PROMPT = (
+    "You are a friendly and helpful English Language Tutor for industrial engineers and factory staff. "
+    "The user wants to practice English communication or ask questions about industrial English. "
+    "Instructions:\n"
+    "1. Always reply in clear, professional English.\n"
+    "2. If the user makes any grammatical, spelling, or vocabulary mistakes, provide a gentle correction and short explanation under a '💡 Correction / Maslahat:' section.\n"
+    "3. Keep responses conversational, concise (2-4 sentences), and ask a question to continue the dialogue.\n"
+    "4. If the user asks in Uzbek or Chinese, explain in that language first, then provide the English phrase."
+)
+
+
 async def handle_english_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
     """Kurs inline callbacklari:
-    eng:menu | eng:l:<id> | eng:q:<id>:<n> | eng:a:<id>:<n>:<k>"""
+    eng:menu | eng:l:<id> | eng:q:<id>:<n> | eng:a:<id>:<n>:<k> | eng:fc:<id>:<k> | eng:stats | eng:reset | eng:tutor"""
     query = update.callback_query
     lang = get_lang(context)
     if not ENG_COURSE:
@@ -1757,7 +1952,45 @@ async def handle_english_callback(update: Update, context: ContextTypes.DEFAULT_
         try:
             await query.edit_message_text(
                 _eng_menu_text(context, lang), parse_mode="Markdown",
-                reply_markup=build_eng_menu_keyboard(context), disable_web_page_preview=True,
+                reply_markup=build_eng_menu_keyboard(context, lang), disable_web_page_preview=True,
+            )
+        except Exception:
+            pass
+        return
+
+    if parts[1] == "tutor":
+        await query.answer()
+        context.user_data["mode"] = "eng_tutor"
+        try:
+            await query.message.reply_text(t(lang, "eng_tutor_intro"), parse_mode="Markdown")
+        except Exception:
+            pass
+        return
+
+    if parts[1] == "stats":
+        await query.answer()
+        done = set(_eng_done_list(context)) & {l.get("id") for l in ENG_COURSE}
+        total = len(ENG_COURSE)
+        pct = int((len(done) / total) * 100) if total else 0
+        badge = "🏆 *Tabriklaymiz! Barcha darslarni to'liq yakunladingiz!*" if pct == 100 else "💪 O'rganishda davom eting!"
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔄 Qayta boshlash (Reset)", callback_data="eng:reset")],
+            [InlineKeyboardButton(t(lang, "eng_back_btn"), callback_data="eng:menu")],
+        ])
+        text = t(lang, "eng_stats_text", done=len(done), total=total, pct=pct, badge=badge)
+        try:
+            await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+        except Exception:
+            pass
+        return
+
+    if parts[1] == "reset":
+        await query.answer("Natijalar qayta boshlandi!")
+        context.user_data["eng_done"] = []
+        try:
+            await query.edit_message_text(
+                _eng_menu_text(context, lang), parse_mode="Markdown",
+                reply_markup=build_eng_menu_keyboard(context, lang),
             )
         except Exception:
             pass
@@ -1774,6 +2007,7 @@ async def handle_english_callback(update: Update, context: ContextTypes.DEFAULT_
         text = build_eng_lesson_text(lesson, idx, lang)
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton(t(lang, "eng_quiz_btn"), callback_data=f"eng:q:{lesson_id}:0")],
+            [InlineKeyboardButton(t(lang, "eng_flashcards_btn"), callback_data=f"eng:fc:{lesson_id}:0")],
             [InlineKeyboardButton(t(lang, "eng_back_btn"), callback_data="eng:menu")],
         ])
         try:
@@ -1785,6 +2019,30 @@ async def handle_english_callback(update: Update, context: ContextTypes.DEFAULT_
                 await query.message.reply_text(text, parse_mode="Markdown", reply_markup=kb)
             except Exception:
                 pass
+        return
+
+    if parts[1] == "fc":
+        await query.answer()
+        words = lesson.get("words", [])
+        if not words:
+            return
+        w_idx = max(0, min(int(parts[3]) if len(parts) > 3 else 0, len(words) - 1))
+        w = words[w_idx]
+        title = lesson.get("title_uz", lesson.get("title_en", ""))
+        text = t(lang, "eng_fc_card", title=title, en=w.get("en", ""), uz=w.get("uz", ""), zh=w.get("zh", ""), cur=w_idx + 1, total=len(words))
+        nav = []
+        if w_idx > 0:
+            nav.append(InlineKeyboardButton(t(lang, "eng_fc_prev"), callback_data=f"eng:fc:{lesson_id}:{w_idx - 1}"))
+        if w_idx < len(words) - 1:
+            nav.append(InlineKeyboardButton(t(lang, "eng_fc_next"), callback_data=f"eng:fc:{lesson_id}:{w_idx + 1}"))
+        rows = []
+        if nav:
+            rows.append(nav)
+        rows.append([InlineKeyboardButton(t(lang, "eng_back_btn"), callback_data=f"eng:l:{lesson_id}")])
+        try:
+            await query.edit_message_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(rows))
+        except Exception:
+            pass
         return
 
     quiz = lesson.get("quiz", [])
@@ -1914,41 +2172,146 @@ def _gemini_generate(system_prompt: str, user_text: str) -> str:
     return (resp.text or "").strip()
 
 
-def _groq_generate(system_prompt: str, user_text: str) -> str:
-    if not groq_client:
-        raise RuntimeError("Groq sozlanmagan")
-    resp = groq_client.chat.completions.create(
-        model=GROQ_MODEL,
-        messages=[
+def _openai_compatible_chat(base_url, api_key, model, system_prompt, user_text, extra_headers=None):
+    """OpenAI-mos chat/completions API'sini urllib orqali chaqiradi (SDK shart emas).
+    Groq, OpenRouter, DeepSeek, Mistral, Cerebras, Together — barchasi shu formatda."""
+    payload = {
+        "model": model,
+        "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_text},
         ],
-        max_tokens=AI_MAX_OUTPUT_TOKENS,
-        temperature=0.3,
-    )
-    return (resp.choices[0].message.content or "").strip()
+        "max_tokens": AI_MAX_OUTPUT_TOKENS,
+        "temperature": 0.3,
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + api_key,
+    }
+    if extra_headers:
+        headers.update(extra_headers)
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(base_url, data=data, headers=headers, method="POST")
+    with urllib.request.urlopen(req, timeout=AI_HTTP_TIMEOUT) as resp:
+        body = json.loads(resp.read().decode("utf-8", "ignore"))
+    choices = body.get("choices") or []
+    if not choices:
+        raise RuntimeError("provayder bo'sh javob qaytardi")
+    return (choices[0].get("message", {}).get("content") or "").strip()
 
 
-def _openrouter_generate(system_prompt: str, user_text: str) -> str:
-    if not openrouter_client:
-        raise RuntimeError("OpenRouter sozlanmagan")
-    resp = openrouter_client.chat.completions.create(
-        model=OPENROUTER_MODEL,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_text},
-        ],
-        max_tokens=AI_MAX_OUTPUT_TOKENS,
-        temperature=0.3,
-    )
-    return (resp.choices[0].message.content or "").strip()
+def _anthropic_chat(api_key, model, system_prompt, user_text):
+    """Anthropic Claude Messages API (urllib orqali, SDK shart emas)."""
+    payload = {
+        "model": model,
+        "max_tokens": AI_MAX_OUTPUT_TOKENS,
+        "system": system_prompt,
+        "messages": [{"role": "user", "content": user_text}],
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": api_key,
+        "anthropic-version": "2023-06-01",
+    }
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request("https://api.anthropic.com/v1/messages", data=data, headers=headers, method="POST")
+    with urllib.request.urlopen(req, timeout=AI_HTTP_TIMEOUT) as resp:
+        body = json.loads(resp.read().decode("utf-8", "ignore"))
+    content = body.get("content") or []
+    if not content:
+        raise RuntimeError("Claude provayderi bo'sh javob qaytardi")
+    return (content[0].get("text") or "").strip()
 
 
+def _openrouter_chat_cascade(api_key, primary_model, system_prompt, user_text):
+    """OpenRouter orqali avtomatik zaxira modellari bilan so'rov yuborish.
+    Agar asosiy bepul model band bo'lsa, zaxiradagi bepul modellarni ketma-ket sinab ko'radi."""
+    models_to_try = [primary_model]
+    for b_mod in [
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "deepseek/deepseek-r1:free",
+        "google/gemini-2.0-flash-exp:free",
+        "qwen/qwen-2.5-72b-instruct:free",
+    ]:
+        if b_mod not in models_to_try:
+            models_to_try.append(b_mod)
+
+    last_err = None
+    for mod in models_to_try:
+        try:
+            return _openai_compatible_chat(
+                "https://openrouter.ai/api/v1/chat/completions",
+                api_key, mod, system_prompt, user_text,
+                {"HTTP-Referer": "https://t.me/plc_fault_bot", "X-Title": "PLC Fault Bot"},
+            )
+        except Exception as e:
+            last_err = e
+            continue
+    raise last_err or RuntimeError("OpenRouter modellari javob bermadi")
+
+
+def _make_openai_provider(base_url, api_key, model, extra_headers=None):
+    def _gen(system_prompt: str, user_text: str) -> str:
+        return _openai_compatible_chat(base_url, api_key, model, system_prompt, user_text, extra_headers)
+    return _gen
+
+
+def _make_anthropic_provider(api_key, model):
+    def _gen(system_prompt: str, user_text: str) -> str:
+        return _anthropic_chat(api_key, model, system_prompt, user_text)
+    return _gen
+
+
+def _make_openrouter_provider(api_key, model):
+    def _gen(system_prompt: str, user_text: str) -> str:
+        return _openrouter_chat_cascade(api_key, model, system_prompt, user_text)
+    return _gen
+
+
+# Barcha AI'lar ustuvorlik tartibida:
+# 1. Gemini (SDK) — eng tezkor va asosiy
+# 2. Groq (Llama 3.3 70B / Mixtral) — chaqmoqdek tez bepul zaxira
+# 3. OpenAI (GPT-4o-mini / GPT-4o) — rasmiy OpenAI
+# 4. Anthropic Claude (Claude 3.5 Haiku / Sonnet)
+# 5. DeepSeek (DeepSeek-V3 / R1)
+# 6. Mistral AI (Mistral Small / Large)
+# 7. Cerebras (Llama-3.3 70b)
+# 8. Together AI
+# 9. xAI (Grok-2)
+# 10. Cohere (Command R)
+# 11. OpenRouter (Ko'p modelli bepul kaskad)
 AI_PROVIDERS = [("Gemini", _gemini_generate)]
-if groq_client:
-    AI_PROVIDERS.append(("Groq", _groq_generate))
-if openrouter_client:
-    AI_PROVIDERS.append(("OpenRouter", _openrouter_generate))
+
+if GROQ_API_KEY:
+    AI_PROVIDERS.append(("Groq", _make_openai_provider("https://api.groq.com/openai/v1/chat/completions", GROQ_API_KEY, GROQ_MODEL)))
+
+if OPENAI_API_KEY:
+    AI_PROVIDERS.append(("OpenAI", _make_openai_provider("https://api.openai.com/v1/chat/completions", OPENAI_API_KEY, OPENAI_MODEL)))
+
+if ANTHROPIC_API_KEY:
+    AI_PROVIDERS.append(("Claude", _make_anthropic_provider(ANTHROPIC_API_KEY, ANTHROPIC_MODEL)))
+
+if DEEPSEEK_API_KEY:
+    AI_PROVIDERS.append(("DeepSeek", _make_openai_provider("https://api.deepseek.com/chat/completions", DEEPSEEK_API_KEY, DEEPSEEK_MODEL)))
+
+if MISTRAL_API_KEY:
+    AI_PROVIDERS.append(("Mistral", _make_openai_provider("https://api.mistral.ai/v1/chat/completions", MISTRAL_API_KEY, MISTRAL_MODEL)))
+
+if CEREBRAS_API_KEY:
+    AI_PROVIDERS.append(("Cerebras", _make_openai_provider("https://api.cerebras.ai/v1/chat/completions", CEREBRAS_API_KEY, CEREBRAS_MODEL)))
+
+if TOGETHER_API_KEY:
+    AI_PROVIDERS.append(("Together", _make_openai_provider("https://api.together.xyz/v1/chat/completions", TOGETHER_API_KEY, TOGETHER_MODEL)))
+
+if XAI_API_KEY:
+    AI_PROVIDERS.append(("xAI", _make_openai_provider("https://api.x.ai/v1/chat/completions", XAI_API_KEY, XAI_MODEL)))
+
+if COHERE_API_KEY:
+    AI_PROVIDERS.append(("Cohere", _make_openai_provider("https://api.cohere.com/v2/chat", COHERE_API_KEY, COHERE_MODEL)))
+
+if OPENROUTER_API_KEY:
+    AI_PROVIDERS.append(("OpenRouter", _make_openrouter_provider(OPENROUTER_API_KEY, OPENROUTER_MODEL)))
+
 
 
 def _generate_sync(system_prompt: str, user_text: str):
@@ -2228,15 +2591,30 @@ async def handle_library_callback(update: Update, context: ContextTypes.DEFAULT_
     await query.answer()
 
 
+async def handle_req_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    """Ruxsatsiz foydalanuvchilarning ro'yxatdan o'tish yoki til so'rovlari."""
+    query = update.callback_query
+    lang = get_lang(context)
+    await query.answer()
+    if data == "req:start":
+        await query.message.reply_text(t(lang, "req_prompt"), parse_mode="Markdown")
+    elif data == "req:lang":
+        await query.message.reply_text(TEXT["uz"]["choose_lang"], reply_markup=language_keyboard())
+
+
 async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     data = query.data or ""
     lang = context.user_data.get("lang", "uz")
+    uid = update.effective_user.id
 
-    # XAVFSIZLIK: har qanday tugma bosilishidan oldin ruxsatni tekshiramiz —
-    # aks holda begona/ruxsatsiz shaxs (masalan bot tokeni sizib chiqqan bo'lsa)
-    # o'zi uchun soxta tugma yaratib, ma'lumotlarni o'zgartira olishi mumkin edi.
-    if not is_authorized(update.effective_user.id):
+    # 1. Ruxsatsiz foydalanuvchilar so'rovlari (ruxsat tekshiruvidan oldin)
+    if data.startswith("req:"):
+        await handle_req_callback(update, context, data)
+        return
+
+    # 2. XAVFSIZLIK: har qanday boshqa tugma bosilishidan oldin ruxsatni tekshiramiz
+    if not is_authorized(uid):
         await query.answer(text=t(lang, "security_blocked"), show_alert=True)
         try:
             await query.edit_message_reply_markup(reply_markup=None)
@@ -2244,32 +2622,41 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
             pass
         return
 
-    # Kutubxona inline tugmalari
+    # 3. Ro'yxatdan o'tish arizasini tasdiqlash/rad etish (reg:) — faqat admin
+    if data.startswith("reg:"):
+        if not is_admin(uid):
+            await query.answer(text=t(lang, "admin_only"), show_alert=True)
+            return
+        _, action, reg_id = data.split(":", 2)
+        await handle_registration_callback(update, context, action, reg_id)
+        return
+
+    # 4. Admin paneli (adm: va usr:)
+    if data.startswith("adm:") or data.startswith("usr"):
+        await handle_admin_panel_callback(update, context, data)
+        return
+
+    # 5. ESP32 boshqaruvi (esp:)
+    if data.startswith("esp:"):
+        await handle_esp32_callback(update, context, data)
+        return
+
+    # 6. Kutubxona inline tugmalari
     if data.startswith("lib"):
         await handle_library_callback(update, context, data)
         return
 
-    # Ingliz tili kursi inline tugmalari
+    # 7. Ingliz tili kursi inline tugmalari
     if data.startswith("eng:"):
         await handle_english_callback(update, context, data)
         return
 
     await query.answer()
 
-    if data.startswith("reg:"):
-        _, action, reg_id = data.split(":", 2)
-        # XAVFSIZLIK: faqat admin ro'yxatdan o'tishni tasdiqlay/rad eta oladi.
-        if not is_admin(update.effective_user.id):
-            return
-        await handle_registration_callback(update, context, action, reg_id)
-        return
-
+    # 8. AI javobiga feedback (fb:)
     parts = data.split(":", 2)
-    if len(parts) != 3:
-        return
-    kind, value, answer_id = parts
-
-    if kind == "fb":
+    if len(parts) == 3 and parts[0] == "fb":
+        _, value, answer_id = parts
         log_feedback(answer_id, "feedback", value)
         msg = t(lang, "feedback_thanks_up") if value == "up" else t(lang, "feedback_thanks_down")
         await query.answer(text=msg, show_alert=False)
@@ -2277,6 +2664,17 @@ async def handle_feedback_callback(update: Update, context: ContextTypes.DEFAULT
             await query.edit_message_reply_markup(reply_markup=None)
         except Exception:
             pass
+        return
+
+    # 9. Qolgan barcha inline tugmalar ESP32 relay orqali uzatiladi
+    if ESP32_CMD_URL:
+        res = await esp32_relay(
+            "callback", update.effective_chat.id, data,
+            from_name=(update.effective_user.full_name or "")[:64],
+            query_id=query.id,
+        )
+        if res:
+            context.user_data["esp32_session"] = bool(res.get("session_open"))
 
 
 # ---------------------------------------------------------------------------
@@ -2385,6 +2783,33 @@ async def fetch_esp32_status():
         return None
 
 
+# --- BITTA BOT RELAY: ESP32'ga tegishli xabar/tugmalarni /tg orqali yetkazish ---
+def _esp32_relay_sync(params: dict):
+    query = urllib.parse.urlencode(params)
+    req = urllib.request.Request(ESP32_CMD_URL + "?" + query, headers={"User-Agent": "plc-bot"})
+    with urllib.request.urlopen(req, timeout=ESP32_TIMEOUT_SEC) as resp:
+        return json.loads(resp.read().decode("utf-8", "ignore"))
+
+
+async def esp32_relay(msg_type: str, chat_id, text: str, from_name: str = "", query_id: str = ""):
+    """ESP32'ga xabar/callback/start relay qiladi.
+    Qaytaradi: {"ok":..,"handled":..} yoki None (relay sozlanmagan/xatolik).
+    handled=True bo'lsa — ESP32 xabarni o'zi qayta ishlagan (Python AI'ga yubormaydi)."""
+    if not ESP32_CMD_URL:
+        return None
+    params = {
+        "key": ESP32_CMD_KEY, "type": msg_type,
+        "chat_id": str(chat_id), "text": text, "from": from_name,
+    }
+    if query_id:
+        params["query_id"] = query_id
+    try:
+        return await asyncio.to_thread(_esp32_relay_sync, params)
+    except Exception as e:
+        logger.warning("ESP32 relay xatosi: %s", e)
+        return None
+
+
 UPTIME_UNITS = {
     "uz": ("soat", "daqiqa"), "en": ("h", "m"), "zh": ("小时", "分钟"),
 }
@@ -2413,19 +2838,138 @@ def format_esp32_status(data: dict, lang: str) -> str:
     )
 
 
+def build_esp32_control_keyboard(lang: str = "uz", is_admin_user: bool = False):
+    rows = [
+        [InlineKeyboardButton("🔄 " + t(lang, "esp_refresh"), callback_data="esp:refresh")],
+    ]
+    if is_admin_user:
+        rows.append([
+            InlineKeyboardButton("🚀 " + t(lang, "esp_start"), callback_data="esp:start"),
+            InlineKeyboardButton("⏸️ " + t(lang, "esp_stop"), callback_data="esp:stop"),
+        ])
+        rows.append([
+            InlineKeyboardButton("🌐 " + t(lang, "esp_mode1"), callback_data="esp:mode1"),
+            InlineKeyboardButton("💨 " + t(lang, "esp_mode2"), callback_data="esp:mode2"),
+        ])
+        rows.append([
+            InlineKeyboardButton("🔕 " + t(lang, "esp_reset_alarm"), callback_data="esp:reset_alarm"),
+            InlineKeyboardButton("⚙️ " + t(lang, "esp_limits"), callback_data="esp:limits"),
+        ])
+    return InlineKeyboardMarkup(rows)
+
+
 async def handle_esp32_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = get_lang(context)
+    uid = update.effective_user.id
+    if not is_authorized(uid):
+        await update.message.reply_text(t(lang, "access_denied_detail"), parse_mode="Markdown", reply_markup=unauthorized_keyboard(lang))
+        return
+
     if not ESP32_STATUS_URL:
         await update.message.reply_text(t(lang, "esp32_not_configured"), reply_markup=kb_for(update))
         return
-    await update.message.reply_text(t(lang, "esp32_fetching"))
+
+    msg_status = await update.message.reply_text(t(lang, "esp32_fetching"))
     data = await fetch_esp32_status()
+    kb = build_esp32_control_keyboard(lang, is_admin(uid))
     if data is None:
-        await update.message.reply_text(t(lang, "esp32_unreachable"), reply_markup=kb_for(update))
+        offline_text = (
+            f"{t(lang, 'esp32_unreachable')}\n\n"
+            f"📡 Manzil: `{ESP32_STATUS_URL}`\n"
+            "🔍 Tekshiring:\n"
+            "1. ESP32 elektr tarmog'iga ulanganmi?\n"
+            "2. Zavod Wi-Fi tarmog'i faolmi?\n"
+            "3. IP manzil to'g'riligini tekshiring."
+        )
+        refresh_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔄 " + t(lang, "esp_refresh"), callback_data="esp:refresh")]])
+        try:
+            await msg_status.edit_text(offline_text, parse_mode="Markdown", reply_markup=refresh_kb)
+        except Exception:
+            await update.message.reply_text(offline_text, parse_mode="Markdown", reply_markup=refresh_kb)
         return
-    await update.message.reply_text(
-        format_esp32_status(data, lang), parse_mode="Markdown", reply_markup=kb_for(update)
-    )
+
+    try:
+        await msg_status.edit_text(
+            format_esp32_status(data, lang), parse_mode="Markdown", reply_markup=kb
+        )
+    except Exception:
+        await update.message.reply_text(
+            format_esp32_status(data, lang), parse_mode="Markdown", reply_markup=kb
+        )
+
+
+async def handle_esp32_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    """ESP32 boshqaruv inline tugmalari."""
+    query = update.callback_query
+    lang = get_lang(context)
+    uid = update.effective_user.id
+
+    if not is_authorized(uid):
+        await query.answer(text=t(lang, "security_blocked"), show_alert=True)
+        return
+
+    action = data.split(":", 1)[1] if ":" in data else ""
+
+    if action == "refresh":
+        await query.answer("Yangilanmoqda...")
+        status_data = await fetch_esp32_status()
+        kb = build_esp32_control_keyboard(lang, is_admin(uid))
+        if status_data:
+            text = format_esp32_status(status_data, lang) + f"\n\n⏱ _Oxirgi yangilanish: {datetime.now().strftime('%H:%M:%S')}_"
+            try:
+                await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+            except Exception:
+                pass
+        else:
+            await query.answer(t(lang, "esp32_unreachable"), show_alert=True)
+        return
+
+    # Qolgan boshqaruv buyruqlari faqat admin uchun
+    if not is_admin(uid):
+        await query.answer(t(lang, "admin_only"), show_alert=True)
+        return
+
+    cmd_map = {
+        "start": "🚀 Start",
+        "stop": "⏸️ Stop",
+        "mode1": "🌐 1-Rejim",
+        "mode2": "💨 2-Rejim",
+        "reset_alarm": "/reset_alarm",
+    }
+
+    if action in cmd_map:
+        await query.answer("Buyruq yuborilmoqda...")
+        res = await esp32_relay("message", update.effective_chat.id, cmd_map[action], from_name=(update.effective_user.full_name or "")[:64])
+        if res:
+            await query.answer(t(lang, "esp_cmd_sent"), show_alert=False)
+        else:
+            await query.answer(t(lang, "esp_cmd_fail"), show_alert=True)
+
+        await asyncio.sleep(0.5)
+        status_data = await fetch_esp32_status()
+        if status_data:
+            kb = build_esp32_control_keyboard(lang, is_admin(uid))
+            text = format_esp32_status(status_data, lang) + f"\n\n⏱ _Oxirgi yangilanish: {datetime.now().strftime('%H:%M:%S')}_"
+            try:
+                await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+            except Exception:
+                pass
+        return
+
+    if action == "limits":
+        status_data = await fetch_esp32_status()
+        if status_data and "limits" in status_data:
+            lim = status_data["limits"]
+            msg = (
+                f"⚙️ *ESP32 Chegaralari:*\n"
+                f"• Havo: {lim.get('air_min')} — {lim.get('air_norm')} — {lim.get('air_max')} bar\n"
+                f"• Suv: {lim.get('water_min')} — {lim.get('water_norm')} — {lim.get('water_max')} bar\n"
+                f"• Harorat: {lim.get('temp_min')} — {lim.get('temp_norm')} — {lim.get('temp_max')} °C"
+            )
+            await query.answer(msg, show_alert=True)
+        else:
+            await query.answer("Limitlarni olib bo'lmadi.", show_alert=True)
+        return
 
 
 # ---------------------------------------------------------------------------
@@ -2433,6 +2977,17 @@ async def handle_esp32_status(update: Update, context: ContextTypes.DEFAULT_TYPE
 # ---------------------------------------------------------------------------
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # BITTA BOT: /start orqali ESP32 monitoring tizimiga ham ro'yxatdan o'tish
+    # so'rovi yuboriladi (foydalanuvchi noma'lum bo'lsa, ESP32 admin tasdiqlaydi).
+    if ESP32_CMD_URL:
+        try:
+            await esp32_relay(
+                "start", update.effective_chat.id, "/start",
+                from_name=(update.effective_user.full_name or "")[:64],
+            )
+        except Exception:
+            pass
+
     # Avval til (ro'yxatdan o'tmaganlar ham til tanlay oladi)
     if not context.user_data.get("lang"):
         await update.message.reply_text(TEXT["uz"]["choose_lang"], reply_markup=language_keyboard())
@@ -2444,6 +2999,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             t(lang, "access_denied_detail"),
             parse_mode="Markdown",
+            reply_markup=unauthorized_keyboard(lang),
         )
         return
 
@@ -2666,6 +3222,320 @@ async def listusers_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for uid, info in ALLOWED_USERS.items()
     ) or "—"
     await update.message.reply_text(f"👑 Adminlar: {admins}\n\n👤 Xodimlar:\n{users}")
+
+
+# ---------------------------------------------------------------------------
+# Mukammal Admin Paneli (Boshqaruv markazi):
+# - Barcha ro'yxatdan o'tgan xodimlarni ko'rish, tekshirish va o'chirish
+# - Kutilayotgan arizalarni bir zumda tasdiqlash / rad etish
+# - AI tizimlar holatini kuzatish
+# - ESP32 boshqaruvi va bot statistikasi
+# ---------------------------------------------------------------------------
+USERS_PAGE_SIZE = 6
+
+
+def _users_panel_text(lang: str) -> str:
+    admins = ", ".join(str(x) for x in sorted(ADMIN_USER_IDS)) or "—"
+    lines = [
+        t(lang, "users_panel_title", count=len(ALLOWED_USERS)),
+        t(lang, "users_panel_admins", admins=admins),
+        t(lang, "users_panel_pending", count=len(PENDING_REGISTRATIONS)),
+    ]
+    if not ALLOWED_USERS:
+        lines.append("")
+        lines.append(t(lang, "users_panel_empty"))
+    return "\n".join(lines)
+
+
+def _users_panel_keyboard(page: int, lang: str):
+    items = list(ALLOWED_USERS.items())
+    total = len(items)
+    pages = max(1, (total + USERS_PAGE_SIZE - 1) // USERS_PAGE_SIZE)
+    page = max(0, min(page, pages - 1))
+    start = page * USERS_PAGE_SIZE
+    rows = []
+    for uid, info in items[start:start + USERS_PAGE_SIZE]:
+        nm = (info.get("name") or str(uid))
+        rows.append([InlineKeyboardButton(
+            f"👤 {nm[:20]} · {uid}", callback_data=safe_callback_data("adm:uview", uid)
+        )])
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton("⬅️", callback_data=f"adm:upg:{page - 1}"))
+    nav.append(InlineKeyboardButton(
+        t(lang, "users_page", page=page + 1, total=pages), callback_data="adm:noop"
+    ))
+    if page < pages - 1:
+        nav.append(InlineKeyboardButton("➡️", callback_data=f"adm:upg:{page + 1}"))
+    if nav:
+        rows.append(nav)
+    rows.append([
+        InlineKeyboardButton(t(lang, "admin_btn_adduser"), callback_data="adm:adduser"),
+        InlineKeyboardButton("🔙 Bosh menyu", callback_data="adm:menu"),
+    ])
+    return InlineKeyboardMarkup(rows)
+
+
+async def show_admin_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Adminning asosiy interaktiv boshqaruv paneli."""
+    lang = get_lang(context)
+    uid = update.effective_user.id if update and update.effective_user else None
+    if not is_admin(uid):
+        if update.callback_query:
+            await update.callback_query.answer(t(lang, "admin_only"), show_alert=True)
+        else:
+            await update.message.reply_text(t(lang, "admin_only"))
+        return
+
+    admins_str = ", ".join(str(x) for x in sorted(ADMIN_USER_IDS)) or "—"
+    esp_status_str = "Sozlangan ✅" if ESP32_STATUS_URL else "Sozlanmagan ⚠️"
+    text = t(
+        lang, "admin_panel_title",
+        admins=admins_str,
+        users=len(ALLOWED_USERS),
+        pending=len(PENDING_REGISTRATIONS),
+        docs=len(LIBRARY_DOCS),
+        esp32=esp_status_str,
+    )
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton(f"{t(lang, 'admin_btn_users')} ({len(ALLOWED_USERS)})", callback_data="adm:users:0")],
+        [InlineKeyboardButton(f"{t(lang, 'admin_btn_pending')} ({len(PENDING_REGISTRATIONS)})", callback_data="adm:pending")],
+        [
+            InlineKeyboardButton(t(lang, "admin_btn_ai"), callback_data="adm:ai"),
+            InlineKeyboardButton(t(lang, "admin_btn_esp32"), callback_data="adm:esp32"),
+        ],
+        [
+            InlineKeyboardButton(t(lang, "admin_btn_stats"), callback_data="adm:stats"),
+            InlineKeyboardButton("📚 Kutubxona", callback_data="adm:lib"),
+        ],
+        [InlineKeyboardButton("✖️ Yopish", callback_data="adm:close")],
+    ])
+
+    if update.callback_query:
+        await update.callback_query.answer()
+        try:
+            await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+        except Exception:
+            pass
+    else:
+        await update.message.reply_text(text, parse_mode="Markdown", reply_markup=kb)
+
+
+async def show_user_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Foydalanuvchilar ro'yxati (komanda yoki tugma orqali)."""
+    lang = get_lang(context)
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text(t(lang, "admin_only"))
+        return
+    kb = _users_panel_keyboard(0, lang)
+    await update.message.reply_text(_users_panel_text(lang), reply_markup=kb)
+
+
+async def handle_admin_panel_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    """Admin markazining barcha inline tugmalarini boshqarish."""
+    query = update.callback_query
+    lang = get_lang(context)
+    uid = update.effective_user.id
+
+    if not is_admin(uid):
+        await query.answer(text=t(lang, "security_blocked"), show_alert=True)
+        return
+
+    await query.answer()
+
+    if data in ("adm:close", "usrclose"):
+        try:
+            await query.edit_message_reply_markup(reply_markup=None)
+        except Exception:
+            pass
+        return
+
+    if data in ("adm:noop", "usrnoop"):
+        return
+
+    if data == "adm:menu":
+        await show_admin_dashboard(update, context)
+        return
+
+    if data.startswith("adm:users:") or data.startswith("adm:upg:") or data.startswith("usrpg:"):
+        try:
+            page = int(data.split(":", 2)[-1])
+        except (ValueError, IndexError):
+            page = 0
+        try:
+            await query.edit_message_text(
+                _users_panel_text(lang), reply_markup=_users_panel_keyboard(page, lang)
+            )
+        except Exception:
+            pass
+        return
+
+    if data.startswith("adm:uview:"):
+        target_uid_str = data.split(":", 2)[2]
+        try:
+            target_uid = int(target_uid_str)
+            info = ALLOWED_USERS.get(target_uid, {})
+        except ValueError:
+            target_uid = target_uid_str
+            info = {}
+
+        name = info.get("name") or "Noma'lum"
+        phone = info.get("phone") or "—"
+        added = info.get("added_at", "—")[:19]
+        text = t(lang, "admin_uview_text", name=name, uid=target_uid, phone=phone, added=added)
+
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton(t(lang, "admin_udel_btn"), callback_data=safe_callback_data("adm:udel", target_uid))],
+            [InlineKeyboardButton(t(lang, "admin_back_btn"), callback_data="adm:users:0")],
+        ])
+        try:
+            await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+        except Exception:
+            pass
+        return
+
+    if data.startswith("adm:udel:") or data.startswith("usrask:"):
+        target_uid_str = data.split(":", 2)[-1]
+        try:
+            target_uid = int(target_uid_str)
+            info = ALLOWED_USERS.get(target_uid, {})
+        except ValueError:
+            info = {}
+        name = info.get("name") or target_uid_str
+        text = t(lang, "admin_udel_confirm", name=name, uid=target_uid_str)
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton(t(lang, "admin_udel_yes"), callback_data=safe_callback_data("adm:udelyes", target_uid_str))],
+            [InlineKeyboardButton(t(lang, "admin_udel_no"), callback_data=safe_callback_data("adm:uview", target_uid_str))],
+        ])
+        try:
+            await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+        except Exception:
+            pass
+        return
+
+    if data.startswith("adm:udelyes:") or data.startswith("usryes:"):
+        target_uid_str = data.split(":", 2)[-1]
+        try:
+            ALLOWED_USERS.pop(int(target_uid_str), None)
+            _save_allowed_users()
+        except ValueError:
+            pass
+        text = f"🗑 *Xodim o'chirildi:* `{target_uid_str}`\n\nFoydalanuvchi endi botdan foydalana olmaydi."
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton(t(lang, "admin_btn_users"), callback_data="adm:users:0")],
+            [InlineKeyboardButton("🔙 Boshqaruv paneli", callback_data="adm:menu")],
+        ])
+        try:
+            await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+        except Exception:
+            pass
+        return
+
+    if data == "adm:pending":
+        if not PENDING_REGISTRATIONS:
+            text = f"⏳ *Kutilayotgan arizalar:*\n\n{t(lang, 'admin_pending_empty')}"
+            kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Boshqaruv paneli", callback_data="adm:menu")]])
+            try:
+                await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+            except Exception:
+                pass
+            return
+
+        text = f"⏳ *Kutilayotgan arizalar soni: {len(PENDING_REGISTRATIONS)} ta*\nTasdiqlash yoki rad etish uchun tanlang:"
+        rows = []
+        for reg_id, reg in list(PENDING_REGISTRATIONS.items())[:10]:
+            nm = reg.get("name") or "Noma'lum"
+            ph = reg.get("phone") or ""
+            rows.append([
+                InlineKeyboardButton(f"👤 {nm[:16]} ({ph})", callback_data=f"adm:pview:{reg_id}"),
+                InlineKeyboardButton("✅", callback_data=f"reg:approve:{reg_id}"),
+                InlineKeyboardButton("❌", callback_data=f"reg:reject:{reg_id}"),
+            ])
+        rows.append([[InlineKeyboardButton("🔙 Boshqaruv paneli", callback_data="adm:menu")]][0])
+        try:
+            await query.edit_message_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(rows))
+        except Exception:
+            pass
+        return
+
+    if data.startswith("adm:pview:"):
+        reg_id = data.split(":", 2)[2]
+        reg = PENDING_REGISTRATIONS.get(reg_id)
+        if not reg:
+            await query.answer("Bu ariza allaqachon ko'rib chiqilgan.", show_alert=True)
+            await show_admin_dashboard(update, context)
+            return
+        text = t(
+            lang, "admin_pending_item",
+            name=reg.get("name", "Noma'lum"),
+            phone=reg.get("phone", "—"),
+            uid=reg.get("uid", "—"),
+            date=reg.get("requested_at", "—")[:19],
+        )
+        kb = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("✅ Qabul qilish", callback_data=f"reg:approve:{reg_id}"),
+                InlineKeyboardButton("❌ Rad etish", callback_data=f"reg:reject:{reg_id}"),
+            ],
+            [InlineKeyboardButton("⬅️ Arizalar ro'yxati", callback_data="adm:pending")],
+        ])
+        try:
+            await query.edit_message_text(text, parse_mode="Markdown", reply_markup=kb)
+        except Exception:
+            pass
+        return
+
+    if data == "adm:ai":
+        lines = ["🤖 *AI Provayderlar holati va kaskadi:*\n━━━━━━━━━━━━━━━━━━━━"]
+        for name, _ in AI_PROVIDERS:
+            if _provider_ready(name):
+                lines.append(f"✅ *{name}* — Faol va tayyor")
+            else:
+                wait_sec = int(_provider_cooldown_until.get(name, 0) - time.time())
+                lines.append(f"⏳ *{name}* — Dam olmoqda (~{wait_sec}s qoldi)")
+        lines.append("━━━━━━━━━━━━━━━━━━━━\n_Barcha kalitlar .env orqali boshqariladi._")
+        kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Boshqaruv paneli", callback_data="adm:menu")]])
+        try:
+            await query.edit_message_text("\n".join(lines), parse_mode="Markdown", reply_markup=kb)
+        except Exception:
+            pass
+        return
+
+    if data == "adm:esp32":
+        await handle_esp32_status(update, context)
+        return
+
+    if data == "adm:stats":
+        stats_text = (
+            "📊 *Bot statistikasi:*\n━━━━━━━━━━━━━━━━━━━━\n"
+            f"👥 Ruxsatli xodimlar: *{len(ALLOWED_USERS)}* ta\n"
+            f"👑 Administratorlar: *{len(ADMIN_USER_IDS)}* ta\n"
+            f"🤖 Faol AI tizimlar: *{len(AI_PROVIDERS)}* ta\n"
+            f"📚 Kutubxona fayllari: *{len(LIBRARY_DOCS)}* ta\n"
+            f"⏳ Kutilayotgan arizalar: *{len(PENDING_REGISTRATIONS)}* ta\n"
+            f"💾 Keshdagi javoblar: *{len(ANSWER_CACHE)}* ta\n"
+            "━━━━━━━━━━━━━━━━━━━━"
+        )
+        kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Boshqaruv paneli", callback_data="adm:menu")]])
+        try:
+            await query.edit_message_text(stats_text, parse_mode="Markdown", reply_markup=kb)
+        except Exception:
+            pass
+        return
+
+    if data == "adm:adduser":
+        msg = (
+            "➕ *Yangi xodimni ro'yxatga qo'shish:*\n\n"
+            "Quyidagi buyruqni yuboring:\n"
+            "`/adduser <telegram_id> <Ism Familiya>`\n\n"
+            "Masalan:\n`/adduser 123456789 Jasur Aliyev`"
+        )
+        await query.message.reply_text(msg, parse_mode="Markdown")
+        return
+
+    if data == "adm:lib":
+        await show_user_library(update, context)
+        return
 
 
 async def nomatches_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -3118,17 +3988,23 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not is_authorized(update.effective_user.id):
-        # Ro'yxatdan o'tishga ruxsat (til tanlash /register)
         user_text_check = (update.message.text or "").strip()
-        if user_text_check in LANG_BUTTON_TO_CODE or user_text_check.startswith("/register"):
-            pass  # pastga tushadi
+        tokens = user_text_check.split()
+        if user_text_check in LANG_BUTTON_TO_CODE:
+            pass  # til tanlashga ruxsat
+        elif user_text_check.startswith("/register"):
+            pass  # buyruq o'tadi
+        elif len(tokens) >= 2 and _looks_like_phone(tokens[-1]):
+            # Operator /register yozishni unutgan bo'lsa ham: "Ism Familiya +99890..."
+            context.args = tokens
+            await register_cmd(update, context)
+            return
         else:
-            # Spam/probing himoyasi: ko'p marta rad javobini olgan begona
-            # foydalanuvchiga endi jim e'tibor berilmaydi.
             if should_answer_denied(update.effective_user.id):
                 await update.message.reply_text(
                     t(get_lang(context), "access_denied_detail"),
                     parse_mode="Markdown",
+                    reply_markup=unauthorized_keyboard(get_lang(context)),
                 )
             return
 
@@ -3143,6 +4019,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(
                 t(lang, "access_denied_detail"),
                 parse_mode="Markdown",
+                reply_markup=unauthorized_keyboard(lang),
             )
         else:
             await update.message.reply_text(
@@ -3160,6 +4037,54 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     lang = get_lang(context)
+
+    # --- Admin paneli tugmasi ---
+    if user_text in (ADMIN_PANEL_LABEL, "/admin"):
+        if is_admin(update.effective_user.id):
+            await show_admin_dashboard(update, context)
+            return
+
+    # --- AI Ingliz tili murabbiyi (English Tutor) rejimi ---
+    if context.user_data.get("mode") == "eng_tutor":
+        exit_triggers = [
+            MACHINE_MENU_LABEL, AI_CHAT_LABEL, LIBRARY_MENU_LABEL,
+            ESP32_MENU_LABEL, ENG_COURSE_LABEL, LANG_CHANGE_LABEL,
+            ADMIN_PANEL_LABEL, ADMIN_LIBRARY_LABEL, HELP_BTN_LABEL,
+            "/exit", "/stop", "/menu",
+        ]
+        if user_text in exit_triggers or user_text in LABEL_TO_ID:
+            context.user_data["mode"] = None
+            await update.message.reply_text(t(lang, "eng_tutor_exit"), reply_markup=kb_for(update))
+            if user_text in ("/exit", "/stop", "/menu"):
+                return
+        else:
+            if not check_rate_limit(update.effective_user.id):
+                await update.message.reply_text(t(lang, "rate_limited"), reply_markup=kb_for(update))
+                return
+            await update.message.reply_chat_action("typing")
+            answer = await ask_ai(ENGLISH_TUTOR_PROMPT, user_text, lang)
+            if not answer:
+                answer = "I'm having trouble with the connection right now. Please try again in a moment!"
+            await safe_reply_text(update, answer)
+            return
+
+    # --- ESP32 monitoring relay (bitta bot rejimi) ---
+    # Faqat ruxsatli foydalanuvchi. Yoki ESP32 buyrug'i, yoki davom etayotgan
+    # kiritish sessiyasi (Wi-Fi parol, kalibrlash qiymati) bo'lsa — ESP32'ga
+    # yetkazamiz va uning javobini kutamiz (Python AI oqimiga o'tmaymiz).
+    if ESP32_CMD_URL and is_authorized(update.effective_user.id):
+        in_session = bool(context.user_data.get("esp32_session"))
+        if in_session or user_text in ESP32_TEXT_COMMANDS:
+            res = await esp32_relay(
+                "message", update.effective_chat.id, user_text,
+                from_name=(update.effective_user.full_name or "")[:64],
+            )
+            if res:
+                context.user_data["esp32_session"] = bool(res.get("session_open"))
+                return
+            context.user_data["esp32_session"] = False
+            await update.message.reply_text(t(lang, "esp32_unreachable"), reply_markup=kb_for(update))
+            return
 
     if user_text in LABEL_TO_ID:
         context.user_data["line_id"] = LABEL_TO_ID[user_text]
@@ -3403,11 +4328,16 @@ def main():
     app.add_handler(CommandHandler("addcomment", addcomment_cmd))
     app.add_handler(CommandHandler("topfaults", topfaults_cmd))
     app.add_handler(CommandHandler("status", status_cmd))
+    app.add_handler(CommandHandler("aistatus", status_cmd))
+    app.add_handler(CommandHandler("esp32", handle_esp32_status))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CommandHandler("adduser", adduser_cmd))
     app.add_handler(CommandHandler("setphone", setphone_cmd))
     app.add_handler(CommandHandler("removeuser", removeuser_cmd))
     app.add_handler(CommandHandler("listusers", listusers_cmd))
+    app.add_handler(CommandHandler("users", show_user_panel))
+    app.add_handler(CommandHandler("admin", show_admin_dashboard))
+    app.add_handler(CommandHandler("course", show_eng_menu))
     app.add_handler(CommandHandler("nomatches", nomatches_cmd))
     app.add_handler(CommandHandler("register", register_cmd))
     # Kutubxona
